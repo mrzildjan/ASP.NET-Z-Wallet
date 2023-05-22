@@ -12,8 +12,8 @@
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
 
-    <webopt:BundleReference runat="server" Path="/Content/images" />
-    <link href="/Content/images/favicon.png" rel="shortcut icon" type="image/x-icon" />
+    <webopt:BundleReference runat="server" Path="~/Content" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
     <asp:PlaceHolder runat="server">
         <%-- CSS Plugins --%>
@@ -45,9 +45,122 @@
                 <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
                 <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
                 <asp:ScriptReference Name="WebFormsBundle" />
+
                 <%--Site Scripts--%>
             </Scripts>
         </asp:ScriptManager>
+
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h4 class="modal-title" id="loginModalLabel">Login</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="login_email" class="form-label">Email address</label>
+                            <asp:TextBox ID="login_email" runat="server" CssClass="form-control" TextMode="Email"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="login_emailValidator" runat="server" ControlToValidate="login_email" ErrorMessage="Email address is required" CssClass="text-danger" ValidationGroup="loginValidation"></asp:RequiredFieldValidator>
+                            <div class="login-email-error-message text-danger" style="display: none;">Email address is required</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="login_password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <asp:TextBox ID="login_password" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
+                                <button type="button" class="btn btn-outline-secondary" id="show_login_password">Show</button>
+                            </div>
+                            <asp:RequiredFieldValidator ID="login_passwordValidator" runat="server" ControlToValidate="login_password" ErrorMessage="Password is required" CssClass="text-danger" ValidationGroup="loginValidation"></asp:RequiredFieldValidator>
+                            <div class="login-password-error-message text-danger" style="display: none;">Password is required</div>
+                        </div>
+                        <div class="text-center" runat="server">
+                            <asp:Button ID="login_button" runat="server" CssClass="btn btn-primary" Text="Login" ValidationGroup="loginValidation" />
+                        </div>
+                        <div class="text-center mt-3">
+                            <p>Don't have an account? <a href="#signUpModal" data-bs-toggle="modal" data-bs-dismiss="modal">Register</a></p>
+                        </div>
+                        <div class="login-message">
+                            <asp:Label ID="loginErrorLabel" runat="server" CssClass="login-error-message" Text=""></asp:Label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h4 class="modal-title" id="signUpModalLabel">Sign Up</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="signup_first_name" class="form-label">First Name</label>
+                                    <asp:TextBox ID="signup_first_name" runat="server" CssClass="form-control"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="signup_first_nameValidator" runat="server" ControlToValidate="signup_first_name" ErrorMessage="First Name is required" CssClass="text-danger" ValidationGroup="signupValidation"></asp:RequiredFieldValidator>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="signup_last_name" class="form-label">Last Name</label>
+                                    <asp:TextBox ID="signup_last_name" runat="server" CssClass="form-control"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="signup_last_nameValidator" runat="server" ControlToValidate="signup_last_name" ErrorMessage="Last Name is required" CssClass="text-danger" ValidationGroup="signupValidation"></asp:RequiredFieldValidator>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="signup_email" class="form-label">Email address</label>
+                                    <asp:TextBox ID="signup_email" runat="server" CssClass="form-control"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="signup_emailValidator" runat="server" ControlToValidate="signup_email" ErrorMessage="Email address is required" CssClass="text-danger" ValidationGroup="signupValidation"></asp:RequiredFieldValidator>
+                                    <div class="signup-email-error-message text-danger" style="display: none;">Email address is required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="signup_phone" class="form-label">Phone Number</label>
+                                    <asp:TextBox ID="signup_phone" runat="server" CssClass="form-control"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="signup_phoneValidator" runat="server" ControlToValidate="signup_phone" ErrorMessage="Phone Number is required" CssClass="text-danger" ValidationGroup="signupValidation"></asp:RequiredFieldValidator>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="signup_password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <asp:TextBox ID="signup_password" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
+                                <button type="button" class="btn btn-outline-secondary" id="show_signup_password">Show</button>
+                            </div>
+                            <asp:RequiredFieldValidator ID="signup_passwordValidator" runat="server" ControlToValidate="signup_password" ErrorMessage="Password is required" CssClass="text-danger" ValidationGroup="signupValidation"></asp:RequiredFieldValidator>
+                            <div class="signup-password-error-message text-danger" style="display: none;">Password is required</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="signup_confirm_password" class="form-label">Confirm Password</label>
+                            <div class="input-group">
+                                <asp:TextBox ID="signup_confirm_password" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
+                                <button type="button" class="btn btn-outline-secondary" id="show_signup_confirm_password">Show</button>
+                            </div>
+                            <asp:RequiredFieldValidator ID="signup_confirm_passwordValidator" runat="server" ControlToValidate="signup_confirm_password" ErrorMessage="Confirm Password is required" CssClass="text-danger" ValidationGroup="signupValidation"></asp:RequiredFieldValidator>
+                            <asp:CompareValidator ID="signup_confirm_passwordCompareValidator" runat="server" ControlToValidate="signup_confirm_password" ControlToCompare="signup_password" Operator="Equal" ErrorMessage="Passwords do not match" CssClass="text-danger" ValidationGroup="signupValidation"></asp:CompareValidator>
+                            <div class="signup-confirm-password-error-message text-danger" style="display: none;">Passwords do not match</div>
+                        </div>
+                        <div class="text-center" runat="server">
+                            <asp:Button ID="signup_button" runat="server" CssClass="btn btn-primary" Text="Sign Up" OnClick="SignupButton_Click" ValidationGroup="signupValidation" />
+                        </div>
+                        <div class="text-center mt-3">
+                            <p>Already have an account? <a href="#loginModal" data-bs-toggle="modal" data-bs-dismiss="modal">Please login</a></p>
+                        </div>
+                        <div class="signup-message text-center">
+                            <asp:Label ID="signupSuccessLabel" runat="server" CssClass="signup-success-message" Text=""></asp:Label>
+                            <asp:Label ID="signupErrorLabel" runat="server" CssClass="signup-error-message" Text=""></asp:Label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <header class="navigation bg-tertiary sticky-top">
             <nav class="navbar navbar-expand-xl navbar-light text-center py-3">
@@ -83,10 +196,8 @@
                                 </ul>
                             </li>
                         </ul>
-                        <!-- account btn -->
-                        <a href="#!" class="btn btn-outline-primary">Log In</a>
-                        <!-- account btn -->
-                        <a href="#!" class="btn btn-primary ms-2 ms-lg-3">Sign Up</a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" class="btn btn-outline-primary">Log In</a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#signUpModal" class="btn btn-primary ms-2 ms-lg-3">Sign Up</a>
                     </div>
                 </div>
             </nav>
@@ -157,20 +268,18 @@
                         <div style="background-color: #F4F4F4; padding: 35px;">
                             <h5 class="mb-4 text-primary font-secondary">Subscribe</h5>
                             <div class="pe-0 pe-xl-5">
-                                <form action="#!" method="post" name="mc-embedded-subscribe-form" target="_blank">
-                                    <div class="input-group mb-3">
-                                        <input type="text" class="form-control shadow-none bg-white border-end-0" placeholder="Email address">
-                                        <span class="input-group-text border-0 p-0">
-                                            <button class="input-group-text border-0 bg-primary" type="submit" name="subscribe"
-                                                aria-label="Subscribe for Newsletter">
-                                                <i class="fas fa-arrow-right"></i>
-                                            </button>
-                                        </span>
-                                    </div>
-                                    <div style="position: absolute; left: -5000px;" aria-hidden="true">
-                                        <input type="text" name="b_463ee871f45d2d93748e77cad_a0a2c6d074" tabindex="-1">
-                                    </div>
-                                </form>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control shadow-none bg-white border-end-0" placeholder="Email address">
+                                    <span class="input-group-text border-0 p-0">
+                                        <button class="input-group-text border-0 bg-primary" type="submit" name="subscribe"
+                                            aria-label="Subscribe for Newsletter">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                                <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                                    <input type="text" name="b_463ee871f45d2d93748e77cad_a0a2c6d074" tabindex="-1">
+                                </div>
                             </div>
                             <p class="mb-0">Stay up-to-date with our e-wallet newsletter. Subscribe now and get the latest updates and news straight to your inbox!</p>
                         </div>
@@ -204,6 +313,40 @@
             </div>
         </footer>
     </form>
+    <script>
+        document.getElementById("show_login_password").addEventListener("click", function () {
+            var passwordInput = document.getElementById("login_password");
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                document.getElementById("show_login_password").textContent = "Hide";
+            } else {
+                passwordInput.type = "password";
+                document.getElementById("show_login_password").textContent = "Show";
+            }
+        });
+
+        document.getElementById("show_signup_password").addEventListener("click", function () {
+            var passwordInput = document.getElementById("signup_password");
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                document.getElementById("show_signup_password").textContent = "Hide";
+            } else {
+                passwordInput.type = "password";
+                document.getElementById("show_signup_password").textContent = "Show";
+            }
+        });
+
+        document.getElementById("show_signup_confirm_password").addEventListener("click", function () {
+            var passwordInput = document.getElementById("signup_confirm_password");
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                document.getElementById("show_signup_confirm_password").textContent = "Hide";
+            } else {
+                passwordInput.type = "password";
+                document.getElementById("show_signup_confirm_password").textContent = "Show";
+            }
+        });
+    </script>
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/Content/plugins/jquery/jquery.min.js") %>
         <!-- Load jQuery before Bootstrap -->
@@ -217,36 +360,5 @@
         <%: Scripts.Render("~/Content/plugins/scrollmenu/scrollmenu.min.js") %>
         <%: Scripts.Render("~/Content/js/script.js") %>
     </asp:PlaceHolder>
-
-    <!-- Messenger Chat Plugin Code -->
-    <div id="fb-root"></div>
-
-    <!-- Your Chat Plugin code -->
-    <div id="fb-customer-chat" class="fb-customerchat">
-    </div>
-
-    <script>
-      var chatbox = document.getElementById('fb-customer-chat');
-      chatbox.setAttribute("page_id", "120046191081202");
-      chatbox.setAttribute("attribution", "biz_inbox");
-    </script>
-
-    <!-- Your SDK code -->
-    <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          xfbml            : true,
-          version          : 'v16.0'
-        });
-      };
-
-      (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
-    </script>
 </body>
 </html>

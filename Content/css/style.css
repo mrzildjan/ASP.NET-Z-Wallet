@@ -11785,4 +11785,47 @@ textarea.form-control {
 .applyLoanModal .modal-content {
     padding: 10px;
 }
-/*# sourceMappingURL=style.css.map */
+
+.signup-success-message {
+    color: green;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.signup-error-message {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.login-error-message {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+button-login {
+    border-radius: 20px;
+    border: 1px solid #FF4B2B;
+    background-color: #FF4B2B;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+}
+
+    button-login:active {
+        transform: scale(0.95);
+    }
+
+    button-login:focus {
+        outline: none;
+    }
+
+    button-login.ghost {
+        background-color: transparent;
+        border-color: #FFFFFF;
+    }
