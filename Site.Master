@@ -26,6 +26,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </asp:PlaceHolder>
 </head>
 <body>
@@ -73,14 +74,14 @@
                             <asp:RequiredFieldValidator ID="login_passwordValidator" runat="server" ControlToValidate="login_password" ErrorMessage="Password is required" CssClass="text-danger" ValidationGroup="loginValidation"></asp:RequiredFieldValidator>
                             <div class="login-password-error-message text-danger" style="display: none;">Password is required</div>
                         </div>
+                        <div class="login-message mb-3 text-center">
+                            <asp:Label ID="loginErrorLabel" runat="server" CssClass="login-error-message" Text="" Visible="false"></asp:Label>
+                        </div>
                         <div class="text-center" runat="server">
-                            <asp:Button ID="login_button" runat="server" CssClass="btn btn-primary" Text="Login" ValidationGroup="loginValidation" />
+                            <asp:Button ID="login_button" runat="server" CssClass="btn btn-primary" Text="Login" ValidationGroup="loginValidation" OnClick="LoginButton_Click" />
                         </div>
                         <div class="text-center mt-3">
                             <p>Don't have an account? <a href="#signUpModal" data-bs-toggle="modal" data-bs-dismiss="modal">Register</a></p>
-                        </div>
-                        <div class="login-message">
-                            <asp:Label ID="loginErrorLabel" runat="server" CssClass="login-error-message" Text=""></asp:Label>
                         </div>
                     </div>
                 </div>
@@ -88,7 +89,7 @@
         </div>
 
         <div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-dialog-centered signup-modal">
                 <div class="modal-content">
                     <div class="modal-header border-0">
                         <h4 class="modal-title" id="signUpModalLabel">Sign Up</h4>
@@ -123,8 +124,9 @@
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label for="signup_phone" class="form-label">Phone Number</label>
-                                    <asp:TextBox ID="signup_phone" runat="server" CssClass="form-control"></asp:TextBox>
+                                    <asp:TextBox ID="signup_phone" runat="server" CssClass="form-control">+63</asp:TextBox>
                                     <asp:RequiredFieldValidator ID="signup_phoneValidator" runat="server" ControlToValidate="signup_phone" ErrorMessage="Phone Number is required" CssClass="text-danger" ValidationGroup="signupValidation"></asp:RequiredFieldValidator>
+                                    <asp:RegularExpressionValidator ID="numValidator" runat="server" ErrorMessage="<br />Invalid Phone Number!" ValidationExpression="^(09|\+639)\d{9}$" CssClass="text-danger" ControlToValidate="signup_phone"></asp:RegularExpressionValidator>
                                 </div>
                             </div>
                         </div>
@@ -134,6 +136,7 @@
                                 <asp:TextBox ID="signup_password" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
                                 <button type="button" class="btn btn-outline-secondary" id="show_signup_password">Show</button>
                             </div>
+                            <asp:RegularExpressionValidator ID="password" runat="server" ErrorMessage="Password length must be minimum of 8 characters" Display="Dynamic" CssClass="text-danger" ControlToValidate="signup_password" ValidationExpression="(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\w])(?!.*\s)^.{8,16}$"></asp:RegularExpressionValidator>
                             <asp:RequiredFieldValidator ID="signup_passwordValidator" runat="server" ControlToValidate="signup_password" ErrorMessage="Password is required" CssClass="text-danger" ValidationGroup="signupValidation"></asp:RequiredFieldValidator>
                             <div class="signup-password-error-message text-danger" style="display: none;">Password is required</div>
                         </div>
@@ -147,15 +150,15 @@
                             <asp:CompareValidator ID="signup_confirm_passwordCompareValidator" runat="server" ControlToValidate="signup_confirm_password" ControlToCompare="signup_password" Operator="Equal" ErrorMessage="Passwords do not match" CssClass="text-danger" ValidationGroup="signupValidation"></asp:CompareValidator>
                             <div class="signup-confirm-password-error-message text-danger" style="display: none;">Passwords do not match</div>
                         </div>
+                        <div class="signup-message text-center mb-3">
+                            <asp:Label ID="signupSuccessLabel" runat="server" CssClass="signup-success-message" Text=""></asp:Label>
+                            <asp:Label ID="signupErrorLabel" runat="server" CssClass="signup-error-message" Text=""></asp:Label>
+                        </div>
                         <div class="text-center" runat="server">
                             <asp:Button ID="signup_button" runat="server" CssClass="btn btn-primary" Text="Sign Up" OnClick="SignupButton_Click" ValidationGroup="signupValidation" />
                         </div>
                         <div class="text-center mt-3">
                             <p>Already have an account? <a href="#loginModal" data-bs-toggle="modal" data-bs-dismiss="modal">Please login</a></p>
-                        </div>
-                        <div class="signup-message text-center">
-                            <asp:Label ID="signupSuccessLabel" runat="server" CssClass="signup-success-message" Text=""></asp:Label>
-                            <asp:Label ID="signupErrorLabel" runat="server" CssClass="signup-error-message" Text=""></asp:Label>
                         </div>
                     </div>
                 </div>

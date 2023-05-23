@@ -37,6 +37,19 @@ namespace Z_Wallet
                     if (reader.HasRows)
                     {
                         // User login success
+                        // Store user information in session
+                        reader.Read();
+                        int userId = (int)reader["UserId"];
+                        string firstName = (string)reader["FirstName"];
+                        string lastName = (string)reader["LastName"];
+
+                        Session["UserId"] = userId;
+                        Session["FirstName"] = firstName;
+                        Session["LastName"] = lastName;
+
+                        reader.Close();
+                        connection.Close();
+
                         // Redirect to the desired page
                         Response.Redirect("Dashboard.aspx");
                     }
@@ -44,7 +57,11 @@ namespace Z_Wallet
                     {
                         // User login failed
                         // Show error message or take appropriate action
-                        loginErrorLabel.Text = "Invalid email or password";
+                        loginErrorLabel.Text = "Invalid email or password!";
+                        loginErrorLabel.Visible = true; // Make the error label visible
+
+                        string alertScript = "<script>alert('Invalid email or password. Please try again');</script>";
+                        Response.Write(alertScript);
                     }
 
                     reader.Close();
@@ -55,14 +72,17 @@ namespace Z_Wallet
             {
                 // Handle any exception that occurred during login
                 loginErrorLabel.Text = "An error occurred during login";
+                loginErrorLabel.Visible = true; // Make the error label visible
+
                 // Log the exception for troubleshooting
+
+                string alertScript = "<script>alert('An error occurred during login');</script>";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "LoginErrorAlert", alertScript, false);
             }
         }
 
         protected void SignupButton_Click(object sender, EventArgs e)
         {
-            Response.Write("Button Clicked");
-
             string firstName = signup_first_name.Text;
             string lastName = signup_last_name.Text;
             string email = signup_email.Text;
@@ -76,6 +96,23 @@ namespace Z_Wallet
                 {
                     connection.Open();
 
+                    // Check if email or phone number already exist in the database
+                    string checkQuery = "SELECT COUNT(*) FROM Users WHERE Email = @Email OR PhoneNumber = @PhoneNumber";
+                    SqlCommand checkCommand = new SqlCommand(checkQuery, connection);
+                    checkCommand.Parameters.AddWithValue("@Email", email);
+                    checkCommand.Parameters.AddWithValue("@PhoneNumber", phone);
+
+                    int existingUserCount = (int)checkCommand.ExecuteScalar();
+                    if (existingUserCount > 0)
+                    {
+                        // Email or phone number already exists
+                        string alertScript = "<script>alert('Email or phone number already exists.');</script>";
+                        Response.Write(alertScript);
+                        signupErrorLabel.Text = "Email or phone number already exists.";
+                        return; // Exit the method without executing the insert query
+                    }
+
+                    // Proceed with user registration
                     string query = "INSERT INTO Users (FirstName, LastName, Email, PhoneNumber, Password, SignUpDateTime) " +
                                    "VALUES (@FirstName, @LastName, @Email, @PhoneNumber, @Password, @SignUpDateTime)";
                     SqlCommand command = new SqlCommand(query, connection);
@@ -89,32 +126,28 @@ namespace Z_Wallet
                     int rowsAffected = command.ExecuteNonQuery();
                     if (rowsAffected > 0)
                     {
-                        if (rowsAffected > 0)
-                        {
-                            // User registration success
-                            // Show success message or take appropriate action
-                            signupSuccessLabel.Text = "Congratulations! You have successfully registered.";
-                            signupErrorLabel.Text = "";
+                        // User registration success
+                        // Show success message or take appropriate action
+                        signupSuccessLabel.Text = "Congratulations! You have successfully registered.";
+                        signupErrorLabel.Text = "";
 
-                            // Clear the form fields
-                            signup_first_name.Text = "";
-                            signup_last_name.Text = "";
-                            signup_email.Text = "";
-                            signup_phone.Text = "";
-                            signup_password.Text = "";
-                            signup_confirm_password.Text = "";
+                        // Clear the form fields
+                        signup_first_name.Text = "";
+                        signup_last_name.Text = "";
+                        signup_email.Text = "";
+                        signup_phone.Text = "";
+                        signup_password.Text = "";
+                        signup_confirm_password.Text = "";
 
-                            // Display window alert
-                            string alertScript = "<script>alert('Congratulations! You have successfully registered.');</script>";
-                            Response.Write(alertScript);
-                        }
-                        else
-                        {
-                            // User registration failed
-                            // Show error message or take appropriate action
-                            signupErrorLabel.Text = "Registration failed";
-                        }
-                        connection.Close();
+                        // Display window alert
+                        string alertScript = "<script>alert('Congratulations! You have successfully registered.');</script>";
+                        Response.Write(alertScript);
+                    }
+                    else
+                    {
+                        // User registration failed
+                        // Show error message or take appropriate action
+                        signupErrorLabel.Text = "Registration failed";
                     }
                 }
             }

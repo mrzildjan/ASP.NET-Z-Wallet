@@ -51,15 +51,6 @@ namespace Z_Wallet
         protected global::System.Web.UI.WebControls.RequiredFieldValidator login_passwordValidator;
 
         /// <summary>
-        /// login_button control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button login_button;
-
-        /// <summary>
         /// loginErrorLabel control.
         /// </summary>
         /// <remarks>
@@ -67,6 +58,15 @@ namespace Z_Wallet
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label loginErrorLabel;
+
+        /// <summary>
+        /// login_button control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button login_button;
 
         /// <summary>
         /// signup_first_name control.
@@ -141,6 +141,15 @@ namespace Z_Wallet
         protected global::System.Web.UI.WebControls.RequiredFieldValidator signup_phoneValidator;
 
         /// <summary>
+        /// numValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator numValidator;
+
+        /// <summary>
         /// signup_password control.
         /// </summary>
         /// <remarks>
@@ -148,6 +157,15 @@ namespace Z_Wallet
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox signup_password;
+
+        /// <summary>
+        /// password control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator password;
 
         /// <summary>
         /// signup_passwordValidator control.
@@ -186,15 +204,6 @@ namespace Z_Wallet
         protected global::System.Web.UI.WebControls.CompareValidator signup_confirm_passwordCompareValidator;
 
         /// <summary>
-        /// signup_button control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button signup_button;
-
-        /// <summary>
         /// signupSuccessLabel control.
         /// </summary>
         /// <remarks>
@@ -211,6 +220,15 @@ namespace Z_Wallet
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label signupErrorLabel;
+
+        /// <summary>
+        /// signup_button control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button signup_button;
 
         /// <summary>
         /// MainContent control.
