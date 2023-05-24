@@ -7,12 +7,12 @@
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="page-header">
-                            <h2 class="pageheader-title"><i class="fa fa-fw fa-credit-card"></i>Deposit Transactions </h2>
+                            <h2 class="pageheader-title"><i class="fa fa-fw fa-file"></i>Cash In</h2>
                             <div class="page-breadcrumb">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Deposit</a></li>
+                                        <li class="breadcrumb-item"><a href="/Dashboard" class="breadcrumb-link">Dashboard</a></li>
+                                        <li class="breadcrumb-item"><a href="/Cash-In" class="breadcrumb-link">Cash In</a></li>
                                     </ol>
                                 </nav>
                             </div>
@@ -20,94 +20,65 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="col-lg-6 mx-auto">
                         <div class="card">
-                            <h5 class="card-header">List of Deposit Transactions </h5>
+                            <div class="card-header">
+                                <h4 class="mb-0">Current Information</h4>
+                            </div>
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table id="example" class="table table-striped table-bordered second" style="width: 100%">
-                                        <thead>
-                                            <tr>
-                                                <th>Transaction Code</th>
-                                                <th>Email</th>
-                                                <th>Deposit Amount</th>
-                                                <th>Currency</th>
-                                                <th>Date/Time</th>
-                                                <th>Payment</th>
-                                                <th>Status</th>
-                                                <th>Remarks</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>TRSCTN-234-21</td>
-                                                <td>john@gmail.com</td>
-                                                <td>100</td>
-                                                <td>USD</td>
-                                                <td>12-12-21 10:30AM</td>
-                                                <td>
-                                                    <img src="../assets/images/paymaya.png" width="50" /></td>
-                                                <td><span class="badge bg-success text-white">successful</span></td>
-                                                <td>Remarks</td>
-                                            </tr>
-                                            <tr>
-                                                <td>TRSCTN-375-21</td>
-                                                <td>john@gmail.com</td>
-                                                <td>100</td>
-                                                <td>USD</td>
-                                                <td>12-12-21 10:30AM</td>
-                                                <td>
-                                                    <img src="../assets/images/gcash.png" width="70" /></td>
-                                                <td><span class="badge bg-info text-white">pending</span></td>
-                                                <td>Remarks</td>
-                                            </tr>
-                                            <tr>
-                                                <td>TRSCTN-897-21</td>
-                                                <td>john@gmail.com</td>
-                                                <td>100</td>
-                                                <td>USD</td>
-                                                <td>12-12-21 10:30AM</td>
-                                                <td>
-                                                    <img src="../assets/images/gcash.png" width="70" /></td>
-                                                <td><span class="badge bg-success text-white">successful</span></td>
-                                                <td>Remarks</td>
-                                            </tr>
-                                            <tr>
-                                                <td>TRSCTN-567-21</td>
-                                                <td>john@gmail.com</td>
-                                                <td>100</td>
-                                                <td>USD</td>
-                                                <td>12-12-21 10:30AM</td>
-                                                <td>
-                                                    <img src="../assets/images/paypal.png" width="70" /></td>
-                                                <td><span class="badge bg-success text-white">successful</span></td>
-                                                <td>Remarks</td>
-                                            </tr>
-                                            <tr>
-                                                <td>TRSCTN-345-21</td>
-                                                <td>john@gmail.com</td>
-                                                <td>100</td>
-                                                <td>USD</td>
-                                                <td>12-12-21 10:30AM</td>
-                                                <td>
-                                                    <img src="../assets/images/coins.ph.png" width="60" /></td>
-                                                <td><span class="badge bg-danger text-white">rejected</span></td>
-                                                <td>Remarks</td>
-                                            </tr>
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th>Transaction Code</th>
-                                                <th>Email</th>
-                                                <th>Deposit Amount</th>
-                                                <th>Currency</th>
-                                                <th>Date/Time</th>
-                                                <th>Payment</th>
-                                                <th>Status</th>
-                                                <th>Remarks</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <asp:Label ID="lblCurrentBalance" runat="server" CssClass="mb-0 font-weight-bold font-24" Text='&#8369;<%# Eval("CurrentBalance") %>'></asp:Label>
+                                    <div class="text-success">
+                                        <% decimal currentBalance = Convert.ToDecimal(lblCurrentBalance.Text);
+                                            decimal maxBalance = 50000.0m;
+                                            decimal progressPercentage = (currentBalance / maxBalance) * 100;
+                                        %>
+                                        <i class="fa fa-fw fa-arrow-up"></i><%: progressPercentage.ToString("0.00") %>%
+                                    </div>
+                                </div>
+                                <div class="progress mt-3">
+                                    <%-- Calculate the progress percentage based on the current balance --%>
+                                    <% decimal currentBalanceInt = Convert.ToDecimal(lblCurrentBalance.Text);
+                                        decimal maxBalanceInt = 50000m;
+                                        decimal progressPercentageInt = (currentBalanceInt / maxBalanceInt * 100);
+                                        if (progressPercentageInt > 100)
+                                        {
+                                            progressPercentageInt = 100;
+                                        }
+
+                                        // Check if progress is 90% or more and apply different class based on it
+                                        string progressClass = progressPercentageInt >= 90 ? "bg-danger" : "bg-success";
+                                    %>
+                                    <div class="progress-bar <%: progressClass %>" role="progressbar" style="width: <%: progressPercentageInt %>%;" aria-valuenow="<%: progressPercentageInt %>" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="depositAmount">Cash In Amount</label>
+                                            <div class="input-group">
+                                                <asp:TextBox ID="depositAmount" runat="server" CssClass="form-control" placeholder="Enter amount"></asp:TextBox>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">PHP</span>
+                                                </div>
+                                            </div>
+                                            <asp:RangeValidator ID="depositAmountRangeValidator" runat="server" ControlToValidate="depositAmount" Type="Double" ErrorMessage="Amount must be between PHP100 and PHP10000." MinimumValue="100" MaximumValue="10000" CssClass="text-danger" ValidationGroup="cashInValidation" Display="Dynamic" SetFocusOnError="true"></asp:RangeValidator>
+                                            <asp:RegularExpressionValidator ID="depositAmountRegexValidator" runat="server" ControlToValidate="depositAmount" ValidationExpression="^\d+(\.\d{1,2})?$" ErrorMessage="<br />Amount must be between PHP100 and PHP10000." ValidationGroup="cashInValidation" CssClass="text-danger" Display="Dynamic" SetFocusOnError="true"></asp:RegularExpressionValidator>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row text-right">
+                                    <div class="col-lg-12">
+                                        <asp:Button ID="btnCashin" runat="server" Text="Cash In" CssClass="btn btn-primary" ValidationGroup="cashInValidation" OnClick="btnCashin_Click" />
+                                        <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn btn-secondary" OnClick="btnCancel_Click" />
+                                    </div>
+                                </div>
+                                <div class="form-group row text-center">
+                                    <div class="col-lg-12">
+                                        <asp:Label ID="lblSuccessMessage" runat="server" CssClass="text-success font-16" Visible="false"></asp:Label>
+                                        <asp:Label ID="lblErrorMessage" runat="server" CssClass="text-danger font-16" Visible="false"></asp:Label>
+                                    </div>
                                 </div>
                             </div>
                         </div>

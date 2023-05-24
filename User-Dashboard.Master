@@ -61,10 +61,6 @@
                     </div>
                 </nav>
             </div>
-
-            <asp:ContentPlaceHolder ID="MainContent" runat="server">
-            </asp:ContentPlaceHolder>
-
             <div class="nav-left-sidebar sidebar-dark">
                 <div class="menu-list">
                     <nav class="navbar navbar-expand-lg navbar-light">
@@ -103,6 +99,8 @@
                 </div>
             </div>
         </div>
+        <asp:ContentPlaceHolder ID="MainContent" runat="server">
+        </asp:ContentPlaceHolder>
     </form>
     <asp:PlaceHolder runat="server">
         <!-- Add the JavaScript files using Script Render -->

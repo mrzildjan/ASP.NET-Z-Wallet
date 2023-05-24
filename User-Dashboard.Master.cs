@@ -13,5 +13,14 @@ namespace Z_Wallet
         {
 
         }
+        /*protected void LogoutButton_Click(object sender, EventArgs e)
+        {
+            // Clear session variables
+            Session.Clear();
+            Session.Abandon();
+
+            // Redirect to the login page
+            Response.Redirect("Login.aspx");
+        }*/
     }
 }

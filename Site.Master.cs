@@ -39,11 +39,11 @@ namespace Z_Wallet
                         // User login success
                         // Store user information in session
                         reader.Read();
-                        int userId = (int)reader["UserId"];
+                        int AccountNumber = (int)reader["AccountNumber"]; // Update column name to "Id"
                         string firstName = (string)reader["FirstName"];
                         string lastName = (string)reader["LastName"];
 
-                        Session["UserId"] = userId;
+                        Session["AccountNumber"] = AccountNumber;
                         Session["FirstName"] = firstName;
                         Session["LastName"] = lastName;
 
@@ -59,9 +59,6 @@ namespace Z_Wallet
                         // Show error message or take appropriate action
                         loginErrorLabel.Text = "Invalid email or password!";
                         loginErrorLabel.Visible = true; // Make the error label visible
-
-                        string alertScript = "<script>alert('Invalid email or password. Please try again');</script>";
-                        Response.Write(alertScript);
                     }
 
                     reader.Close();
@@ -75,12 +72,13 @@ namespace Z_Wallet
                 loginErrorLabel.Visible = true; // Make the error label visible
 
                 // Log the exception for troubleshooting
+                Console.WriteLine("Exception during login: " + ex.Message);
 
-                string alertScript = "<script>alert('An error occurred during login');</script>";
+                // Display the specific exception message to provide more information to the user
+                string alertScript = $"<script>alert('An error occurred during login: {ex.Message}');</script>";
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "LoginErrorAlert", alertScript, false);
             }
         }
-
         protected void SignupButton_Click(object sender, EventArgs e)
         {
             string firstName = signup_first_name.Text;
@@ -113,8 +111,8 @@ namespace Z_Wallet
                     }
 
                     // Proceed with user registration
-                    string query = "INSERT INTO Users (FirstName, LastName, Email, PhoneNumber, Password, SignUpDateTime) " +
-                                   "VALUES (@FirstName, @LastName, @Email, @PhoneNumber, @Password, @SignUpDateTime)";
+                    string query = "INSERT INTO Users (FirstName, LastName, Email, PhoneNumber, Password, SignUpDateTime, CurrentBalance, TotalSendMoney, TotalCashIn, TotalCashOut) " +
+                                    "VALUES (@FirstName, @LastName, @Email, @PhoneNumber, @Password, @SignUpDateTime, 0.00, 0.00, 0.00, 0.00)";
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@FirstName", firstName);
                     command.Parameters.AddWithValue("@LastName", lastName);

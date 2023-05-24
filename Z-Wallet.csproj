@@ -103,8 +103,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="App_Data\Database1.mdf" />
+    <Content Include="App_Data\Database1_log.ldf">
+      <DependentUpon>Database1.mdf</DependentUpon>
+    </Content>
     <Content Include="App_Data\Z-Wallet.mdf" />
-    <Content Include="App_Data\Z-Wallet_log.ldf" />
+    <Content Include="App_Data\Z-Wallet_log.ldf">
+      <DependentUpon>Z-Wallet.mdf</DependentUpon>
+    </Content>
     <Content Include="Cash-In-History.aspx" />
     <Content Include="Cash-In.aspx" />
     <Content Include="Cash-Out-History.aspx" />

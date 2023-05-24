@@ -136,7 +136,7 @@
                                 <asp:TextBox ID="signup_password" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
                                 <button type="button" class="btn btn-outline-secondary" id="show_signup_password">Show</button>
                             </div>
-                            <asp:RegularExpressionValidator ID="password" runat="server" ErrorMessage="Password length must be minimum of 8 characters" Display="Dynamic" CssClass="text-danger" ControlToValidate="signup_password" ValidationExpression="(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\w])(?!.*\s)^.{8,16}$"></asp:RegularExpressionValidator>
+                            <asp:RegularExpressionValidator ID="password" runat="server" ErrorMessage="Password length must be a minimum of 8 characters" Display="Dynamic" CssClass="text-danger" ControlToValidate="signup_password" ValidationExpression="^.{8,}$"></asp:RegularExpressionValidator>
                             <asp:RequiredFieldValidator ID="signup_passwordValidator" runat="server" ControlToValidate="signup_password" ErrorMessage="Password is required" CssClass="text-danger" ValidationGroup="signupValidation"></asp:RequiredFieldValidator>
                             <div class="signup-password-error-message text-danger" style="display: none;">Password is required</div>
                         </div>

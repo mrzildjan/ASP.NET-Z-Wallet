@@ -16,19 +16,19 @@
                                         <div class="card mb-3">
                                             <div class="card-header bg-primary text-white">Account Number</div>
                                             <div class="card-body">
-                                                <h4 class="mb-0">1234567890</h4>
+                                                <asp:Label ID="lblAccountNumber" runat="server" CssClass="mb-0 font-weight-bold font-18"></asp:Label>
                                             </div>
                                         </div>
                                         <div class="card mb-3">
                                             <div class="card-header bg-primary text-white">Name</div>
                                             <div class="card-body">
-                                                <h4 class="mb-0">John Doe</h4>
+                                                <asp:Label ID="lblName" runat="server" CssClass="mb-0 font-weight-bold font-16"></asp:Label>
                                             </div>
                                         </div>
                                         <div class="card mb-3">
                                             <div class="card-header bg-primary text-white">Date Registered</div>
                                             <div class="card-body">
-                                                <h4 class="mb-0">May 23, 2023</h4>
+                                                <asp:Label ID="lblDateRegistered" runat="server" CssClass="mb-0 font-weight-bold font-16"></asp:Label>
                                             </div>
                                         </div>
                                     </div>
@@ -37,13 +37,29 @@
                                             <div class="card-header bg-primary text-white">Current Balance</div>
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                    <h1 class="mb-0">$9,000</h1>
+                                                    <asp:Label ID="lblCurrentBalance" runat="server" CssClass="mb-0 font-weight-bold font-24" Text='&#8369;<%# Eval("CurrentBalance") %>'></asp:Label>
                                                     <div class="text-success">
-                                                        <i class="fa fa-fw fa-arrow-up"></i>25%
+                                                        <% decimal currentBalance = Convert.ToDecimal(lblCurrentBalance.Text);
+                                                            decimal maxBalance = 50000.0m;
+                                                            decimal progressPercentage = (currentBalance / maxBalance) * 100;
+                                                        %>
+                                                        <i class="fa fa-fw fa-arrow-up"></i><%: progressPercentage.ToString("0.00") %>%
                                                     </div>
                                                 </div>
                                                 <div class="progress mt-3">
-                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 90%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <%-- Calculate the progress percentage based on the current balance --%>
+                                                    <% decimal currentBalanceInt = Convert.ToDecimal(lblCurrentBalance.Text);
+                                                        decimal maxBalanceInt = 50000m;
+                                                        decimal progressPercentageInt = (currentBalanceInt / maxBalanceInt * 100);
+                                                        if (progressPercentageInt > 100)
+                                                        {
+                                                            progressPercentageInt = 100;
+                                                        }
+
+                                                        // Check if progress is 90% or more and apply different class based on it
+                                                        string progressClass = progressPercentageInt >= 90 ? "bg-danger" : "bg-success";
+                                                    %>
+                                                    <div class="progress-bar <%: progressClass %>" role="progressbar" style="width: <%: progressPercentageInt %>%;" aria-valuenow="<%: progressPercentageInt %>" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -51,7 +67,7 @@
                                             <div class="card-header bg-primary text-white">Total Sent Money</div>
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                    <h1 class="mb-0">$5,000</h1>
+                                                    <asp:Label ID="lblTotalSendMoney" runat="server" CssClass="mb-0 font-weight-bold font-24"></asp:Label>
                                                     <div class="text-success">
                                                         <i class="fa fa-fw fa-arrow-up"></i>25%
                                                     </div>
@@ -66,10 +82,10 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="card mb-3">
-                                            <div class="card-header bg-primary">Number of Deposits</div>
+                                            <div class="card-header bg-primary">Total Cash In</div>
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                    <h1 class="mb-0">132</h1>
+                                                    <asp:Label ID="lblToalCashIn" runat="server" CssClass="mb-0 font-weight-bold font-24"></asp:Label>
                                                     <div class="text-success">
                                                         <i class="fa fa-fw fa-arrow-up"></i>25%
                                                     </div>
@@ -79,10 +95,10 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="card mb-3">
-                                            <div class="card-header bg-primary">Number of Withdrawals</div>
+                                            <div class="card-header bg-primary">Total Cash Out</div>
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                    <h1 class="mb-0">20</h1>
+                                                    <asp:Label ID="lblTotalCashout" runat="server" CssClass="mb-0 font-weight-bold font-24"></asp:Label>
                                                     <div class="text-danger">
                                                         <i class="fa fa-fw fa-arrow-down"></i>15%
                                                     </div>
