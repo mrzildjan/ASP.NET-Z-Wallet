@@ -69,7 +69,7 @@ namespace Z_Wallet
 
             if (success)
             {
-                // Display the updated balance
+                // Display the updated balance and total cash-in
                 DisplayAccountInformation(accountNumber);
 
                 lblSuccessMessage.Visible = true;
@@ -84,8 +84,9 @@ namespace Z_Wallet
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                // Retrieve the current balance
+                // Retrieve the current balance and total cash-in amount
                 decimal currentBalance = GetCurrentBalance(accountNumber);
+                decimal totalCashIn = GetTotalCashIn(accountNumber);
 
                 // Check if the cash-in amount exceeds the credit limit
                 if (currentBalance + cashInAmount > 50000)
@@ -95,10 +96,12 @@ namespace Z_Wallet
                     return false; // Cash-in exceeds the credit limit
                 }
 
-                string query = "UPDATE Users SET CurrentBalance = CurrentBalance + @CashInAmount WHERE AccountNumber = @AccountNumber";
+                // Update the current balance and total cash-in amount in the database
+                string query = "UPDATE Users SET CurrentBalance = CurrentBalance + @CashInAmount, TotalCashIn = @TotalCashInAmount WHERE AccountNumber = @AccountNumber";
 
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@CashInAmount", cashInAmount);
+                command.Parameters.AddWithValue("@TotalCashInAmount", totalCashIn + cashInAmount);
                 command.Parameters.AddWithValue("@AccountNumber", accountNumber);
 
                 connection.Open();
@@ -133,6 +136,31 @@ namespace Z_Wallet
             }
         }
 
+        private decimal GetTotalCashIn(int accountNumber)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT TotalCashIn FROM Users WHERE AccountNumber = @AccountNumber";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@AccountNumber", accountNumber);
+
+                connection.Open();
+                object result = command.ExecuteScalar();
+
+                if (result != null && result != DBNull.Value)
+                {
+                    return Convert.ToDecimal(result);
+                }
+                else
+                {
+                    throw new Exception("Total cash-in not found for the specified account.");
+                }
+            }
+        }
+
         protected void btnCancel_Click(object sender, EventArgs e)
         {
             // Clear the cash-in amount textbox
@@ -142,6 +170,5 @@ namespace Z_Wallet
             lblSuccessMessage.Visible = false;
             lblErrorMessage.Visible = false;
         }
-
     }
 }

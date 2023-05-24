@@ -653,6 +653,7 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
+    <Content Include="Send-Money.aspx" />
     <Content Include="Services.aspx" />
     <Content Include="Signin.aspx" />
     <Content Include="Site.Master" />
@@ -760,6 +761,13 @@
       <DependentUpon>Profile.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Send-Money.aspx.cs">
+      <DependentUpon>Send-Money.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Send-Money.aspx.designer.cs">
+      <DependentUpon>Send-Money.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Services.aspx.cs">
       <DependentUpon>Services.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

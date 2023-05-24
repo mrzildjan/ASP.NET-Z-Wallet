@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/User-Dashboard.Master" AutoEventWireup="true" CodeBehind="Dashboard.aspx.cs" Inherits="Z_Wallet.Dashboard" %>
+﻿<%@ Page Title="Dashboard" Language="C#" MasterPageFile="~/User-Dashboard.Master" AutoEventWireup="true" CodeBehind="Dashboard.aspx.cs" Inherits="Z_Wallet.Dashboard" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <main>
@@ -68,12 +68,6 @@
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <asp:Label ID="lblTotalSendMoney" runat="server" CssClass="mb-0 font-weight-bold font-24"></asp:Label>
-                                                    <div class="text-success">
-                                                        <i class="fa fa-fw fa-arrow-up"></i>25%
-                                                    </div>
-                                                </div>
-                                                <div class="progress mt-3">
-                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -85,10 +79,7 @@
                                             <div class="card-header bg-primary">Total Cash In</div>
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                    <asp:Label ID="lblToalCashIn" runat="server" CssClass="mb-0 font-weight-bold font-24"></asp:Label>
-                                                    <div class="text-success">
-                                                        <i class="fa fa-fw fa-arrow-up"></i>25%
-                                                    </div>
+                                                    <asp:Label ID="lblTotalCashIn" runat="server" CssClass="mb-0 font-weight-bold font-24"></asp:Label>
                                                 </div>
                                             </div>
                                         </div>
@@ -99,9 +90,6 @@
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <asp:Label ID="lblTotalCashout" runat="server" CssClass="mb-0 font-weight-bold font-24"></asp:Label>
-                                                    <div class="text-danger">
-                                                        <i class="fa fa-fw fa-arrow-down"></i>15%
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

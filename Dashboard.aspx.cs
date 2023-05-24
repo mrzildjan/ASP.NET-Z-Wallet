@@ -34,7 +34,7 @@ namespace Z_Wallet
                         lblDateRegistered.Text = ((DateTime)row["SignUpDateTime"]).ToString("MMM dd, yyyy");
                         lblCurrentBalance.Text = row["CurrentBalance"].ToString();
                         lblTotalSendMoney.Text = row["TotalSendMoney"].ToString();
-                        lblToalCashIn.Text = row["TotalCashIn"].ToString();
+                        lblTotalCashIn.Text = row["TotalCashIn"].ToString();
                         lblTotalCashout.Text = row["TotalCashOut"].ToString();
                     }
                 }

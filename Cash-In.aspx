@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/User-Dashboard.Master" AutoEventWireup="true" CodeBehind="Cash-In.aspx.cs" Inherits="Z_Wallet.Cash_In" %>
+﻿<%@ Page Title="Cash-In" Language="C#" MasterPageFile="~/User-Dashboard.Master" AutoEventWireup="true" CodeBehind="Cash-In.aspx.cs" Inherits="Z_Wallet.Cash_In" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <main>
@@ -23,7 +23,7 @@
                     <div class="col-lg-6 mx-auto">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="mb-0">Current Information</h4>
+                                <h4 class="mb-0">Current Balance</h4>
                             </div>
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
@@ -63,6 +63,7 @@
                                                     <span class="input-group-text">PHP</span>
                                                 </div>
                                             </div>
+                                            <asp:RequiredFieldValidator ID="depositRequiredFieldValidator" runat="server" ControlToValidate="depositAmount" ErrorMessage="Enter a Cash-In Amount." CssClass="text-danger" ValidationGroup="cashInValidation" Display="Dynamic" SetFocusOnError="true"></asp:RequiredFieldValidator>
                                             <asp:RangeValidator ID="depositAmountRangeValidator" runat="server" ControlToValidate="depositAmount" Type="Double" ErrorMessage="Amount must be between PHP100 and PHP10000." MinimumValue="100" MaximumValue="10000" CssClass="text-danger" ValidationGroup="cashInValidation" Display="Dynamic" SetFocusOnError="true"></asp:RangeValidator>
                                             <asp:RegularExpressionValidator ID="depositAmountRegexValidator" runat="server" ControlToValidate="depositAmount" ValidationExpression="^\d+(\.\d{1,2})?$" ErrorMessage="<br />Amount must be between PHP100 and PHP10000." ValidationGroup="cashInValidation" CssClass="text-danger" Display="Dynamic" SetFocusOnError="true"></asp:RegularExpressionValidator>
                                         </div>
