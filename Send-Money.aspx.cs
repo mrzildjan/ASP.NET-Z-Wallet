@@ -115,21 +115,26 @@ namespace Z_Wallet
                 return;
             }
 
-            bool success = UpdateCurrentBalance(accountNumber, receiverAccountNumberValue, sendAmountValue);
+            int updateResult = UpdateCurrentBalance(accountNumber, receiverAccountNumberValue, sendAmountValue);
 
-            if (success)
+            switch (updateResult)
             {
-                // Display the updated balance and success message
-                lblErrorMessage.Visible = false;
-                lblSuccessMessage.Visible = true;
-                lblSuccessMessage.Text = "Money successfully sent.";
-                DisplayAccountInformation(accountNumber);
-            }
-            else
-            {
-                // Display an error message indicating insufficient funds or that the receiver's new balance would exceed the limit
-                lblErrorMessage.Visible = true;
-                lblErrorMessage.Text = "Insufficient funds or the receiver's credit amount would exceed 50,000 PHP. Please enter valid details.";
+                case 0: // success
+                        // Display the updated balance
+                    DisplayAccountInformation(accountNumber);
+
+                    lblSuccessMessage.Visible = true;
+                    lblSuccessMessage.Text = "Money was successfully sent.";
+                    lblErrorMessage.Visible = false;
+                    break;
+                case 1: // insufficient funds
+                    lblErrorMessage.Visible = true;
+                    lblErrorMessage.Text = "Insufficient funds.";
+                    break;
+                case 2: // receiver's credit limit would be exceeded
+                    lblErrorMessage.Visible = true;
+                    lblErrorMessage.Text = "The receiver's credit amount would exceed 50,000 PHP.";
+                    break;
             }
         }
 
@@ -169,7 +174,6 @@ namespace Z_Wallet
             int receiverAccountNumberValue;
             if (!int.TryParse(receiverAccountNumber.Text, out receiverAccountNumberValue))
             {
-                // Display an error message or handle the invalid receiver account number input
                 lblErrorMessage.Visible = true;
                 lblErrorMessage.Text = "Invalid receiver account number. Please enter a valid account number.";
                 return;
@@ -178,7 +182,6 @@ namespace Z_Wallet
             decimal sendAmountValue;
             if (!decimal.TryParse(sendAmount.Text, out sendAmountValue))
             {
-                // Display an error message or handle the invalid send amount input
                 lblErrorMessage.Visible = true;
                 lblErrorMessage.Text = "Invalid send amount. Please enter a valid amount.";
                 return;
@@ -193,7 +196,6 @@ namespace Z_Wallet
                 // Check if the receiver account number is the same as the sender's account number
                 if (accountNumber == receiverAccountNumberValue)
                 {
-                    // Display an error message indicating that sending money to own account is not allowed
                     lblErrorMessage.Visible = true;
                     lblErrorMessage.Text = "You cannot send money to your own account.";
                     return;
@@ -210,21 +212,26 @@ namespace Z_Wallet
                 }
 
                 // Update the current balance in the database
-                bool success = UpdateCurrentBalance(accountNumber, receiverAccountNumberValue, sendAmountValue);
+                int updateResult = UpdateCurrentBalance(accountNumber, receiverAccountNumberValue, sendAmountValue);
 
-                if (success)
+                switch (updateResult)
                 {
-                    // Display the updated balance
-                    DisplayAccountInformation(accountNumber);
+                    case 0:
+                        // Display the updated balance
+                        DisplayAccountInformation(accountNumber);
 
-                    lblSuccessMessage.Visible = true;
-                    lblSuccessMessage.Text = "Money was successfully sent.";
-                    lblErrorMessage.Visible = false;
-                }
-                else
-                {
-                    lblErrorMessage.Visible = true;
-                    lblErrorMessage.Text = "Insufficient funds or invalid receiver account number. Please enter valid details.";
+                        lblSuccessMessage.Visible = true;
+                        lblSuccessMessage.Text = "Money was successfully sent.";
+                        lblErrorMessage.Visible = false;
+                        break;
+                    case 1:
+                        lblErrorMessage.Visible = true;
+                        lblErrorMessage.Text = "Insufficient funds. Please enter a valid amount.";
+                        break;
+                    case 2:
+                        lblErrorMessage.Visible = true;
+                        lblErrorMessage.Text = "The transaction would exceed the receiver's credit limit of 50,000 PHP.";
+                        break;
                 }
             }
             else
@@ -256,7 +263,7 @@ namespace Z_Wallet
             }
         }
 
-        private bool UpdateCurrentBalance(int senderAccountNumber, int receiverAccountNumber, decimal sendAmount)
+        private int UpdateCurrentBalance(int senderAccountNumber, int receiverAccountNumber, decimal sendAmount)
         {
             string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
 
@@ -268,11 +275,17 @@ namespace Z_Wallet
                 // Check if the sender has sufficient funds
                 if (sendAmount > senderCurrentBalance)
                 {
-                    return false; // Insufficient funds
+                    return 1; // Insufficient funds
                 }
 
                 // Retrieve the current balance of the receiver
                 decimal receiverCurrentBalance = GetCurrentBalance(receiverAccountNumber);
+
+                // Check if receiver's balance exceeds limit after transaction
+                if (receiverCurrentBalance + sendAmount > 50000)
+                {
+                    return 2; // Receiver's balance will exceed limit
+                }
 
                 // Update the current balances in the database
                 string updateSenderQuery = "UPDATE Users SET CurrentBalance = CurrentBalance - @SendAmount WHERE AccountNumber = @SenderAccountNumber";
@@ -299,7 +312,7 @@ namespace Z_Wallet
                     updateReceiverCommand.ExecuteNonQuery();
 
                     transaction.Commit();
-                    return true;
+                    return 0;
                 }
                 catch (Exception ex)
                 {
