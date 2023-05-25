@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -63,7 +63,7 @@ namespace Z_Wallet
         protected void btnSendMoney_Click(object sender, EventArgs e)
         {
             // Get the account number from the session
-            int accountNumber = (int)Session["AccountNumber"];
+            int senderAccountNumber = (int)Session["AccountNumber"];
 
             // Get the receiver's account number and send amount entered by the user
             int receiverAccountNumberValue;
@@ -97,7 +97,7 @@ namespace Z_Wallet
 
             // Verify the password (You can replace this with your own password verification logic)
             string enteredPassword = password.Text;
-            bool passwordVerified = VerifyPassword(accountNumber, enteredPassword);
+            bool passwordVerified = VerifyPassword(senderAccountNumber, enteredPassword);
 
             if (!passwordVerified)
             {
@@ -107,7 +107,7 @@ namespace Z_Wallet
             }
 
             // Check if the receiver account number is the same as the sender's account number
-            if (accountNumber == receiverAccountNumberValue)
+            if (senderAccountNumber == receiverAccountNumberValue)
             {
                 // Display an error message indicating that sending money to own account is not allowed
                 lblErrorMessage.Visible = true;
@@ -115,17 +115,31 @@ namespace Z_Wallet
                 return;
             }
 
-            int updateResult = UpdateCurrentBalance(accountNumber, receiverAccountNumberValue, sendAmountValue);
+            int updateResult = UpdateCurrentBalance(senderAccountNumber, receiverAccountNumberValue, sendAmountValue);
 
             switch (updateResult)
             {
                 case 0: // success
-                        // Display the updated balance
-                    DisplayAccountInformation(accountNumber);
+                    // Update the total send money and total receive money in the database
+                    bool updateSendSuccess = UpdateTotalSendMoney(senderAccountNumber, sendAmountValue);
+                    bool updateReceiveSuccess = UpdateTotalReceiveMoney(receiverAccountNumberValue, sendAmountValue);
 
-                    lblSuccessMessage.Visible = true;
-                    lblSuccessMessage.Text = "Money was successfully sent.";
-                    lblErrorMessage.Visible = false;
+                    if (updateSendSuccess && updateReceiveSuccess)
+                    {
+                        // Display the updated balance
+                        DisplayAccountInformation(senderAccountNumber);
+
+                        lblSuccessMessage.Visible = true;
+                        lblSuccessMessage.Text = "Money was successfully sent.";
+                        lblErrorMessage.Visible = false;
+                    }
+                    else
+                    {
+                        // Update failed. Display an error message.
+                        lblErrorMessage.Visible = true;
+                        lblErrorMessage.Text = "Money was sent successfully.";
+                        lblSuccessMessage.Visible = false;
+                    }
                     break;
                 case 1: // insufficient funds
                     lblErrorMessage.Visible = true;
@@ -133,7 +147,7 @@ namespace Z_Wallet
                     break;
                 case 2: // receiver's credit limit would be exceeded
                     lblErrorMessage.Visible = true;
-                    lblErrorMessage.Text = "The receiver's credit amount would exceed 50,000 PHP.";
+                    lblErrorMessage.Text = "The receiver's credit amount would exceed the limit.";
                     break;
             }
         }
@@ -168,7 +182,7 @@ namespace Z_Wallet
         protected void btnVerifyPassword_Click(object sender, EventArgs e)
         {
             // Get the account number from the session
-            int accountNumber = (int)Session["AccountNumber"];
+            int senderAccountNumber = (int)Session["AccountNumber"];
 
             // Get the receiver's account number and send amount entered by the user
             int receiverAccountNumberValue;
@@ -189,12 +203,12 @@ namespace Z_Wallet
 
             // Verify the password (You can replace this with your own password verification logic)
             string enteredPassword = password.Text;
-            bool passwordVerified = VerifyPassword(accountNumber, enteredPassword);
+            bool passwordVerified = VerifyPassword(senderAccountNumber, enteredPassword);
 
             if (passwordVerified)
             {
                 // Check if the receiver account number is the same as the sender's account number
-                if (accountNumber == receiverAccountNumberValue)
+                if (senderAccountNumber == receiverAccountNumberValue)
                 {
                     lblErrorMessage.Visible = true;
                     lblErrorMessage.Text = "You cannot send money to your own account.";
@@ -212,17 +226,31 @@ namespace Z_Wallet
                 }
 
                 // Update the current balance in the database
-                int updateResult = UpdateCurrentBalance(accountNumber, receiverAccountNumberValue, sendAmountValue);
+                int updateResult = UpdateCurrentBalance(senderAccountNumber, receiverAccountNumberValue, sendAmountValue);
 
                 switch (updateResult)
                 {
                     case 0:
-                        // Display the updated balance
-                        DisplayAccountInformation(accountNumber);
+                        // Update the total send money and total receive money in the database
+                        bool updateSendSuccess = UpdateTotalSendMoney(senderAccountNumber, sendAmountValue);
+                        bool updateReceiveSuccess = UpdateTotalReceiveMoney(receiverAccountNumberValue, sendAmountValue);
 
-                        lblSuccessMessage.Visible = true;
-                        lblSuccessMessage.Text = "Money was successfully sent.";
-                        lblErrorMessage.Visible = false;
+                        if (updateSendSuccess && updateReceiveSuccess)
+                        {
+                            // Display the updated balance
+                            DisplayAccountInformation(senderAccountNumber);
+
+                            lblSuccessMessage.Visible = true;
+                            lblSuccessMessage.Text = "Money was successfully sent.";
+                            lblErrorMessage.Visible = false;
+                        }
+                        else
+                        {
+                            // Update failed. Display an error message.
+                            lblErrorMessage.Visible = true;
+                            lblErrorMessage.Text = "Money was sent successfully.";
+                            lblSuccessMessage.Visible = false;
+                        }
                         break;
                     case 1:
                         lblErrorMessage.Visible = true;
@@ -230,7 +258,7 @@ namespace Z_Wallet
                         break;
                     case 2:
                         lblErrorMessage.Visible = true;
-                        lblErrorMessage.Text = "The transaction would exceed the receiver's credit limit of 50,000 PHP.";
+                        lblErrorMessage.Text = "The transaction would exceed the receiver's credit limit.";
                         break;
                 }
             }
@@ -344,6 +372,44 @@ namespace Z_Wallet
                 {
                     throw new Exception("Current balance not found for the specified account.");
                 }
+            }
+        }
+
+        private bool UpdateTotalSendMoney(int accountNumber, decimal sendAmount)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "UPDATE Users SET TotalSendMoney = ISNULL(TotalSendMoney, 0) + @SendAmount WHERE AccountNumber = @AccountNumber";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@SendAmount", sendAmount);
+                command.Parameters.AddWithValue("@AccountNumber", accountNumber);
+
+                connection.Open();
+                int rowsAffected = command.ExecuteNonQuery();
+
+                return rowsAffected > 0;
+            }
+        }
+
+        private bool UpdateTotalReceiveMoney(int accountNumber, decimal receiveAmount)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "UPDATE Users SET TotalReceiveMoney = ISNULL(TotalReceiveMoney, 0) + @ReceiveAmount WHERE AccountNumber = @AccountNumber";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@ReceiveAmount", receiveAmount);
+                command.Parameters.AddWithValue("@AccountNumber", accountNumber);
+
+                connection.Open();
+                int rowsAffected = command.ExecuteNonQuery();
+
+                return rowsAffected > 0;
             }
         }
 

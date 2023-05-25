@@ -111,8 +111,8 @@ namespace Z_Wallet
                     }
 
                     // Proceed with user registration
-                    string query = "INSERT INTO Users (FirstName, LastName, Email, PhoneNumber, Password, SignUpDateTime, CurrentBalance, TotalSendMoney, TotalCashIn, TotalCashOut) " +
-                                    "VALUES (@FirstName, @LastName, @Email, @PhoneNumber, @Password, @SignUpDateTime, 0.00, 0.00, 0.00, 0.00)";
+                    string query = "INSERT INTO Users (FirstName, LastName, Email, PhoneNumber, Password, SignUpDateTime, CurrentBalance, TotalSendMoney, TotalSendMoney, TotalCashIn, TotalCashOut) " +
+                                    "VALUES (@FirstName, @LastName, @Email, @PhoneNumber, @Password, @SignUpDateTime, 0.00, 0.00, 0.00, 0.00, 0.00)";
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@FirstName", firstName);
                     command.Parameters.AddWithValue("@LastName", lastName);

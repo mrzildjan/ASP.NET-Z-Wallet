@@ -80,7 +80,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="receiverAccountNumber">Receiver's Account Number</label>
-                                            <asp:TextBox ID="receiverAccountNumber" runat="server" CssClass="form-control" placeholder="Enter receiver's account number"></asp:TextBox>
+                                            <asp:TextBox ID="receiverAccountNumber" runat="server" CssClass="form-control" placeholder="Enter account number"></asp:TextBox>
                                             <asp:RequiredFieldValidator ID="receiverAccountNumberRequiredFieldValidator" runat="server" ControlToValidate="receiverAccountNumber" ErrorMessage="Receiver's Account Number is required" ValidationGroup="sendMoneyValidation" CssClass="text-danger" Display="Dynamic"></asp:RequiredFieldValidator>
                                         </div>
                                         <div class="form-group">

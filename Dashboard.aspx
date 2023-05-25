@@ -16,19 +16,19 @@
                                         <div class="card mb-3">
                                             <div class="card-header bg-primary text-white">Account Number</div>
                                             <div class="card-body">
-                                                <asp:Label ID="lblAccountNumber" runat="server" CssClass="mb-0 font-weight-bold font-18"></asp:Label>
+                                                <asp:Label ID="lblAccountNumber" runat="server" CssClass="mb-0 font-weight-bold font-20"></asp:Label>
                                             </div>
                                         </div>
                                         <div class="card mb-3">
                                             <div class="card-header bg-primary text-white">Name</div>
                                             <div class="card-body">
-                                                <asp:Label ID="lblName" runat="server" CssClass="mb-0 font-weight-bold font-16"></asp:Label>
+                                                <asp:Label ID="lblName" runat="server" CssClass="mb-0 font-weight-bold font-18"></asp:Label>
                                             </div>
                                         </div>
                                         <div class="card mb-3">
                                             <div class="card-header bg-primary text-white">Date Registered</div>
                                             <div class="card-body">
-                                                <asp:Label ID="lblDateRegistered" runat="server" CssClass="mb-0 font-weight-bold font-16"></asp:Label>
+                                                <asp:Label ID="lblDateRegistered" runat="server" CssClass="mb-0 font-weight-bold font-18"></asp:Label>
                                             </div>
                                         </div>
                                     </div>
@@ -68,6 +68,14 @@
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <asp:Label ID="lblTotalSendMoney" runat="server" CssClass="mb-0 font-weight-bold font-24"></asp:Label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card mb-3">
+                                            <div class="card-header bg-primary text-white">Total Receive Money</div>
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <asp:Label ID="lblTotalReceiveMoney" runat="server" CssClass="mb-0 font-weight-bold font-24"></asp:Label>
                                                 </div>
                                             </div>
                                         </div>
