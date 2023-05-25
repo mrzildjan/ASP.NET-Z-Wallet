@@ -291,6 +291,58 @@ namespace Z_Wallet
             }
         }
 
+        private void StoreTransaction(int senderAccountNumber, int receiverAccountNumber, decimal sendAmount)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "INSERT INTO Transactions (AccountNumber, TransactionType, TransactionSender, TransactionReceiver, TransactionAmount, TransactionDate) " +
+                               "VALUES (@AccountNumber, @TransactionType, @TransactionSender, @TransactionReceiver, @TransactionAmount, @TransactionDate)";
+
+                string senderName = GetAccountName(senderAccountNumber);
+                string receiverName = GetAccountName(receiverAccountNumber);
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@AccountNumber", senderAccountNumber);
+                command.Parameters.AddWithValue("@TransactionType", "Send Money");
+                command.Parameters.AddWithValue("@TransactionSender", senderName);
+                command.Parameters.AddWithValue("@TransactionReceiver", receiverName);
+                command.Parameters.AddWithValue("@TransactionAmount", sendAmount);
+                command.Parameters.AddWithValue("@TransactionDate", DateTime.Now);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        private string GetAccountName(int accountNumber)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT FirstName, LastName FROM Users WHERE AccountNumber = @AccountNumber";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@AccountNumber", accountNumber);
+
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    string firstName = reader["FirstName"].ToString();
+                    string lastName = reader["LastName"].ToString();
+                    return firstName + " " + lastName;
+                }
+                else
+                {
+                    throw new Exception("Account not found.");
+                }
+            }
+        }
+
         private int UpdateCurrentBalance(int senderAccountNumber, int receiverAccountNumber, decimal sendAmount)
         {
             string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
@@ -332,7 +384,6 @@ namespace Z_Wallet
 
                 try
                 {
-                    // Execute the update commands within a transaction
                     updateSenderCommand.Transaction = transaction;
                     updateSenderCommand.ExecuteNonQuery();
 
@@ -340,6 +391,9 @@ namespace Z_Wallet
                     updateReceiverCommand.ExecuteNonQuery();
 
                     transaction.Commit();
+
+                    // Store the transaction information in the database
+                    StoreTransaction(senderAccountNumber, receiverAccountNumber, sendAmount);
                     return 0;
                 }
                 catch (Exception ex)

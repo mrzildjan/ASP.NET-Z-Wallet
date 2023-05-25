@@ -19,11 +19,11 @@
         <%: Styles.Render("~/Content/assets/vendor/charts/chartist-bundle/chartist.css") %>
         <%: Styles.Render("~/Content/assets/vendor/charts/c3charts/c3.css") %>
         <%: Styles.Render("~/Content/assets/vendor/charts/morris-bundle/morris.css") %>
-        <link rel="stylesheet" type="text/css" href="../Content/assets/vendor/daterangepicker/daterangepicker.css" />
-        <link rel="stylesheet" type="text/css" href="../Content/assets/vendor/datatables/css/dataTables.bootstrap4.css">
-        <link rel="stylesheet" type="text/css" href="../Content/assets/vendor/datatables/css/buttons.bootstrap4.css">
-        <link rel="stylesheet" type="text/css" href="../Content/assets/vendor/datatables/css/select.bootstrap4.css">
-        <link rel="stylesheet" type="text/css" href="../Content/assets/vendor/datatables/css/fixedHeader.bootstrap4.css">
+        <link rel="stylesheet" type="text/css" href="/Content/assets/vendor/daterangepicker/daterangepicker.css" />
+        <link rel="stylesheet" type="text/css" href="/Content/assets/vendor/datatables/css/dataTables.bootstrap4.css" />
+        <link rel="stylesheet" type="text/css" href="/Content/assets/vendor/datatables/css/buttons.bootstrap4.css" />
+        <link rel="stylesheet" type="text/css" href="/Content/assets/vendor/datatables/css/select.bootstrap4.css" />
+        <link rel="stylesheet" type="text/css" href="/Content/assets/vendor/datatables/css/fixedHeader.bootstrap4.css" />
     </asp:PlaceHolder>
 </head>
 <body>
@@ -85,7 +85,7 @@
                                     <a class="nav-link" href="\Send-Money"><i class="fa fa-fw fa-money-bill-alt"></i>Send Money</a>
                                 </li>
                                 <li class="nav-item ">
-                                    <a class="nav-link" href="\Cash-Out-History"><i class="fa fa-fw fa-file"></i>Transaction History</a>
+                                    <a class="nav-link" href="\Reports"><i class="fa fa-fw fa-file"></i>Reports</a>
                                 </li>
                                 <li class="nav-item ">
                                     <a class="nav-link" href="\Profile"><i class="fa fa-fw fa-user"></i>Profile</a>
@@ -123,6 +123,9 @@
         <%: Scripts.Render("~/Content/assets/vendor/charts/morris-bundle/morrisjs.html") %>
         <script src="../../../../cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
         <script src="../../../../cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        <%: Scripts.Render("~Content/assets/vendor/datatables/js/buttons.bootstrap4.min.js") %>
+        <%: Scripts.Render("~Content/assets/vendor/datatables/js/data-table.js") %>
+        <%: Scripts.Render("~Content/assets/vendor/datatables/js/dataTables.bootstrap4.min.js") %>
     </asp:PlaceHolder>
 </body>
 </html>

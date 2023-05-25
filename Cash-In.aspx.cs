@@ -56,6 +56,28 @@ namespace Z_Wallet
             return accountData;
         }
 
+        private void StoreTransaction(int accountNumber, string transactionType, string transactionSender, string transactionReceiver, decimal transactionAmount)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "INSERT INTO Transactions (AccountNumber, TransactionType, TransactionSender, TransactionReceiver, TransactionAmount, TransactionDate) " +
+                               "VALUES (@AccountNumber, @TransactionType, @TransactionSender, @TransactionReceiver, @TransactionAmount, @TransactionDate)";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@AccountNumber", accountNumber);
+                command.Parameters.AddWithValue("@TransactionType", transactionType);
+                command.Parameters.AddWithValue("@TransactionSender", transactionSender);
+                command.Parameters.AddWithValue("@TransactionReceiver", transactionReceiver);
+                command.Parameters.AddWithValue("@TransactionAmount", transactionAmount);
+                command.Parameters.AddWithValue("@TransactionDate", DateTime.Now);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
         protected void btnCashin_Click(object sender, EventArgs e)
         {
             // Get the account number from the session
@@ -69,6 +91,9 @@ namespace Z_Wallet
 
             if (success)
             {
+                // Store the transaction information in the database
+                StoreTransaction(accountNumber, "Cash-In", "", "", cashInAmount);
+
                 // Display the updated balance and total cash-in
                 DisplayAccountInformation(accountNumber);
 

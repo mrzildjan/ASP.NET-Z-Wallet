@@ -111,9 +111,7 @@
     <Content Include="App_Data\Z-Wallet_log.ldf">
       <DependentUpon>Z-Wallet.mdf</DependentUpon>
     </Content>
-    <Content Include="Cash-In-History.aspx" />
     <Content Include="Cash-In.aspx" />
-    <Content Include="Cash-Out-History.aspx" />
     <Content Include="Cash-Out.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\assets\images\1.jpg" />
@@ -560,6 +558,7 @@
     <Content Include="Legal.aspx" />
     <Content Include="Privacy-Policy.aspx" />
     <Content Include="Profile.aspx" />
+    <Content Include="Reports.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -673,26 +672,12 @@
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Cash-In-History.aspx.cs">
-      <DependentUpon>Cash-In-History.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Cash-In-History.aspx.designer.cs">
-      <DependentUpon>Cash-In-History.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Cash-In.aspx.cs">
       <DependentUpon>Cash-In.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Cash-In.aspx.designer.cs">
       <DependentUpon>Cash-In.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Cash-Out-History.aspx.cs">
-      <DependentUpon>Cash-Out-History.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Cash-Out-History.aspx.designer.cs">
-      <DependentUpon>Cash-Out-History.aspx</DependentUpon>
     </Compile>
     <Compile Include="Cash-Out.aspx.cs">
       <DependentUpon>Cash-Out.aspx</DependentUpon>
@@ -761,6 +746,13 @@
       <DependentUpon>Profile.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports.aspx.cs">
+      <DependentUpon>Reports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports.aspx.designer.cs">
+      <DependentUpon>Reports.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Send-Money.aspx.cs">
       <DependentUpon>Send-Money.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

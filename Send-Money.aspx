@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/User-Dashboard.Master" AutoEventWireup="true" CodeBehind="Send-Money.aspx.cs" Inherits="Z_Wallet.Send_Money" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <main>
         <!-- Add the modal for password verification -->
@@ -18,7 +19,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <asp:Button ID="btnVerifyPassword" runat="server" Text="Verify" CssClass="btn btn-primary" OnClick="btnVerifyPassword_Click" OnClientClick="return validatePassword();" />
+                        <asp:Button ID="btnVerifyPassword" runat="server" Text="Verify" CssClass="btn btn-primary" OnClick="btnVerifyPassword_Click" OnClientClick="return validateModalInput();" />
                         <asp:Button ID="btnCancelPassword" runat="server" Text="Cancel" CssClass="btn btn-secondary" data-dismiss="modal" />
                         <asp:RequiredFieldValidator ID="passwordRequiredFieldValidator" runat="server" ControlToValidate="password" ErrorMessage="Password is required" ValidationGroup="passwordValidation" CssClass="text-danger" Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
@@ -134,6 +135,7 @@
             function validateSendMoney() {
                 var receiverAccountNumber = document.getElementById('<%= receiverAccountNumber.ClientID %>').value;
                 var sendAmount = document.getElementById('<%= sendAmount.ClientID %>').value;
+
                 if (receiverAccountNumber === '') {
                     alert("Please enter the receiver's account number.");
                     return false;
@@ -142,6 +144,36 @@
                     alert('Please enter a send amount.');
                     return false;
                 }
+
+                var amount = parseFloat(sendAmount);
+                if (isNaN(amount) || amount < 100 || amount > 10000) {
+                    alert('Amount must be between 100 and 10,000.');
+                    return false;
+                }
+
+                return true;
+            }
+
+            function validateModalInput() {
+                var receiverAccountNumber = document.getElementById('<%= receiverAccountNumber.ClientID %>').value;
+        var sendAmount = document.getElementById('<%= sendAmount.ClientID %>').value;
+
+                if (receiverAccountNumber === '') {
+                    alert("Please enter the receiver's account number.");
+                    return false;
+                }
+
+                if (sendAmount === '') {
+                    alert('Please enter a send amount.');
+                    return false;
+                }
+
+                var amount = parseFloat(sendAmount);
+                if (isNaN(amount) || amount < 100 || amount > 10000) {
+                    alert('Amount must be between 100 and 10,000.');
+                    return false;
+                }
+
                 return true;
             }
         </script>

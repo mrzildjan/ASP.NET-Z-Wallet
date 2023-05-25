@@ -19,11 +19,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <asp:Button ID="btnVerifyPassword" runat="server" Text="Verify" CssClass="btn btn-primary" OnClick="btnVerifyPassword_Click" OnClientClick="return validatePassword();" />
+                        <asp:Button ID="btnVerifyPassword" runat="server" Text="Verify" CssClass="btn btn-primary" OnClick="btnVerifyPassword_Click" OnClientClick="return validateModalInput();" />
                         <asp:Button ID="btnCancelPassword" runat="server" Text="Cancel" CssClass="btn btn-secondary" data-dismiss="modal" />
                         <asp:RequiredFieldValidator ID="passwordRequiredFieldValidator" runat="server" ControlToValidate="password" ErrorMessage="Password is required" ValidationGroup="passwordValidation" CssClass="text-danger" Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -134,6 +133,29 @@
                     alert('Please enter a cash-out amount.');
                     return false;
                 }
+
+                var amount = parseFloat(withdrawAmount);
+                if (isNaN(amount) || amount < 100 || amount > 10000) {
+                    alert('Amount must be between 100 and 10,000.');
+                    return false;
+                }
+
+                return true;
+            }
+
+            function validateModalInput() {
+                var modalWithdrawAmount = document.getElementById('<%= withdrawAmount.ClientID %>').value;
+                if (modalWithdrawAmount === '') {
+                    alert('Please enter a cash-out amount.');
+                    return false;
+                }
+
+                var amount = parseFloat(modalWithdrawAmount);
+                if (isNaN(amount) || amount < 100 || amount > 10000) {
+                    alert('Amount must be between 100 and 10,000.');
+                    return false;
+                }
+
                 return true;
             }
         </script>
