@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/User-Dashboard.Master" AutoEventWireup="true" CodeBehind="Profile.aspx.cs" Inherits="Z_Wallet.Profile" %>
+﻿<%@ Page Title="Profile" Language="C#" MasterPageFile="~/User-Dashboard.Master" AutoEventWireup="true" CodeBehind="Profile.aspx.cs" Inherits="Z_Wallet.Profile" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <main>
@@ -38,6 +38,11 @@
                                 <asp:Button ID="btnChooseFile" runat="server" Text="Choose File" CssClass="btn btn-secondary mt-3" OnClientClick="chooseFile();return false;" />
                                 <asp:Button ID="btnUpload" runat="server" Text="Upload" CssClass="btn btn-primary mt-3" OnClick="btnUpload_Click" />
                                 <asp:RegularExpressionValidator ID="revImageFile" runat="server" ControlToValidate="fileUpload" ErrorMessage="<br />Invalid file format. Please choose an image." ValidationExpression="^.*\.(jpg|JPG|jpeg|JPEG|png|PNG)$" CssClass="text-danger"></asp:RegularExpressionValidator>
+                                <div class="form-group row text-center">
+                                    <div class="col-lg-12">
+                                        <asp:Label ID="lblAvatarSuccessMessage" runat="server" CssClass="text-success font-16" Visible="false"></asp:Label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -50,40 +55,68 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="firstName">First name</label>
-                                        <asp:TextBox ID="txtFirstName" runat="server" CssClass="form-control" placeholder="" required=""></asp:TextBox>
+                                        <asp:TextBox ID="txtFirstName" runat="server" CssClass="form-control" placeholder=""></asp:TextBox>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="lastName">Last name</label>
-                                        <asp:TextBox ID="txtLastName" runat="server" CssClass="form-control" placeholder="" required=""></asp:TextBox>
+                                        <asp:TextBox ID="txtLastName" runat="server" CssClass="form-control" placeholder=""></asp:TextBox>
                                     </div>
                                     <div class="col-md-12 mb-3">
-                                        <label for="lastName">Email</label>
-                                        <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" placeholder="" required=""></asp:TextBox>
+                                        <label for="email">Email</label>
+                                        <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" placeholder=""></asp:TextBox>
                                     </div>
                                     <div class="col-md-12 mb-3">
-                                        <label for="lastName">Contact</label>
-                                        <asp:TextBox ID="txtContact" runat="server" CssClass="form-control" placeholder="" required=""></asp:TextBox>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="password">Password</label>
-                                        <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-control" placeholder=""></asp:TextBox>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="confirmPassword">Confirm Password</label>
-                                        <asp:TextBox ID="txtConfirmPassword" runat="server" TextMode="Password" CssClass="form-control" placeholder=""></asp:TextBox>
-                                        <asp:CompareValidator ID="cvPasswordMatch" runat="server" ControlToValidate="txtConfirmPassword" ControlToCompare="txtPassword" ErrorMessage="Passwords do not match." CssClass="text-danger"></asp:CompareValidator>
+                                        <label for="contact">Contact</label>
+                                        <asp:TextBox ID="txtContact" runat="server" CssClass="form-control" placeholder=""></asp:TextBox>
+                                        <asp:RegularExpressionValidator ID="numValidator" runat="server" ErrorMessage="<br />Invalid Phone Number!" ValidationExpression="^(09|\+639)\d{9}$" CssClass="text-danger" ControlToValidate="txtContact"></asp:RegularExpressionValidator>
                                     </div>
                                 </div>
                                 <div class="form-group row text-right">
                                     <div class="col col-sm-10 col-lg-12 offset-lg-0">
                                         <asp:Button ID="btnUpdate" runat="server" Text="Update" CssClass="btn btn-space btn-primary" OnClick="btnUpdate_Click" />
-                                        <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn btn-space btn-secondary" />
+                                        <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn btn-space btn-secondary" OnClick="btnCancel_Click" />
                                     </div>
                                 </div>
                                 <div class="form-group row text-center">
                                     <div class="col-lg-12">
                                         <asp:Label ID="lblSuccessMessage" runat="server" CssClass="text-success font-16" Visible="false"></asp:Label>
                                         <asp:Label ID="lblErrorMessage" runat="server" CssClass="text-danger font-16" Visible="false"></asp:Label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="mb-0">Change Password</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="oldPassword">Old Password</label>
+                                        <asp:TextBox ID="txtOldPassword" runat="server" TextMode="Password" CssClass="form-control" placeholder=""></asp:TextBox>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="newPassword">New Password</label>
+                                        <asp:TextBox ID="txtNewPassword" runat="server" TextMode="Password" CssClass="form-control" placeholder=""></asp:TextBox>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="confirmNewPassword">Confirm New Password</label>
+                                        <asp:TextBox ID="txtConfirmNewPassword" runat="server" TextMode="Password" CssClass="form-control" placeholder=""></asp:TextBox>
+                                        <asp:CompareValidator ID="cvPasswordMatch" runat="server" ControlToValidate="txtConfirmNewPassword" ControlToCompare="txtNewPassword" ErrorMessage="Passwords do not match." CssClass="text-danger"></asp:CompareValidator>
+                                    </div>
+                                </div>
+                                <div class="form-group row text-right">
+                                    <div class="col col-sm-10 col-lg-12 offset-lg-0">
+                                        <asp:Button ID="btnChangePassword" runat="server" Text="Change Password" CssClass="btn btn-space btn-primary" OnClick="btnChangePassword_Click" />
+                                        <asp:Button ID="btnCancelPassword" runat="server" Text="Cancel" CssClass="btn btn-space btn-secondary" OnClick="btnCancelPassword_Click" />
+                                    </div>
+                                </div>
+                                <div class="form-group row text-center">
+                                    <div class="col-lg-12">
+                                        <asp:Label ID="lblPasswordSuccessMessage" runat="server" CssClass="text-success font-16" Visible="false"></asp:Label>
+                                        <br />
+                                        <asp:Label ID="lblPasswordErrorMessage" runat="server" CssClass="text-danger font-16" Visible="false"></asp:Label>
                                     </div>
                                 </div>
                             </div>
@@ -103,11 +136,11 @@
             margin: 0 auto;
         }
 
-            .profile-picture img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
         .custom-file-input {
             position: relative;
@@ -155,12 +188,11 @@
 
             if (file) {
                 reader.readAsDataURL(file);
+                document.getElementById('<%= lblAvatarSuccessMessage.ClientID %>').style.display = 'none';
             } else {
                 preview.src = "";
                 preview.style.display = "none";
             }
         }
-
     </script>
-
 </asp:Content>

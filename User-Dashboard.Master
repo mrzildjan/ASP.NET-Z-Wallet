@@ -44,14 +44,19 @@
                             </li>
                             <li class="nav-item dropdown nav-user">
                                 <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="../assets/images/2.jpg" alt="" class="user-avatar-md rounded-circle"></a>
+                                    <img src="" alt="Avatar" class="user-avatar-md rounded-circle" runat="server" id="userAvatarImage" />
+                                </a>
                                 <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
                                     <div class="nav-user-info">
-                                        <h5 class="mb-0 text-white nav-user-name">John Doe</h5>
+                                        <h5 class="mb-0 text-white nav-user-name">
+                                            <asp:Literal runat="server" ID="userFullNameLabel"></asp:Literal>
+                                        </h5>
                                         <span class="status"></span><span class="ml-2">Member</span>
                                     </div>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Account</a>
-                                    <a class="dropdown-item" href="../"><i class="fas fa-power-off mr-2"></i>Logout</a>
+                                    <a class="dropdown-item" href="/Profile"><i class="fas fa-user mr-2"></i>Account</a>
+                                    <asp:LinkButton ID="logoutButton" runat="server" OnClick="Logout_Click" CssClass="dropdown-item">
+                                    <i class="fas fa-power-off mr-2"></i>Logout
+                                    </asp:LinkButton>
                                 </div>
                             </li>
                             <li class="nav-item">
@@ -91,7 +96,9 @@
                                     <a class="nav-link" href="\Profile"><i class="fa fa-fw fa-user"></i>Profile</a>
                                 </li>
                                 <li class="nav-item ">
-                                    <a class="nav-link" href="\Logout"><i class="fa fa-fw fa-power-off"></i>Logout</a>
+                                    <asp:LinkButton ID="LinkButton1" runat="server" OnClick="Logout_Click" CssClass="nav-link">
+                                    <i class="fa fa-fw fa-power-off"></i>Logout
+                                    </asp:LinkButton>
                                 </li>
                             </ul>
                         </div>

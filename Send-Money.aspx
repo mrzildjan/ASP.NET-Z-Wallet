@@ -99,15 +99,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group row text-right">
-                                    <div class="col-lg-12">
+                                    <div class="d-flex justify-content-end col-lg-12">
                                         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
                                         <!-- Add ScriptManager for UpdatePanel -->
                                         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                                             <ContentTemplate>
-                                                <asp:Button ID="btnSendMoney" runat="server" Text="Send Money" CssClass="btn btn-primary" ValidationGroup="sendMoneyValidation" OnClick="btnSendMoney_Click" OnClientClick="return validateSendMoney();" data-toggle="modal" data-target="#passwordModal" />
-                                                <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn btn-secondary" OnClick="btnCancel_Click" />
+                                                <asp:Button ID="btnSendMoney" runat="server" Text="Send Money" CssClass="btn btn-primary mr-1" ValidationGroup="sendMoneyValidation" OnClick="btnSendMoney_Click" OnClientClick="return validateSendMoney();" data-toggle="modal" data-target="#passwordModal" />
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
+                                        <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn btn-secondary" OnClick="btnCancel_Click" />
                                     </div>
                                 </div>
                                 <div class="form-group row text-center">
@@ -156,7 +156,7 @@
 
             function validateModalInput() {
                 var receiverAccountNumber = document.getElementById('<%= receiverAccountNumber.ClientID %>').value;
-        var sendAmount = document.getElementById('<%= sendAmount.ClientID %>').value;
+                var sendAmount = document.getElementById('<%= sendAmount.ClientID %>').value;
 
                 if (receiverAccountNumber === '') {
                     alert("Please enter the receiver's account number.");

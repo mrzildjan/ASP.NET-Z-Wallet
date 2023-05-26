@@ -84,62 +84,39 @@ namespace Z_Wallet
             string lastName = txtLastName.Text;
             string email = txtEmail.Text;
             string contact = txtContact.Text;
-            string password = txtPassword.Text;
 
-            if (!IsNewPasswordSameAsCurrent(accountNumber, password))
-            {
-                // Update the user's profile data in the database
-                UpdateUserProfile(accountNumber, firstName, lastName, email, contact, password);
+            // Update the user's profile data in the database
+            UpdateUserProfile(accountNumber, firstName, lastName, email, contact);
 
-                // Reload the profile data
-                LoadProfileData();
+            // Reload the profile data
+            LoadProfileData();
 
-                // Display a success message
-                lblSuccessMessage.Text = "Profile updated successfully.";
-                lblSuccessMessage.Visible = true;
-            }
-            else
-            {
-                // Display an error message indicating that the new password is the same as the current password
-                lblErrorMessage.Text = "New password must be different from the current password.";
-                lblErrorMessage.Visible = true;
-            }
+            // Display a success message
+            lblSuccessMessage.Text = "Profile updated successfully.";
+            lblSuccessMessage.Visible = true;
+
+            // Hide error message
+            lblErrorMessage.Visible = false;
+
+            // Hide password change 
+            lblPasswordSuccessMessage.Visible = false;
+            lblPasswordErrorMessage.Visible = false;
+            lblAvatarSuccessMessage.Visible = false;
         }
 
-        private bool IsNewPasswordSameAsCurrent(int accountNumber, string newPassword)
+        private void UpdateUserProfile(int accountNumber, string firstName, string lastName, string email, string contact)
         {
             string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = "SELECT COUNT(*) FROM Users WHERE AccountNumber = @AccountNumber AND Password = @Password";
-
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@AccountNumber", accountNumber);
-                command.Parameters.AddWithValue("@Password", newPassword);
-
-                connection.Open();
-                int matchingCount = (int)command.ExecuteScalar();
-                connection.Close();
-
-                return matchingCount > 0;
-            }
-        }
-
-        private void UpdateUserProfile(int accountNumber, string firstName, string lastName, string email, string contact, string password)
-        {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                string query = "UPDATE Users SET FirstName = @FirstName, LastName = @LastName, Email = @Email, PhoneNumber = @Contact, Password = @Password WHERE AccountNumber = @AccountNumber";
+                string query = "UPDATE Users SET FirstName = @FirstName, LastName = @LastName, Email = @Email, PhoneNumber = @Contact WHERE AccountNumber = @AccountNumber";
 
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@FirstName", firstName);
                 command.Parameters.AddWithValue("@LastName", lastName);
                 command.Parameters.AddWithValue("@Email", email);
                 command.Parameters.AddWithValue("@Contact", contact);
-                command.Parameters.AddWithValue("@Password", password);
                 command.Parameters.AddWithValue("@AccountNumber", accountNumber);
 
                 connection.Open();
@@ -180,7 +157,149 @@ namespace Z_Wallet
                 connection.Open();
                 command.ExecuteNonQuery();
                 connection.Close();
+
+                lblAvatarSuccessMessage.Text = "Avatar changed successfully.";
+                lblAvatarSuccessMessage.Visible = true;
+
+                lblPasswordSuccessMessage.Visible = false;
+                lblPasswordErrorMessage.Visible = false;
+                lblSuccessMessage.Visible = false;
+                lblErrorMessage.Visible = false;
             }
+        }
+
+        protected void btnChangePassword_Click(object sender, EventArgs e)
+        {
+            int accountNumber = Convert.ToInt32(Session["AccountNumber"]);
+            string oldPassword = txtOldPassword.Text;
+            string newPassword = txtNewPassword.Text;
+
+            // Verify if the old password matches the current password
+            if (IsOldPasswordValid(accountNumber, oldPassword))
+            {
+                // Check if the new password is different from the current password
+                if (IsNewPasswordDifferent(accountNumber, newPassword))
+                {
+                    // Update the user's password in the database
+                    UpdateUserPassword(accountNumber, newPassword);
+
+                    // Display a success message
+                    lblPasswordSuccessMessage.Text = "Password changed successfully.";
+                    lblPasswordSuccessMessage.Visible = true;
+
+                    // Hide error message
+                    lblPasswordErrorMessage.Visible = false;
+
+                    lblSuccessMessage.Visible = false;
+                    lblErrorMessage.Visible = false;
+                    lblAvatarSuccessMessage.Visible = false;
+                }
+                else
+                {
+                    // Display an error message indicating that the new password must be different
+                    lblPasswordErrorMessage.Text = "New password must be different from the current password.";
+                    lblPasswordErrorMessage.Visible = true;
+
+                    // Hide error message
+                    lblPasswordSuccessMessage.Visible = false;
+
+                    lblSuccessMessage.Visible = false;
+                    lblErrorMessage.Visible = false;
+                    lblAvatarSuccessMessage.Visible = false;
+                }
+            }
+            else
+            {
+                // Display an error message indicating the invalid old password
+                lblPasswordErrorMessage.Text = "Invalid old password.";
+                lblPasswordErrorMessage.Visible = true;
+
+                lblPasswordSuccessMessage.Visible = false;
+
+                lblSuccessMessage.Visible = false;
+                lblErrorMessage.Visible = false;
+                lblAvatarSuccessMessage.Visible = false;
+            }
+        }
+
+        private bool IsNewPasswordDifferent(int accountNumber, string newPassword)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT COUNT(*) FROM Users WHERE AccountNumber = @AccountNumber AND Password = @Password";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@AccountNumber", accountNumber);
+                command.Parameters.AddWithValue("@Password", newPassword);
+
+                connection.Open();
+                int matchingCount = (int)command.ExecuteScalar();
+                connection.Close();
+
+                return matchingCount == 0;
+            }
+        }
+
+        private bool IsOldPasswordValid(int accountNumber, string oldPassword)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT COUNT(*) FROM Users WHERE AccountNumber = @AccountNumber AND Password = @Password";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@AccountNumber", accountNumber);
+                command.Parameters.AddWithValue("@Password", oldPassword);
+
+                connection.Open();
+                int matchingCount = (int)command.ExecuteScalar();
+                connection.Close();
+
+                return matchingCount > 0;
+            }
+        }
+
+        private void UpdateUserPassword(int accountNumber, string newPassword)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "UPDATE Users SET Password = @Password WHERE AccountNumber = @AccountNumber";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Password", newPassword);
+                command.Parameters.AddWithValue("@AccountNumber", accountNumber);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            lblPasswordSuccessMessage.Visible = false;
+            lblPasswordErrorMessage.Visible = false;
+            lblSuccessMessage.Visible = false;
+            lblErrorMessage.Visible = false;
+            lblAvatarSuccessMessage.Visible = false;
+        }
+
+        protected void btnCancelPassword_Click(object sender, EventArgs e)
+        {
+            txtOldPassword.Text = "";
+            txtNewPassword.Text = "";
+            txtConfirmNewPassword.Text = "";
+
+            lblPasswordSuccessMessage.Visible = false;
+            lblPasswordErrorMessage.Visible = false;
+            lblSuccessMessage.Visible = false;
+            lblErrorMessage.Visible = false;
+            lblAvatarSuccessMessage.Visible = false;
         }
     }
 }

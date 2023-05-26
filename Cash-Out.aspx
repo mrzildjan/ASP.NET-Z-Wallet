@@ -94,15 +94,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group row text-right">
-                                    <div class="col-lg-12">
+                                    <div class="d-flex justify-content-end col-lg-12">
                                         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
                                         <!-- Add ScriptManager for UpdatePanel -->
                                         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                                             <ContentTemplate>
-                                                <asp:Button ID="btnCashOut" runat="server" Text="Cash Out" CssClass="btn btn-primary" ValidationGroup="cashOutValidation" OnClick="btnCashOut_Click" OnClientClick="return validateCashOut();" data-toggle="modal" data-target="#passwordModal" />
-                                                <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn btn-secondary" OnClick="btnCancel_Click" />
+                                                <asp:Button ID="btnCashOut" runat="server" Text="Cash Out" CssClass="btn btn-primary mr-1" ValidationGroup="cashOutValidation" OnClick="btnCashOut_Click" OnClientClick="return validateCashOut();" data-toggle="modal" data-target="#passwordModal" />
+                                                
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
+                                        <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn btn-secondary" OnClick="btnCancel_Click" />
                                     </div>
                                 </div>
                                 <div class="form-group row text-center">

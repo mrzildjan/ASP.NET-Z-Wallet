@@ -118,6 +118,8 @@ namespace Z_Wallet
                 {
                     lblErrorMessage.Visible = true;
                     lblErrorMessage.Text = "Account credit amount cannot exceed 50,000 PHP.";
+
+                    lblSuccessMessage.Visible = false;
                     return false; // Cash-in exceeds the credit limit
                 }
 

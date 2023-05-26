@@ -133,12 +133,16 @@ namespace Z_Wallet
                 {
                     lblErrorMessage.Visible = true;
                     lblErrorMessage.Text = "Insufficient funds. Please enter a valid cash-out amount.";
+
+                    lblSuccessMessage.Visible = false;
                 }
             }
             else
             {
                 lblErrorMessage.Visible = true;
                 lblErrorMessage.Text = "Invalid password. Please try again.";
+
+                lblSuccessMessage.Visible = false;
             }
 
             // Hide the password verification modal using JavaScript/jQuery

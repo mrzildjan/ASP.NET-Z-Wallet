@@ -72,6 +72,8 @@ namespace Z_Wallet
                 // Display an error message or handle the invalid receiver account number input
                 lblErrorMessage.Visible = true;
                 lblErrorMessage.Text = "Invalid receiver account number. Please enter a valid account number.";
+
+                lblSuccessMessage.Visible = false;
                 return;
             }
 
@@ -81,6 +83,8 @@ namespace Z_Wallet
                 // Display an error message or handle the invalid send amount input
                 lblErrorMessage.Visible = true;
                 lblErrorMessage.Text = "Invalid send amount. Please enter a valid amount.";
+
+                lblSuccessMessage.Visible = false;
                 return;
             }
 
@@ -92,6 +96,8 @@ namespace Z_Wallet
                 // Display an error message indicating that the receiver's account was not found
                 lblErrorMessage.Visible = true;
                 lblErrorMessage.Text = "The receiver's account was not found.";
+
+                lblSuccessMessage.Visible = false;
                 return;
             }
 
@@ -103,6 +109,8 @@ namespace Z_Wallet
             {
                 lblErrorMessage.Visible = true;
                 lblErrorMessage.Text = "Invalid password. Please try again.";
+
+                lblSuccessMessage.Visible = false;
                 return;
             }
 
@@ -112,6 +120,8 @@ namespace Z_Wallet
                 // Display an error message indicating that sending money to own account is not allowed
                 lblErrorMessage.Visible = true;
                 lblErrorMessage.Text = "You cannot send money to your own account.";
+
+                lblSuccessMessage.Visible = false;
                 return;
             }
 
@@ -144,10 +154,14 @@ namespace Z_Wallet
                 case 1: // insufficient funds
                     lblErrorMessage.Visible = true;
                     lblErrorMessage.Text = "Insufficient funds.";
+
+                    lblSuccessMessage.Visible = false;
                     break;
                 case 2: // receiver's credit limit would be exceeded
                     lblErrorMessage.Visible = true;
                     lblErrorMessage.Text = "The receiver's credit amount would exceed the limit.";
+
+                    lblSuccessMessage.Visible = false;
                     break;
             }
         }
@@ -190,6 +204,8 @@ namespace Z_Wallet
             {
                 lblErrorMessage.Visible = true;
                 lblErrorMessage.Text = "Invalid receiver account number. Please enter a valid account number.";
+
+                lblSuccessMessage.Visible = false;
                 return;
             }
 
@@ -198,6 +214,8 @@ namespace Z_Wallet
             {
                 lblErrorMessage.Visible = true;
                 lblErrorMessage.Text = "Invalid send amount. Please enter a valid amount.";
+
+                lblSuccessMessage.Visible = false;
                 return;
             }
 
@@ -212,6 +230,8 @@ namespace Z_Wallet
                 {
                     lblErrorMessage.Visible = true;
                     lblErrorMessage.Text = "You cannot send money to your own account.";
+
+                    lblSuccessMessage.Visible = false;
                     return;
                 }
 
@@ -222,6 +242,8 @@ namespace Z_Wallet
                 {
                     lblErrorMessage.Visible = true;
                     lblErrorMessage.Text = "Invalid receiver account number. Please enter a valid account number.";
+
+                    lblSuccessMessage.Visible = false;
                     return;
                 }
 
@@ -255,10 +277,12 @@ namespace Z_Wallet
                     case 1:
                         lblErrorMessage.Visible = true;
                         lblErrorMessage.Text = "Insufficient funds. Please enter a valid amount.";
+                        lblSuccessMessage.Visible = false;
                         break;
                     case 2:
                         lblErrorMessage.Visible = true;
                         lblErrorMessage.Text = "The transaction would exceed the receiver's credit limit.";
+                        lblSuccessMessage.Visible = false;
                         break;
                 }
             }
@@ -266,6 +290,7 @@ namespace Z_Wallet
             {
                 lblErrorMessage.Visible = true;
                 lblErrorMessage.Text = "Invalid password. Please try again.";
+                lblSuccessMessage.Visible = false;
             }
 
             // Hide the password verification modal using JavaScript/jQuery
