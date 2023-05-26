@@ -51,35 +51,27 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="firstName">First name</label>
                                         <asp:TextBox ID="txtFirstName" runat="server" CssClass="form-control" placeholder="" required=""></asp:TextBox>
-                                        <asp:RequiredFieldValidator ID="rfvFirstName" runat="server" ControlToValidate="txtFirstName" ErrorMessage="First name is required." CssClass="text-danger"></asp:RequiredFieldValidator>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="lastName">Last name</label>
                                         <asp:TextBox ID="txtLastName" runat="server" CssClass="form-control" placeholder="" required=""></asp:TextBox>
-                                        <asp:RequiredFieldValidator ID="rfvLastName" runat="server" ControlToValidate="txtLastName" ErrorMessage="Last name is required." CssClass="text-danger"></asp:RequiredFieldValidator>
                                     </div>
                                     <div class="col-md-12 mb-3">
                                         <label for="lastName">Email</label>
                                         <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" placeholder="" required=""></asp:TextBox>
-                                        <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail" ErrorMessage="Email is required." CssClass="text-danger"></asp:RequiredFieldValidator>
-                                        <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail" ErrorMessage="Invalid email format." ValidationExpression="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" CssClass="text-danger"></asp:RegularExpressionValidator>
                                     </div>
                                     <div class="col-md-12 mb-3">
                                         <label for="lastName">Contact</label>
                                         <asp:TextBox ID="txtContact" runat="server" CssClass="form-control" placeholder="" required=""></asp:TextBox>
-                                        <asp:RequiredFieldValidator ID="rfvContact" runat="server" ControlToValidate="txtContact" ErrorMessage="Contact is required." CssClass="text-danger"></asp:RequiredFieldValidator>
-                                        <asp:RegularExpressionValidator ID="revContact" runat="server" ControlToValidate="txtContact" ErrorMessage="Invalid contact format." ValidationExpression="^(09|\+639)\d{9}$" CssClass="text-danger"></asp:RegularExpressionValidator>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="password">Password</label>
                                         <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-control" placeholder=""></asp:TextBox>
-                                        <asp:RequiredFieldValidator ID="rfvPassword" runat="server" ControlToValidate="txtPassword" ErrorMessage="Password is required." CssClass="text-danger" Display="None"></asp:RequiredFieldValidator>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="confirmPassword">Confirm Password</label>
                                         <asp:TextBox ID="txtConfirmPassword" runat="server" TextMode="Password" CssClass="form-control" placeholder=""></asp:TextBox>
-                                        <asp:RequiredFieldValidator ID="rfvConfirmPassword" runat="server" ControlToValidate="txtConfirmPassword" ErrorMessage="Confirm Password is required." CssClass="text-danger" Display="None"></asp:RequiredFieldValidator>
-                                        <asp:CompareValidator ID="cvPasswordMatch" runat="server" ControlToValidate="txtConfirmPassword" ControlToCompare="txtPassword" ErrorMessage="Passwords do not match." CssClass="text-danger" Display="None"></asp:CompareValidator>
+                                        <asp:CompareValidator ID="cvPasswordMatch" runat="server" ControlToValidate="txtConfirmPassword" ControlToCompare="txtPassword" ErrorMessage="Passwords do not match." CssClass="text-danger"></asp:CompareValidator>
                                     </div>
                                 </div>
                                 <div class="form-group row text-right">
