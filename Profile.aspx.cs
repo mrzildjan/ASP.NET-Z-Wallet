@@ -51,7 +51,20 @@ namespace Z_Wallet
                     else
                     {
                         // Set the default profile picture path
-                        previewImage.ImageUrl = "/Content/assets/images/2.jpg";
+                        previewImage.ImageUrl = "/Content/assets/images/user.png";
+                    }
+
+                    // Display the account status
+                    string accountStatus = row["isDeactivated"].ToString();
+                    if (accountStatus == "Active")
+                    {
+                        lblAccountStatus.Text = "Active";
+                        lblAccountStatus.CssClass = "status-text status-active";
+                    }
+                    else
+                    {
+                        lblAccountStatus.Text = "Inactive";
+                        lblAccountStatus.CssClass = "status-text status-inactive d-flex";
                     }
                 }
             }
@@ -98,10 +111,11 @@ namespace Z_Wallet
             // Hide error message
             lblErrorMessage.Visible = false;
 
-            // Hide password change 
             lblPasswordSuccessMessage.Visible = false;
             lblPasswordErrorMessage.Visible = false;
             lblAvatarSuccessMessage.Visible = false;
+            lblStatusErrorMessage.Visible = false;
+            lblStatusSuccessMessage.Visible = false;
         }
 
         private void UpdateUserProfile(int accountNumber, string firstName, string lastName, string email, string contact)
@@ -165,6 +179,10 @@ namespace Z_Wallet
                 lblPasswordErrorMessage.Visible = false;
                 lblSuccessMessage.Visible = false;
                 lblErrorMessage.Visible = false;
+                lblStatusErrorMessage.Visible = false;
+                lblStatusSuccessMessage.Visible = false;
+                lblStatusErrorMessage.Visible = false;
+                lblStatusSuccessMessage.Visible = false;
             }
         }
 
@@ -193,6 +211,8 @@ namespace Z_Wallet
                     lblSuccessMessage.Visible = false;
                     lblErrorMessage.Visible = false;
                     lblAvatarSuccessMessage.Visible = false;
+                    lblStatusErrorMessage.Visible = false;
+                    lblStatusSuccessMessage.Visible = false;
                 }
                 else
                 {
@@ -206,6 +226,8 @@ namespace Z_Wallet
                     lblSuccessMessage.Visible = false;
                     lblErrorMessage.Visible = false;
                     lblAvatarSuccessMessage.Visible = false;
+                    lblStatusErrorMessage.Visible = false;
+                    lblStatusSuccessMessage.Visible = false;
                 }
             }
             else
@@ -219,6 +241,8 @@ namespace Z_Wallet
                 lblSuccessMessage.Visible = false;
                 lblErrorMessage.Visible = false;
                 lblAvatarSuccessMessage.Visible = false;
+                lblStatusErrorMessage.Visible = false;
+                lblStatusSuccessMessage.Visible = false;
             }
         }
 
@@ -287,6 +311,8 @@ namespace Z_Wallet
             lblSuccessMessage.Visible = false;
             lblErrorMessage.Visible = false;
             lblAvatarSuccessMessage.Visible = false;
+            lblStatusErrorMessage.Visible = false;
+            lblStatusSuccessMessage.Visible = false;
         }
 
         protected void btnCancelPassword_Click(object sender, EventArgs e)
@@ -300,6 +326,120 @@ namespace Z_Wallet
             lblSuccessMessage.Visible = false;
             lblErrorMessage.Visible = false;
             lblAvatarSuccessMessage.Visible = false;
+            lblStatusErrorMessage.Visible = false;
+            lblStatusSuccessMessage.Visible = false;
+        }
+
+        protected void btnReactivate_Click(object sender, EventArgs e)
+        {
+            int accountNumber = Convert.ToInt32(Session["AccountNumber"]);
+
+            // Get the current account status from the database
+            string currentStatus = GetAccountStatus(accountNumber);
+
+            if (currentStatus == "Active")
+            {
+                // Account is already active, display a message
+                lblStatusErrorMessage.Text = "Account is already active.";
+                lblStatusErrorMessage.Visible = true;
+                lblStatusSuccessMessage.Visible = false;
+            }
+            else
+            {
+                // Update the user's account status to "Active" in the database
+                UpdateAccountStatus(accountNumber, "Active");
+
+                // Set the status label text
+                lblAccountStatus.Text = "Active";
+                // Add the appropriate CSS class
+                lblAccountStatus.CssClass = "status-text status-active";
+
+                // Display a success message
+                lblStatusSuccessMessage.Text = "Account reactivated successfully.";
+                lblStatusSuccessMessage.Visible = true;
+                lblStatusErrorMessage.Visible = false;
+            }
+        }
+
+        protected void btnDeactivate_Click(object sender, EventArgs e)
+        {
+            int accountNumber = Convert.ToInt32(Session["AccountNumber"]);
+
+            // Get the current account status from the database
+            string currentStatus = GetAccountStatus(accountNumber);
+
+            if (currentStatus == "Inactive")
+            {
+                // Account is already deactivated, display a message
+                lblStatusErrorMessage.Text = "Account is already deactivated.";
+                lblStatusErrorMessage.Visible = true;
+                lblStatusSuccessMessage.Visible = false;
+            }
+            else
+            {
+                // Update the user's account status to "Inactive" in the database
+                UpdateAccountStatus(accountNumber, "Inactive");
+
+                // Set the status label text
+                lblAccountStatus.Text = "Inactive";
+                // Add the appropriate CSS class
+                lblAccountStatus.CssClass = "status-text status-inactive d-flex";
+
+                // Display a success message
+                lblStatusSuccessMessage.Text = "Account deactivated successfully.";
+                lblStatusSuccessMessage.Visible = true;
+                lblStatusErrorMessage.Visible = false;
+            }
+        }
+
+        private string GetAccountStatus(int accountNumber)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT isDeactivated FROM Users WHERE AccountNumber = @AccountNumber";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@AccountNumber", accountNumber);
+
+                connection.Open();
+                string accountStatus = (string)command.ExecuteScalar();
+                connection.Close();
+
+                return accountStatus;
+            }
+        }
+
+        private void UpdateAccountStatus(int accountNumber, string status)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "UPDATE Users SET isDeactivated = @Status WHERE AccountNumber = @AccountNumber";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Status", status);
+                command.Parameters.AddWithValue("@AccountNumber", accountNumber);
+
+                connection.Open();
+                int rowsAffected = command.ExecuteNonQuery();
+                connection.Close();
+
+                if (rowsAffected > 0)
+                {
+                    lblStatusSuccessMessage.Text = "Account status updated successfully.";
+                    lblStatusSuccessMessage.Visible = true;
+                    lblStatusErrorMessage.Visible = false;
+                }
+                else
+                {
+                    lblStatusErrorMessage.Text = "Failed to update account status.";
+                    lblStatusErrorMessage.Visible = true;
+                    lblStatusSuccessMessage.Visible = false;
+                }
+            }
         }
     }
 }

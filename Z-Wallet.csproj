@@ -153,6 +153,7 @@
     <Content Include="Content\assets\images\product-pic.jpg" />
     <Content Include="Content\assets\images\slack.png" />
     <Content Include="Content\assets\images\switch.png" />
+    <Content Include="Content\assets\images\user.png" />
     <Content Include="Content\assets\libs\css\style.css" />
     <Content Include="Content\assets\libs\js\chart.js" />
     <Content Include="Content\assets\libs\js\dashboard-ecommerce.js" />

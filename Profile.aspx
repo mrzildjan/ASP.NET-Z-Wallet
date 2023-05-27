@@ -35,12 +35,39 @@
                                         <asp:FileUpload ID="fileUpload" runat="server" CssClass="mb-3" Style="display: none;" onchange="previewFile()" />
                                     </div>
                                 </div>
-                                <asp:Button ID="btnChooseFile" runat="server" Text="Choose File" CssClass="btn btn-secondary mt-3" OnClientClick="chooseFile();return false;" />
+                                <asp:Button ID="btnChooseFile" runat="server" Text="Choose File" CssClass="btn btn-secondary mt-3 mr-1" OnClientClick="chooseFile();return false;" />
                                 <asp:Button ID="btnUpload" runat="server" Text="Upload" CssClass="btn btn-primary mt-3" OnClick="btnUpload_Click" />
                                 <asp:RegularExpressionValidator ID="revImageFile" runat="server" ControlToValidate="fileUpload" ErrorMessage="<br />Invalid file format. Please choose an image." ValidationExpression="^.*\.(jpg|JPG|jpeg|JPEG|png|PNG)$" CssClass="text-danger"></asp:RegularExpressionValidator>
                                 <div class="form-group row text-center">
                                     <div class="col-lg-12">
                                         <asp:Label ID="lblAvatarSuccessMessage" runat="server" CssClass="text-success font-16" Visible="false"></asp:Label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="mb-0">Account Status</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="accountStatus">Status</label>
+                                        <div class="status-indicator">
+                                            <asp:Label ID="lblAccountStatus" runat="server" CssClass="status-text">Active</asp:Label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row text-right">
+                                    <div class="col col-sm-10 col-lg-12 offset-lg-0">
+                                        <asp:Button ID="btnReactivate" runat="server" Text="Reactivate" CssClass="btn btn-primary mt-3 mr-1" OnClick="btnReactivate_Click" />
+                                        <asp:Button ID="btnDeactivate" runat="server" Text="Deactivate" CssClass="btn btn-secondary mt-3" OnClick="btnDeactivate_Click" />
+                                    </div>
+                                </div>
+                                <div class="form-group row text-center">
+                                    <div class="col-lg-12">
+                                        <asp:Label ID="lblStatusSuccessMessage" runat="server" CssClass="text-success font-16" Visible="false"></asp:Label>
+                                        <asp:Label ID="lblStatusErrorMessage" runat="server" CssClass="text-danger font-16" Visible="false"></asp:Label>
                                     </div>
                                 </div>
                             </div>
@@ -136,11 +163,11 @@
             margin: 0 auto;
         }
 
-        .profile-picture img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+            .profile-picture img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
 
         .custom-file-input {
             position: relative;
@@ -166,6 +193,26 @@
         .custom-file-input:focus ~ .custom-file-label {
             border-color: #80bdff;
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .status-text {
+            font-weight: bold;
+            padding: 5px 5px;
+            color: #fff;
+        }
+
+        .status-active {
+            background-color: #28a745; /* Green */
+        }
+
+        .status-inactive {
+            background-color: #dc3545; /* Red */
         }
     </style>
 

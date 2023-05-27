@@ -83,26 +83,82 @@ namespace Z_Wallet
             // Get the account number from the session
             int accountNumber = (int)Session["AccountNumber"];
 
-            // Get the cash in amount entered by the user
-            decimal cashInAmount = Convert.ToDecimal(depositAmount.Text);
+            // Check if the account is deactivated
+            bool isDeactivated = IsAccountDeactivated(accountNumber);
 
-            // Update the current balance in the database
-            bool success = UpdateCurrentBalance(accountNumber, cashInAmount);
-
-            if (success)
+            if (isDeactivated)
             {
-                // Store the transaction information in the database
-                StoreTransaction(accountNumber, "Cash-In", "", "", cashInAmount);
+                lblErrorMessage.Visible = true;
+                lblErrorMessage.Text = "Account is deactivated. Cash-out is not allowed.";
 
-                // Display the updated balance and total cash-in
-                DisplayAccountInformation(accountNumber);
+                lblSuccessMessage.Visible = false;
+            }
+            else
+            {
+                // Get the cash in amount entered by the user
+                decimal cashInAmount = Convert.ToDecimal(depositAmount.Text);
 
-                lblSuccessMessage.Visible = true;
-                lblSuccessMessage.Text = "Cash-in was successfully added to your account.";
-                lblErrorMessage.Visible = false;
+                // Check if the cash-in amount is greater than zero
+                if (cashInAmount > 0)
+                {
+                    // Update the current balance in the database
+                    bool success = UpdateCurrentBalance(accountNumber, cashInAmount);
+
+                    if (success)
+                    {
+                        // Store the transaction information in the database
+                        StoreTransaction(accountNumber, "Cash-In", "", "", cashInAmount);
+
+                        // Display the updated balance and total cash-in
+                        DisplayAccountInformation(accountNumber);
+
+                        lblSuccessMessage.Visible = true;
+                        lblSuccessMessage.Text = "Cash-in was successfully added to your account.";
+                        lblErrorMessage.Visible = false;
+                    }
+                    else
+                    {
+                        lblErrorMessage.Visible = true;
+                        lblErrorMessage.Text = "Failed to update the current balance. Please try again.";
+
+                        lblSuccessMessage.Visible = false;
+                    }
+                }
+                else
+                {
+                    lblErrorMessage.Visible = true;
+                    lblErrorMessage.Text = "Invalid cash-in amount. Please enter a positive value.";
+
+                    lblSuccessMessage.Visible = false;
+                }
             }
         }
 
+        private bool IsAccountDeactivated(int accountNumber)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT isDeactivated FROM Users WHERE AccountNumber = @AccountNumber";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@AccountNumber", accountNumber);
+
+                connection.Open();
+                object result = command.ExecuteScalar();
+
+                if (result != null && result != DBNull.Value)
+                {
+                    string accountStatus = result.ToString();
+                    return accountStatus == "Inactive" || accountStatus == "Deactivated";
+                }
+                else
+                {
+                    throw new Exception("Account not found for the specified account number.");
+                }
+            }
+        }
         private bool UpdateCurrentBalance(int accountNumber, decimal cashInAmount)
         {
             string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";

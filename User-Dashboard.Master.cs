@@ -41,14 +41,33 @@ namespace Z_Wallet
                     DataRow row = userInfo.Rows[0];
                     firstName = row["FirstName"].ToString();
                     lastName = row["LastName"].ToString();
-                    byte[] avatarData = (byte[])row["Avatar"];
+                    byte[] avatarData = row["Avatar"] as byte[];
                     if (avatarData != null && avatarData.Length > 0)
                     {
                         avatarUrl = "data:image/jpeg;base64," + Convert.ToBase64String(avatarData);
                     }
+                    else
+                    {
+                        // Set the default image URL if avatar is null
+                        avatarUrl = "/Content/assets/images/user.png";
+                    }
                 }
             }
         }
+
+        protected void SetUserAvatar()
+        {
+            if (!string.IsNullOrEmpty(avatarUrl))
+            {
+                userAvatarImage.Src = avatarUrl;
+            }
+            else
+            {
+                // Set the default image URL if avatar URL is null or empty
+                userAvatarImage.Src = "/Content/assets/images/user.png";
+            }
+        }
+
 
         private DataTable GetUserInfo(int accountNumber)
         {
@@ -72,12 +91,6 @@ namespace Z_Wallet
         {
             userFullNameLabel.Text = $"{firstName} {lastName}";
         }
-
-        protected void SetUserAvatar()
-        {
-            userAvatarImage.Src = avatarUrl;
-        }
-
         protected void Logout_Click(object sender, EventArgs e)
         {
             Session.Clear();

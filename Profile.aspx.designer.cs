@@ -69,6 +69,51 @@ namespace Z_Wallet
         protected global::System.Web.UI.WebControls.Label lblAvatarSuccessMessage;
 
         /// <summary>
+        /// lblAccountStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAccountStatus;
+
+        /// <summary>
+        /// btnReactivate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnReactivate;
+
+        /// <summary>
+        /// btnDeactivate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDeactivate;
+
+        /// <summary>
+        /// lblStatusSuccessMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblStatusSuccessMessage;
+
+        /// <summary>
+        /// lblStatusErrorMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblStatusErrorMessage;
+
+        /// <summary>
         /// txtFirstName control.
         /// </summary>
         /// <remarks>
