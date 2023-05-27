@@ -105,7 +105,7 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <a href="#" class="card-link">View Details</a>
+                                <a href="\Profile" class="card-link">View Details</a>
                             </div>
                         </div>
                     </div>

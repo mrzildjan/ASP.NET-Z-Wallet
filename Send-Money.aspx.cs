@@ -206,18 +206,6 @@ namespace Z_Wallet
                 return;
             }
 
-            // Check if the receiver account is deactivated
-            bool receiverDeactivated = IsAccountDeactivated(receiverAccountNumberValue);
-
-            if (receiverDeactivated)
-            {
-                lblErrorMessage.Visible = true;
-                lblErrorMessage.Text = "Cannot send money to a deactivated account.";
-
-                lblSuccessMessage.Visible = false;
-                return;
-            }
-
             decimal sendAmountValue;
             if (!decimal.TryParse(sendAmount.Text, out sendAmountValue))
             {
@@ -240,12 +228,23 @@ namespace Z_Wallet
                 if (isDeactivated)
                 {
                     lblErrorMessage.Visible = true;
-                    lblErrorMessage.Text = "Account is deactivated. Cash-out is not allowed.";
+                    lblErrorMessage.Text = "Account is deactivated. Send-money is not allowed.";
 
                     lblSuccessMessage.Visible = false;
                 }
                 else
                 {
+                    // Check if the receiver account is deactivated
+                    bool receiverDeactivated = IsAccountDeactivated(receiverAccountNumberValue);
+
+                    if (receiverDeactivated)
+                    {
+                        lblErrorMessage.Visible = true;
+                        lblErrorMessage.Text = "Cannot send money to a deactivated account.";
+
+                        lblSuccessMessage.Visible = false;
+                        return;
+                    }
 
                     // Check if the receiver account number is the same as the sender's account number
                     if (senderAccountNumber == receiverAccountNumberValue)
@@ -341,7 +340,10 @@ namespace Z_Wallet
                 }
                 else
                 {
-                    throw new Exception("Account not found for the specified account number.");
+                    // Instead of throwing an exception, set a label text to indicate that the account was not found.
+                    lblErrorMessage.Text = "Account not found for the specified account number.";
+                    lblErrorMessage.Visible = true;
+                    return false;
                 }
             }
         }

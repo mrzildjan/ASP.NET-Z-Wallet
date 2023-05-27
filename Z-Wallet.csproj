@@ -103,10 +103,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
-    <Content Include="App_Data\Database1.mdf" />
-    <Content Include="App_Data\Database1_log.ldf">
-      <DependentUpon>Database1.mdf</DependentUpon>
-    </Content>
     <Content Include="App_Data\Z-Wallet.mdf" />
     <Content Include="App_Data\Z-Wallet_log.ldf">
       <DependentUpon>Z-Wallet.mdf</DependentUpon>
@@ -154,6 +150,7 @@
     <Content Include="Content\assets\images\slack.png" />
     <Content Include="Content\assets\images\switch.png" />
     <Content Include="Content\assets\images\user.png" />
+    <Content Include="Content\assets\images\brand.png" />
     <Content Include="Content\assets\libs\css\style.css" />
     <Content Include="Content\assets\libs\js\chart.js" />
     <Content Include="Content\assets\libs\js\dashboard-ecommerce.js" />

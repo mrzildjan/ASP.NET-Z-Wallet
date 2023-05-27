@@ -119,7 +119,7 @@ namespace Z_Wallet
                     else
                     {
                         lblErrorMessage.Visible = true;
-                        lblErrorMessage.Text = "Failed to update the current balance. Please try again.";
+                        lblErrorMessage.Text = "Account credit amount cannot exceed 50,000 PHP.";
 
                         lblSuccessMessage.Visible = false;
                     }

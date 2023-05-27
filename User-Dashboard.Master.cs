@@ -90,6 +90,7 @@ namespace Z_Wallet
         protected void SetUserFullName()
         {
             userFullNameLabel.Text = $"{firstName} {lastName}";
+            LoginNameLabel.Text = $"{firstName} {lastName}";
         }
         protected void Logout_Click(object sender, EventArgs e)
         {

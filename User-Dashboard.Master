@@ -31,20 +31,21 @@
         <div class="dashboard-main-wrapper">
             <div class="dashboard-header">
                 <nav class="navbar navbar-expand-lg bg-dark fixed-top">
-                    <a class="navbar-brand" href="/Dashboard">Z-Wallet</a>
+                    <a class="navbar-brand" href="/Dashboard">Z - Wallet</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-auto navbar-right-top">
-                            <li class="nav-item">
-                                <div id="custom-search" class="top-search-bar">
-                                    <input class="form-control" type="text" placeholder="Search..">
+                            <li class="nav-item align-items-center">
+                                <div class="nav-link">
+                                    <i class="text-white fas fa-user mr-2 mt-3"></i>
+                                    <asp:Label ID="LoginNameLabel" CssClass="text-white text-xxl-center align-middle" runat="server"></asp:Label>
                                 </div>
                             </li>
                             <li class="nav-item dropdown nav-user">
                                 <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="" alt="Avatar" class="user-avatar-md rounded-circle" runat="server" id="userAvatarImage" />
+                                    <img src="" alt="Avatar" class="user-avatar-md rounded-circle" runat="server" id="userAvatarImage" style="object-fit: cover; width: 50px; height: 50px;" />
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
                                     <div class="nav-user-info">
@@ -55,20 +56,18 @@
                                     </div>
                                     <a class="dropdown-item" href="/Profile"><i class="fas fa-user mr-2"></i>Account</a>
                                     <asp:LinkButton ID="logoutButton" runat="server" OnClick="Logout_Click" CssClass="dropdown-item">
-                                    <i class="fas fa-power-off mr-2"></i>Logout
+            <i class="fas fa-power-off mr-2"></i>Logout
                                     </asp:LinkButton>
                                 </div>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-lg-none" href="/Dashboard"><i class="fa fa-fw fa-tachometer-alt"></i>Dashboard</a>
-                            </li>
+
                         </ul>
                     </div>
                 </nav>
             </div>
             <div class="nav-left-sidebar sidebar-dark">
                 <div class="menu-list">
-                    <nav class="navbar navbar-expand-lg navbar-light">
+                    <nav class="navbar navbar-expand-lg navbar-light mt-2">
                         <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
@@ -109,6 +108,17 @@
         <asp:ContentPlaceHolder ID="MainContent" runat="server">
         </asp:ContentPlaceHolder>
     </form>
+    <style>
+        .nav-link.nav-user-img::after {
+            content: "";
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 3px;
+            transform: rotate(45deg);
+            margin-left: 5px;
+        }
+    </style>
     <asp:PlaceHolder runat="server">
         <!-- Add the JavaScript files using Script Render -->
         <%: Scripts.Render("~/Content/assets/vendor/jquery/jquery-3.3.1.min.js") %>
