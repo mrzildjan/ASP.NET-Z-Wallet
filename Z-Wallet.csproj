@@ -623,6 +623,8 @@
     <Content Include="Content\assets\vendor\summernote\css\font\summernote.ttf" />
     <Content Include="Content\assets\vendor\summernote\css\font\summernote.woff" />
     <Content Include="Content\assets\vendor\summernote\css\font\summernote.woff2" />
+    <Content Include="libman.json" />
+    <Content Include="Admin-Dashboard.Master" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -661,6 +663,13 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin-Dashboard.Master.cs">
+      <DependentUpon>Admin-Dashboard.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin-Dashboard.Master.designer.cs">
+      <DependentUpon>Admin-Dashboard.Master</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="About.aspx.cs">
       <DependentUpon>About.aspx</DependentUpon>

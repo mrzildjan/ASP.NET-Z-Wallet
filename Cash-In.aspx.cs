@@ -32,7 +32,7 @@ namespace Z_Wallet
             if (accountData.Rows.Count > 0)
             {
                 DataRow row = accountData.Rows[0];
-                lblCurrentBalance.Text = row["CurrentBalance"].ToString();
+                lblCurrentBalance.Text = string.Format("₱ {0:N2}", Convert.ToDecimal(row["CurrentBalance"]));
             }
         }
 

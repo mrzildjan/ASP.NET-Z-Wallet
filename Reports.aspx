@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/User-Dashboard.Master" AutoEventWireup="true" CodeBehind="Reports.aspx.cs" Inherits="Z_Wallet.Reports" %>
+﻿<%@ Page Title="Reports" Language="C#" MasterPageFile="~/User-Dashboard.Master" AutoEventWireup="true" CodeBehind="Reports.aspx.cs" Inherits="Z_Wallet.Reports" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <main>
@@ -44,8 +44,8 @@
                                                         <td><%# Eval("TransactionID") %></td>
                                                         <td><%# Eval("AccountNumber") %></td>
                                                         <td><%# Eval("TransactionType") %></td>
-                                                        <td><%# Eval("TransactionSender") %></td>
-                                                        <td><%# Eval("TransactionReceiver") %></td>
+                                                        <td><%# Eval("TransactionSender") == string.Empty ? "Not Applicable" : Eval("TransactionSender") %></td>
+                                                        <td><%# Eval("TransactionReceiver") == string.Empty ? "Not Applicable" : Eval("TransactionReceiver") %></td>
                                                         <td><%# Eval("TransactionAmount") %></td>
                                                         <td><%# Convert.ToDateTime(Eval("TransactionDate")).ToString("dd-MM-yy hh:mm tt") %></td>
                                                     </tr>

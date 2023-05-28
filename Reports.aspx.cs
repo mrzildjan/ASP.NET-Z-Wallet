@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace Z_Wallet
 {
@@ -31,16 +32,15 @@ namespace Z_Wallet
 
                 if (transactions.Rows.Count > 0)
                 {
-                    rptTransactions.DataSource = transactions;
+                    DataView sortedView = transactions.DefaultView;
+                    sortedView.Sort = "TransactionDate DESC";
+                    rptTransactions.DataSource = sortedView;
                     rptTransactions.DataBind();
                 }
             }
             catch (Exception ex)
             {
                 // Handle any exceptions that occur during data retrieval
-                // and display an error message to the user
-                //lblErrorMessage.Text = "An error occurred while retrieving transactions.";
-                //lblErrorMessage.Visible = true;
                 Response.Write("<script>window.alert('An error occurred while retrieving transactions.')<script/>");
             }
         }

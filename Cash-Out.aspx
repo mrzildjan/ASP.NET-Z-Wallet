@@ -53,7 +53,7 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <asp:Label ID="lblCurrentBalance" runat="server" CssClass="mb-0 font-weight-bold font-24" Text='&#8369;<%# Eval("CurrentBalance") %>'></asp:Label>
                                     <div class="text-success">
-                                        <% decimal currentBalance = Convert.ToDecimal(lblCurrentBalance.Text);
+                                        <% decimal currentBalance = Convert.ToDecimal(lblCurrentBalance.Text.Replace("₱", ""));
                                             decimal maxBalance = 50000.0m;
                                             decimal progressPercentage = (currentBalance / maxBalance) * 100;
                                         %>
@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="progress mt-3">
                                     <%-- Calculate the progress percentage based on the current balance --%>
-                                    <% decimal currentBalanceInt = Convert.ToDecimal(lblCurrentBalance.Text);
+                                    <% decimal currentBalanceInt = Convert.ToDecimal(lblCurrentBalance.Text.Replace("₱", ""));
                                         decimal maxBalanceInt = 50000m;
                                         decimal progressPercentageInt = (currentBalanceInt / maxBalanceInt * 100);
                                         if (progressPercentageInt > 100)
@@ -100,7 +100,7 @@
                                         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                                             <ContentTemplate>
                                                 <asp:Button ID="btnCashOut" runat="server" Text="Cash Out" CssClass="btn btn-primary mr-1" ValidationGroup="cashOutValidation" OnClick="btnCashOut_Click" OnClientClick="return validateCashOut();" data-toggle="modal" data-target="#passwordModal" />
-                                                
+
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
                                         <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn btn-secondary" OnClick="btnCancel_Click" />

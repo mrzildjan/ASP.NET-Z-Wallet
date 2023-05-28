@@ -32,11 +32,11 @@ namespace Z_Wallet
                         lblAccountNumber.Text = row["AccountNumber"].ToString();
                         lblName.Text = string.Format("{0} {1}", row["FirstName"].ToString(), row["LastName"].ToString());
                         lblDateRegistered.Text = ((DateTime)row["SignUpDateTime"]).ToString("MMM dd, yyyy");
-                        lblCurrentBalance.Text = row["CurrentBalance"].ToString();
-                        lblTotalSendMoney.Text = row["TotalSendMoney"].ToString();
-                        lblTotalReceiveMoney.Text = row["TotalReceiveMoney"].ToString();
-                        lblTotalCashIn.Text = row["TotalCashIn"].ToString();
-                        lblTotalCashout.Text = row["TotalCashOut"].ToString();
+                        lblCurrentBalance.Text = string.Format("₱ {0:N2}", Convert.ToDecimal(row["CurrentBalance"]));
+                        lblTotalSendMoney.Text = string.Format("₱ {0:N2}", Convert.ToDecimal(row["TotalSendMoney"]));
+                        lblTotalReceiveMoney.Text = string.Format("₱ {0:N2}", Convert.ToDecimal(row["TotalReceiveMoney"]));
+                        lblTotalCashIn.Text = string.Format("₱ {0:N2}", Convert.ToDecimal(row["TotalCashIn"]));
+                        lblTotalCashout.Text = string.Format("₱ {0:N2}", Convert.ToDecimal(row["TotalCashOut"]));
                     }
                 }
             }

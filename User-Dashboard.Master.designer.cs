@@ -51,22 +51,22 @@ namespace Z_Wallet
         protected global::System.Web.UI.WebControls.Literal userFullNameLabel;
 
         /// <summary>
-        /// logoutButton control.
+        /// LogoutButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton logoutButton;
+        protected global::System.Web.UI.WebControls.LinkButton LogoutButton;
 
         /// <summary>
-        /// LinkButton1 control.
+        /// Logout control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButton1;
+        protected global::System.Web.UI.WebControls.LinkButton Logout;
 
         /// <summary>
         /// MainContent control.
