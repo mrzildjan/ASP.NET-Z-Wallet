@@ -80,13 +80,13 @@
                                         <a class="nav-link" href="\Admin"><i class="fa fa-fw fa-tachometer-alt"></i>Dashboard</a>
                                     </li>
                                     <li class="nav-item ">
-                                        <a class="nav-link" href="\Manage-Members"><i class="fa fa-fw fa-credit-card"></i>Manage Members</a>
+                                        <a class="nav-link" href="\Manage-Members"><i class="fa fa-fw fa-users"></i>Manage Members</a>
                                     </li>
                                     <li class="nav-item ">
-                                        <a class="nav-link" href="\View-Transactions"><i class="fa fa-fw fa-money-bill-alt"></i>View Transactions</a>
+                                        <a class="nav-link" href="\View-Transactions"><i class="fa fa-fw fa-history"></i>View Transactions</a>
                                     </li>
                                     <li class="nav-item ">
-                                        <a class="nav-link" href="\Admin-Members"><i class="fa fa-fw fa-piggy-bank"></i>Admin Members</a>
+                                        <a class="nav-link" href="\Admin-Members"><i class="fa fa-fw fa-user-plus"></i>Admin Members</a>
                                     </li>
                                     <li class="nav-item ">
                                         <a class="nav-link" href="\Profile"><i class="fa fa-fw fa-user"></i>Profile</a>

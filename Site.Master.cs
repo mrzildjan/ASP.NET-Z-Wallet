@@ -17,6 +17,7 @@ namespace Z_Wallet
         {
 
         }
+
         protected void LoginButton_Click(object sender, EventArgs e)
         {
             string email = login_email.Text;
@@ -28,41 +29,75 @@ namespace Z_Wallet
                 {
                     connection.Open();
 
-                    string query = "SELECT * FROM Users WHERE Email = @Email AND Password = @Password";
-                    SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@Email", email);
-                    command.Parameters.AddWithValue("@Password", password);
+                    // Check if the login credentials match a user account
+                    string userQuery = "SELECT * FROM Users WHERE Email = @Email AND Password = @Password";
+                    SqlCommand userCommand = new SqlCommand(userQuery, connection);
+                    userCommand.Parameters.AddWithValue("@Email", email);
+                    userCommand.Parameters.AddWithValue("@Password", password);
 
-                    SqlDataReader reader = command.ExecuteReader();
-                    if (reader.HasRows)
+                    SqlDataReader userReader = userCommand.ExecuteReader();
+                    if (userReader.HasRows)
                     {
                         // User login success
                         // Store user information in session
-                        reader.Read();
-                        int AccountNumber = (int)reader["AccountNumber"]; // Update column name to "Id"
-                        string firstName = (string)reader["FirstName"];
-                        string lastName = (string)reader["LastName"];
+                        userReader.Read();
+                        int AccountNumber = (int)userReader["AccountNumber"]; // Update column name to "Id"
+                        string firstName = (string)userReader["FirstName"];
+                        string lastName = (string)userReader["LastName"];
 
                         Session["AccountNumber"] = AccountNumber;
                         Session["FirstName"] = firstName;
                         Session["LastName"] = lastName;
 
-                        reader.Close();
+                        userReader.Close();
                         connection.Close();
 
-                        // Redirect to the desired page
+                        // Redirect to the desired user page
                         Response.Redirect("Dashboard.aspx");
                     }
                     else
                     {
-                        // User login failed
-                        // Show error message or take appropriate action
-                        loginErrorLabel.Text = "Invalid email or password!";
-                        loginErrorLabel.Visible = true; // Make the error label visible
-                    }
+                        userReader.Close();
 
-                    reader.Close();
-                    connection.Close();
+                        // Check if the login credentials match an admin account
+                        string adminQuery = "SELECT * FROM Admins WHERE Email = @Email AND Password = @Password";
+                        SqlCommand adminCommand = new SqlCommand(adminQuery, connection);
+                        adminCommand.Parameters.AddWithValue("@Email", email);
+                        adminCommand.Parameters.AddWithValue("@Password", password);
+
+                        SqlDataReader adminReader = adminCommand.ExecuteReader();
+                        if (adminReader.HasRows)
+                        {
+                            // Admin login success
+                            // Store admin information in session
+                            adminReader.Read();
+                            string adminEmail = (string)adminReader["Email"];
+                            string adminFirstName = (string)adminReader["FirstName"];
+                            string adminLastName = (string)adminReader["LastName"];
+
+                            Session["Email"] = adminEmail;
+                            Session["FirstName"] = adminFirstName;
+                            Session["LastName"] = adminLastName;
+
+                            adminReader.Close();
+                            connection.Close();
+
+                            // Redirect to the desired admin page
+                            Response.Redirect("Admin.aspx");
+                        }
+                        else
+                        {
+                            adminReader.Close();
+
+                            // Login failed for both user and admin
+                            // Show error message or take appropriate action
+                            loginErrorLabel.Text = "Invalid email or password!";
+                            loginErrorLabel.Visible = true; // Make the error label visible
+
+                            string alertScript = "<script>alert('Invalid email or password!');</script>";
+                            Response.Write(alertScript);
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -79,6 +114,7 @@ namespace Z_Wallet
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "LoginErrorAlert", alertScript, false);
             }
         }
+
         protected void SignupButton_Click(object sender, EventArgs e)
         {
             string firstName = signup_first_name.Text;
@@ -95,19 +131,14 @@ namespace Z_Wallet
                     connection.Open();
 
                     // Check if email or phone number already exist in the database
-                    string checkQuery = "SELECT COUNT(*) FROM Users WHERE Email = @Email OR PhoneNumber = @PhoneNumber";
+                    string checkQuery = "SELECT COUNT(*) FROM Users";
                     SqlCommand checkCommand = new SqlCommand(checkQuery, connection);
-                    checkCommand.Parameters.AddWithValue("@Email", email);
-                    checkCommand.Parameters.AddWithValue("@PhoneNumber", phone);
 
                     int existingUserCount = (int)checkCommand.ExecuteScalar();
-                    if (existingUserCount > 0)
+                    if (existingUserCount == 0)
                     {
-                        // Email or phone number already exists
-                        string alertScript = "<script>alert('Email or phone number already exists.');</script>";
-                        Response.Write(alertScript);
-                        signupErrorLabel.Text = "Email or phone number already exists.";
-                        return; // Exit the method without executing the insert query
+                        // No users exist, add admin account
+                        AddAdminAccount(connection);
                     }
 
                     // Proceed with user registration
@@ -157,5 +188,32 @@ namespace Z_Wallet
             }
         }
 
+        private void AddAdminAccount(SqlConnection connection)
+        {
+            string adminFirstName = "Admin";
+            string adminLastName = "Admin";
+            string adminEmail = "admin";
+            string adminPassword = "admin";
+            DateTime createdDateTime = DateTime.Now;
+
+            string query = "INSERT INTO Admins (FirstName, LastName, Email, Password, CreatedDateTime) " +
+                           "VALUES (@FirstName, @LastName, @Email, @Password, @CreatedDateTime)";
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@FirstName", adminFirstName);
+            command.Parameters.AddWithValue("@LastName", adminLastName);
+            command.Parameters.AddWithValue("@Email", adminEmail);
+            command.Parameters.AddWithValue("@Password", adminPassword);
+            command.Parameters.AddWithValue("@CreatedDateTime", createdDateTime);
+
+            int rowsAffected = command.ExecuteNonQuery();
+            if (rowsAffected > 0)
+            {
+                // Admin account added successfully
+            }
+            else
+            {
+                // Failed to add admin account
+            }
+        }
     }
 }

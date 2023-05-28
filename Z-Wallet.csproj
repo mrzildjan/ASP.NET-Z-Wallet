@@ -103,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="Admin.aspx" />
     <Content Include="App_Data\Z-Wallet.mdf" />
     <Content Include="App_Data\Z-Wallet_log.ldf">
       <DependentUpon>Z-Wallet.mdf</DependentUpon>
@@ -669,6 +670,13 @@
     </Compile>
     <Compile Include="Admin-Dashboard.Master.designer.cs">
       <DependentUpon>Admin-Dashboard.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Admin.aspx.cs">
+      <DependentUpon>Admin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin.aspx.designer.cs">
+      <DependentUpon>Admin.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="About.aspx.cs">
