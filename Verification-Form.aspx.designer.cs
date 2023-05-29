@@ -33,6 +33,15 @@ namespace Z_Wallet
         protected global::System.Web.UI.WebControls.DropDownList ddlIDType;
 
         /// <summary>
+        /// cardfileUpload1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cardfileUpload1;
+
+        /// <summary>
         /// previewIDImage1 control.
         /// </summary>
         /// <remarks>
@@ -60,22 +69,13 @@ namespace Z_Wallet
         protected global::System.Web.UI.WebControls.Button btnChooseFile1;
 
         /// <summary>
-        /// btnUpload1 control.
+        /// cardfileUpload2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnUpload1;
-
-        /// <summary>
-        /// lblFrontIDSuccessMessage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblFrontIDSuccessMessage;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cardfileUpload2;
 
         /// <summary>
         /// previewIDImage2 control.
@@ -105,24 +105,6 @@ namespace Z_Wallet
         protected global::System.Web.UI.WebControls.Button btnChooseFile2;
 
         /// <summary>
-        /// btnUpload2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnUpload2;
-
-        /// <summary>
-        /// lblBackIDSuccessMessage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblBackIDSuccessMessage;
-
-        /// <summary>
         /// txtFirstName control.
         /// </summary>
         /// <remarks>
@@ -130,6 +112,15 @@ namespace Z_Wallet
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtFirstName;
+
+        /// <summary>
+        /// txtMiddleName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtMiddleName;
 
         /// <summary>
         /// txtLastName control.

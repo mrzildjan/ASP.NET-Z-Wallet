@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Verification" Language="C#" MasterPageFile="~/User-Dashboard.Master" AutoEventWireup="true" CodeBehind="Verification-Form.aspx.cs" Inherits="Z_Wallet.Verification" %>
+﻿<%@ Page Title="Verification" Language="C#" MasterPageFile="~/User-Dashboard.Master" AutoEventWireup="true" CodeBehind="Verification.aspx.cs" Inherits="Z_Wallet.Verification" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <main>
@@ -7,11 +7,11 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-header">
-                            <h2 class="pageheader-title"><i class="fa fa-fw fa-user"></i>My Profile</h2>
+                            <h2 class="pageheader-title"><i class="fa fa-fw fa-user"></i>Verification Form</h2>
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Profile</a></li>
+                                    <li class="breadcrumb-item"><a href="\Admin" class="breadcrumb-link">Dashboard</a></li>
+                                    <li class="breadcrumb-item"><a href="\Verification-Form" class="breadcrumb-link">Verification Form</a></li>
                                 </ol>
                             </nav>
                         </div>
@@ -40,7 +40,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="col-md-12 mb-3">
-                                    <label for="IDType">ID Type</label>
+                                    <label for="IDType">ID Type <span class="required">*</span></label>
                                     <asp:DropDownList ID="ddlIDType" runat="server" CssClass="form-control">
                                         <asp:ListItem Text="Select ID Type" Value=""></asp:ListItem>
                                         <asp:ListItem Text="Passport" Value="Passport"></asp:ListItem>
@@ -62,9 +62,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card" id="cardfileUpload1" runat="server">
                             <div class="card-header">
-                                <h4 class="mb-0">Front ID Picture</h4>
+                                <h4 class="mb-0">Front ID Picture <span class="required">*</span></h4>
                             </div>
                             <div class="card-body text-center">
                                 <div class="rounded-circle overflow-hidden id-picture">
@@ -77,17 +77,11 @@
                                     </div>
                                 </div>
                                 <asp:Button ID="btnChooseFile1" runat="server" Text="Choose File" CssClass="btn btn-secondary mt-3 mr-1" OnClientClick="chooseFile1(); return false;" />
-                                <asp:Button ID="btnUpload1" runat="server" Text="Upload" CssClass="btn btn-primary mt-3" OnClick="btnUpload1_Click" />
-                                <div class="form-group row text-center">
-                                    <div class="col-12">
-                                        <asp:Label ID="lblFrontIDSuccessMessage" runat="server" CssClass="text-success font-16" Visible="false"></asp:Label>
-                                    </div>
-                                </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card fileUpload2" id="cardfileUpload2" runat="server">
                             <div class="card-header">
-                                <h4 class="mb-0">Back ID Picture</h4>
+                                <h4 class="mb-0">Back ID Picture <span class="required">*</span></h4>
                             </div>
                             <div class="card-body text-center">
                                 <div class="rounded-circle overflow-hidden id-picture">
@@ -100,12 +94,6 @@
                                     </div>
                                 </div>
                                 <asp:Button ID="btnChooseFile2" runat="server" Text="Choose File" CssClass="btn btn-secondary mt-3 mr-1" OnClientClick="chooseFile2(); return false;" />
-                                <asp:Button ID="btnUpload2" runat="server" Text="Upload" CssClass="btn btn-primary mt-3" OnClick="btnUpload2_Click" />
-                                <div class="form-group row text-center">
-                                    <div class="col-12">
-                                        <asp:Label ID="lblBackIDSuccessMessage" runat="server" CssClass="text-success font-16" Visible="false"></asp:Label>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -117,34 +105,38 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label for="firstName">First name</label>
+                                        <label for="firstName">First name <span class="required">*</span></label>
                                         <asp:TextBox ID="txtFirstName" runat="server" CssClass="form-control" placeholder=""></asp:TextBox>
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label for="lastName">Last name</label>
+                                        <label for="MiddleName">Middle name</label>
+                                        <asp:TextBox ID="txtMiddleName" runat="server" CssClass="form-control" placeholder=""></asp:TextBox>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="LastName">Last name <span class="required">*</span></label>
                                         <asp:TextBox ID="txtLastName" runat="server" CssClass="form-control" placeholder=""></asp:TextBox>
                                     </div>
-                                    <div class="col-md-12 mb-3">
-                                        <label for="txtBirthDate">Birth Date</label>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="txtBirthDate">Birth Date <span class="required">*</span></label>
                                         <asp:TextBox ID="txtBirthDate" runat="server" CssClass="form-control" type="date" placeholder=""></asp:TextBox>
                                     </div>
-                                    <div class="col-md-12 mb-3">
-                                        <label for="ddlGender">Gender</label>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="ddlGender">Gender <span class="required">*</span></label>
                                         <asp:DropDownList ID="ddlGender" runat="server" CssClass="form-control">
                                             <asp:ListItem Text="Male" Value="Male"></asp:ListItem>
                                             <asp:ListItem Text="Female" Value="Female"></asp:ListItem>
                                         </asp:DropDownList>
                                     </div>
-                                    <div class="col-md-12 mb-3">
-                                        <label for="Nationality">Nationality</label>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="Nationality">Nationality <span class="required">*</span></label>
                                         <asp:TextBox ID="txtNationality" runat="server" CssClass="form-control" placeholder=""></asp:TextBox>
                                     </div>
-                                    <div class="col-md-12 mb-3">
-                                        <label for="PlaceOfBirth">Place of Birth</label>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="PlaceOfBirth">Place of Birth <span class="required">*</span></label>
                                         <asp:TextBox ID="txtPlaceOfBirth" runat="server" CssClass="form-control" placeholder=""></asp:TextBox>
                                     </div>
-                                    <div class="col-md-12 mb-3">
-                                        <label for="Religion">Religion</label>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="Religion">Religion <span class="required">*</span></label>
                                         <asp:TextBox ID="txtReligion" runat="server" CssClass="form-control" placeholder=""></asp:TextBox>
                                     </div>
                                 </div>
@@ -156,28 +148,28 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-12 mb-3">
-                                        <label for="AddressLine1">Address Line 1</label>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="AddressLine1">Address Line 1 <span class="required">*</span></label>
                                         <asp:TextBox ID="txtAddressLine1" runat="server" CssClass="form-control" placeholder=""></asp:TextBox>
                                     </div>
-                                    <div class="col-md-12 mb-3">
+                                    <div class="col-md-6 mb-3">
                                         <label for="AddressLine2">Address Line 2</label>
                                         <asp:TextBox ID="txtAddressLine2" runat="server" CssClass="form-control" placeholder=""></asp:TextBox>
                                     </div>
-                                    <div class="col-md-12 mb-3">
-                                        <label for="CityAddress">City</label>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="CityAddress">City <span class="required">*</span></label>
                                         <asp:TextBox ID="txtCityAddress" runat="server" CssClass="form-control" placeholder=""></asp:TextBox>
                                     </div>
-                                    <div class="col-md-12 mb-3">
-                                        <label for="ProvinceAddress">Province</label>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="ProvinceAddress">Province <span class="required">*</span></label>
                                         <asp:TextBox ID="ProvinceAddress" runat="server" CssClass="form-control" placeholder=""></asp:TextBox>
                                     </div>
-                                    <div class="col-md-12 mb-3">
-                                        <label for="PostalCode">Postal Code</label>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="PostalCode">Postal Code <span class="required">*</span></label>
                                         <asp:TextBox ID="txtPostalCode" runat="server" CssClass="form-control" placeholder=""></asp:TextBox>
                                     </div>
-                                    <div class="col-md-12 mb-3">
-                                        <label for="Country">Country</label>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="Country">Country <span class="required">*</span></label>
                                         <asp:DropDownList ID="ddlCountries" runat="server" CssClass="form-control">
                                         </asp:DropDownList>
                                     </div>
@@ -209,11 +201,11 @@
             margin: 0 auto;
         }
 
-            .id-picture img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
+        .id-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
         .custom-file-input {
             position: relative;
@@ -234,6 +226,9 @@
             border-radius: 0.25rem;
             transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
             cursor: pointer;
+            background-image: url('path/to/your/image.jpg');
+            background-size: cover;
+            background-position: center;
         }
 
         .custom-file-input:focus ~ .custom-file-label {
@@ -253,12 +248,16 @@
             color: #fff;
         }
 
-        .status-active {
+        .status-verified {
             background-color: #28a745; /* Green */
         }
 
-        .status-inactive {
+        .status-pending {
             background-color: #dc3545; /* Red */
+        }
+
+        .required {
+            color: red;
         }
     </style>
 
@@ -281,7 +280,6 @@
 
             if (file) {
                 reader.readAsDataURL(file);
-                document.getElementById('<%= lblFrontIDSuccessMessage.ClientID %>').style.display = 'none';
             } else {
                 preview.src = "";
                 preview.style.display = "none";
@@ -306,7 +304,6 @@
 
             if (file) {
                 reader.readAsDataURL(file);
-                document.getElementById('<%= lblBackIDSuccessMessage.ClientID %>').style.display = 'none';
             } else {
                 preview.src = "";
                 preview.style.display = "none";

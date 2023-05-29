@@ -91,6 +91,9 @@
                                 <li class="nav-item ">
                                     <a class="nav-link" href="\Reports"><i class="fa fa-fw fa-file"></i>Reports</a>
                                 </li>
+                                 <li class="nav-item ">
+                                    <a class="nav-link" href="\Verification-Form"><i class="fa fa-fw fa-check-circle"></i>Verification</a>
+                                </li>
                                 <li class="nav-item ">
                                     <a class="nav-link" href="\Profile"><i class="fa fa-fw fa-user"></i>Profile</a>
                                 </li>
