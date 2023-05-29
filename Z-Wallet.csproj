@@ -555,6 +555,7 @@
     <Content Include="Global.asax" />
     <Content Include="How-It-Works.aspx" />
     <Content Include="Legal.aspx" />
+    <Content Include="Manage-Members.aspx" />
     <Content Include="Privacy-Policy.aspx" />
     <Content Include="Profile.aspx" />
     <Content Include="Reports.aspx" />
@@ -658,6 +659,7 @@
     <Content Include="Signin.aspx" />
     <Content Include="Site.Master" />
     <Content Include="Terms.aspx" />
+    <Content Include="Verification-Form.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -746,6 +748,13 @@
     <Compile Include="Legal.aspx.designer.cs">
       <DependentUpon>Legal.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Manage-Members.aspx.cs">
+      <DependentUpon>Manage-Members.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Manage-Members.aspx.designer.cs">
+      <DependentUpon>Manage-Members.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Privacy-Policy.aspx.cs">
       <DependentUpon>Privacy-Policy.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -816,6 +825,13 @@
     </Compile>
     <Compile Include="User-Dashboard.Master.designer.cs">
       <DependentUpon>User-Dashboard.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Verification-Form.aspx.cs">
+      <DependentUpon>Verification-Form.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Verification-Form.aspx.designer.cs">
+      <DependentUpon>Verification-Form.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>

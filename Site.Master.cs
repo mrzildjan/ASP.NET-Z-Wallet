@@ -192,12 +192,12 @@ namespace Z_Wallet
         {
             string adminFirstName = "Admin";
             string adminLastName = "Admin";
-            string adminEmail = "admin";
+            string adminEmail = "admin@zwallet.ph";
             string adminPassword = "admin";
             DateTime createdDateTime = DateTime.Now;
 
-            string query = "INSERT INTO Admins (FirstName, LastName, Email, Password, CreatedDateTime) " +
-                           "VALUES (@FirstName, @LastName, @Email, @Password, @CreatedDateTime)";
+            string query = "INSERT INTO Admins (FirstName, LastName, Email, Password, CreatedDateTime, Avatar) " +
+                           "VALUES (@FirstName, @LastName, @Email, @Password, @CreatedDateTime, NULL)";
             SqlCommand command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@FirstName", adminFirstName);
             command.Parameters.AddWithValue("@LastName", adminLastName);
