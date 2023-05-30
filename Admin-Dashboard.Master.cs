@@ -23,7 +23,7 @@ namespace Z_Wallet
                 {
                     LoadUserInfo();
                     SetUserFullName();
-                    SetUserAvatar();
+                    SetAdminAvatar();
                 }
             }
         }
@@ -37,17 +37,46 @@ namespace Z_Wallet
             }
         }
 
-        protected void SetUserAvatar()
+        protected void SetAdminAvatar()
         {
-            if (!string.IsNullOrEmpty(avatarUrl))
+            string email = Session["Email"].ToString(); // Get the user's email from the session
+
+            // Fetch the avatar image data from the database
+            byte[] imageData = null;
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                userAvatarImage.Src = avatarUrl;
+                string query = "SELECT Avatar FROM Admins WHERE Email = @Email";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Email", email);
+
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    if (!reader.IsDBNull(0))
+                    {
+                        imageData = (byte[])reader["Avatar"];
+                    }
+                }
+                reader.Close();
+            }
+
+            if (imageData != null && imageData.Length > 0)
+            {
+                // Convert the image data to a base64 string
+                string base64Image = Convert.ToBase64String(imageData);
+
+                // Create the image URL with the base64 string
+                avatarUrl = "data:image/jpeg;base64," + base64Image;
             }
             else
             {
-                // Set the default image URL if avatar URL is null or empty
-                userAvatarImage.Src = "/Content/assets/images/user.png";
+                // Set the default image URL if avatar image data is null or empty
+                avatarUrl = "/Content/assets/images/user.png";
             }
+
+            userAvatarImage.Src = avatarUrl;
         }
 
         protected void SetUserFullName()

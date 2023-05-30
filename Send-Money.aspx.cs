@@ -374,7 +374,9 @@ namespace Z_Wallet
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "INSERT INTO Transactions (AccountNumber, TransactionType, TransactionSender, TransactionReceiver, TransactionAmount, TransactionDate) " +
-                               "VALUES (@AccountNumber, @TransactionType, @TransactionSender, @TransactionReceiver, @TransactionAmount, @TransactionDate)";
+                               "VALUES (@AccountNumber, @TransactionType, @TransactionSender, @TransactionReceiver, @TransactionAmount, @TransactionDate);" +
+                               "INSERT INTO Transactions (AccountNumber, TransactionType, TransactionSender, TransactionReceiver, TransactionAmount, TransactionDate) " +
+                               "VALUES (@ReceiverAccountNumber, @ReceivedTransactionType, @ReceivedTransactionSender, @ReceivedTransactionReceiver, @TransactionAmount, @TransactionDate)";
 
                 string senderName = GetAccountName(senderAccountNumber);
                 string receiverName = GetAccountName(receiverAccountNumber);
@@ -384,6 +386,10 @@ namespace Z_Wallet
                 command.Parameters.AddWithValue("@TransactionType", "Send Money");
                 command.Parameters.AddWithValue("@TransactionSender", senderName);
                 command.Parameters.AddWithValue("@TransactionReceiver", receiverName);
+                command.Parameters.AddWithValue("@ReceiverAccountNumber", receiverAccountNumber);
+                command.Parameters.AddWithValue("@ReceivedTransactionType", "Received Money");
+                command.Parameters.AddWithValue("@ReceivedTransactionSender", senderName);
+                command.Parameters.AddWithValue("@ReceivedTransactionReceiver", receiverName);
                 command.Parameters.AddWithValue("@TransactionAmount", sendAmount);
                 command.Parameters.AddWithValue("@TransactionDate", DateTime.Now);
 

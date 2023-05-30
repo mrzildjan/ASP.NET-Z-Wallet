@@ -181,8 +181,6 @@ namespace Z_Wallet
                 lblErrorMessage.Visible = false;
                 lblStatusErrorMessage.Visible = false;
                 lblStatusSuccessMessage.Visible = false;
-                lblStatusErrorMessage.Visible = false;
-                lblStatusSuccessMessage.Visible = false;
             }
         }
 

@@ -89,7 +89,7 @@
                                         <a class="nav-link" href="\Admin-Members"><i class="fa fa-fw fa-user-plus"></i>Admin Members</a>
                                     </li>
                                     <li class="nav-item ">
-                                        <a class="nav-link" href="\Profile"><i class="fa fa-fw fa-user"></i>Profile</a>
+                                        <a class="nav-link" href="\Admin-Profile"><i class="fa fa-fw fa-user"></i>Profile</a>
                                     </li>
                                     <li class="nav-item ">
                                         <asp:LinkButton ID="LinkButton1" runat="server" OnClick="Logout_Click" CssClass="nav-link">

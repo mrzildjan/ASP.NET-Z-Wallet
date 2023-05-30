@@ -29,7 +29,6 @@
                                         <thead>
                                             <tr>
                                                 <th>Transaction Code</th>
-                                                <th>Account Number</th>
                                                 <th>Type</th>
                                                 <th>Sender</th>
                                                 <th>Receiver</th>
@@ -42,7 +41,6 @@
                                                 <ItemTemplate>
                                                     <tr>
                                                         <td><%# Eval("TransactionID") %></td>
-                                                        <td><%# Eval("AccountNumber") %></td>
                                                         <td><%# Eval("TransactionType") %></td>
                                                         <td><%# Eval("TransactionSender") == string.Empty ? "Not Applicable" : Eval("TransactionSender") %></td>
                                                         <td><%# Eval("TransactionReceiver") == string.Empty ? "Not Applicable" : Eval("TransactionReceiver") %></td>

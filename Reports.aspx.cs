@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Web.Util;
 
 namespace Z_Wallet
 {
@@ -58,7 +59,22 @@ namespace Z_Wallet
 
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 DataTable transactions = new DataTable();
-                adapter.Fill(transactions);
+
+                connection.Open(); // Open the database connection
+
+                adapter.Fill(transactions); // Fill the DataTable with data from the database
+
+                // Update transaction ID to previous value - 1 for type "Received Money"
+                foreach (DataRow row in transactions.Rows)
+                {
+                    if (row["TransactionType"].ToString() == "Received Money")
+                    {
+                        int transactionID = int.Parse(row["TransactionID"].ToString());
+                        row["TransactionID"] = transactionID - 1;
+                    }
+                }
+
+                connection.Close(); // Close the database connection
 
                 return transactions;
             }
