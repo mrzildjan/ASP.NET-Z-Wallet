@@ -11,16 +11,23 @@ namespace Z_Wallet
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            if (Session["Email"] == null && Session["FirstName"] == null && Session["LastName"] == null)
             {
-                BindMembers();
+                Response.Redirect("Default.aspx"); // Redirect to the login page
+            }
+            else
+            {
+                if (!IsPostBack)
+                {
+                    BindMembers();
+                }
             }
         }
 
         private void BindMembers()
         {
             string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-            string query = "SELECT FirstName, LastName, Email, PhoneNumber, AccountStatus FROM Users";
+            string query = "SELECT AccountNumber, FirstName, LastName, Email, PhoneNumber, AccountStatus FROM Users";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -33,6 +40,7 @@ namespace Z_Wallet
                     while (reader.Read())
                     {
                         Member member = new Member();
+                        member.AccountNumber = Convert.ToInt32(reader["AccountNumber"]);
                         member.FullName = $"{reader["FirstName"]} {reader["LastName"]}";
                         member.Email = reader["Email"].ToString();
                         member.PhoneNumber = reader["PhoneNumber"].ToString();
@@ -52,7 +60,7 @@ namespace Z_Wallet
 
         protected List<Member> MembersList;
 
-        private string GetStatusBadgeClass(string status)
+        protected string GetStatusBadgeClass(string status)
         {
             switch (status)
             {
@@ -79,5 +87,6 @@ namespace Z_Wallet
         public string PhoneNumber;
         public string Status;
         public string StatusBadgeClass;
+        public int AccountNumber;
     }
 }

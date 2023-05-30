@@ -660,6 +660,7 @@
     <Content Include="Signin.aspx" />
     <Content Include="Site.Master" />
     <Content Include="Terms.aspx" />
+    <Content Include="User-Members.aspx" />
     <Content Include="Verification-Form.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
@@ -833,6 +834,13 @@
     </Compile>
     <Compile Include="User-Dashboard.Master.designer.cs">
       <DependentUpon>User-Dashboard.Master</DependentUpon>
+    </Compile>
+    <Compile Include="User-Members.aspx.cs">
+      <DependentUpon>User-Members.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User-Members.aspx.designer.cs">
+      <DependentUpon>User-Members.aspx</DependentUpon>
     </Compile>
     <Compile Include="Verification-Form.aspx.cs">
       <DependentUpon>Verification-Form.aspx</DependentUpon>
