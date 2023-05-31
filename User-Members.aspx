@@ -260,14 +260,6 @@
                 color: #fff;
             }
 
-            .status-verified {
-                background-color: #28a745; /* Green */
-            }
-
-            .status-pending {
-                background-color: #dc3545; /* Red */
-            }
-
             .required {
                 color: red;
             }
@@ -296,7 +288,7 @@
                     preview.src = "";
                     preview.style.display = "none";
                 }
-            }
+            }   
 
             function chooseFile2() {
                 var fileInput = document.getElementById('<%=fileUpload2.ClientID%>');

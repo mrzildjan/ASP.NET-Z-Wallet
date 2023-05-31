@@ -114,39 +114,51 @@ namespace Z_Wallet
 
             if (passwordVerified)
             {
-                // Check if the account is deactivated or inactive
-                bool isDeactivated = IsAccountDeactivated(accountNumber);
+                bool isVerified = AccountStatus(accountNumber);
 
-                if (isDeactivated)
+                if (isVerified)
                 {
                     lblErrorMessage.Visible = true;
-                    lblErrorMessage.Text = "Account is deactivated. Cash-out is not allowed.";
+                    lblErrorMessage.Text = "Account is not Verified. Please complete Verification Form.";
 
                     lblSuccessMessage.Visible = false;
                 }
                 else
                 {
-                    // Update the current balance and total cash-out in the database
-                    bool success = UpdateCurrentBalance(accountNumber, cashOutAmount);
+                    // Check if the account is deactivated or inactive
+                    bool isDeactivated = IsAccountDeactivated(accountNumber);
 
-                    if (success)
+                    if (isDeactivated)
                     {
-                        // Store the transaction information in the database
-                        StoreTransaction(accountNumber, "Cash-Out", "", "", cashOutAmount);
+                        lblErrorMessage.Visible = true;
+                        lblErrorMessage.Text = "Account is deactivated. Cash-out is not allowed.";
 
-                        // Display the updated balance and total cash-out
-                        DisplayAccountInformation(accountNumber);
-
-                        lblSuccessMessage.Visible = true;
-                        lblSuccessMessage.Text = "Cash-out was successfully deducted from your account.";
-                        lblErrorMessage.Visible = false;
+                        lblSuccessMessage.Visible = false;
                     }
                     else
                     {
-                        lblErrorMessage.Visible = true;
-                        lblErrorMessage.Text = "Insufficient funds. Please enter a valid cash-out amount.";
+                        // Update the current balance and total cash-out in the database
+                        bool success = UpdateCurrentBalance(accountNumber, cashOutAmount);
 
-                        lblSuccessMessage.Visible = false;
+                        if (success)
+                        {
+                            // Store the transaction information in the database
+                            StoreTransaction(accountNumber, "Cash-Out", "", "", cashOutAmount);
+
+                            // Display the updated balance and total cash-out
+                            DisplayAccountInformation(accountNumber);
+
+                            lblSuccessMessage.Visible = true;
+                            lblSuccessMessage.Text = "Cash-out was successfully deducted from your account.";
+                            lblErrorMessage.Visible = false;
+                        }
+                        else
+                        {
+                            lblErrorMessage.Visible = true;
+                            lblErrorMessage.Text = "Insufficient funds. Please enter a valid cash-out amount.";
+
+                            lblSuccessMessage.Visible = false;
+                        }
                     }
                 }
             }
@@ -162,6 +174,31 @@ namespace Z_Wallet
             ScriptManager.RegisterStartupScript(this, this.GetType(), "hidePasswordModal", "$('#passwordModal').modal('hide');", true);
         }
 
+        private bool AccountStatus(int accountNumber)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT AccountStatus FROM Users WHERE AccountNumber = @AccountNumber";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@AccountNumber", accountNumber);
+
+                connection.Open();
+                object result = command.ExecuteScalar();
+
+                if (result != null && result != DBNull.Value)
+                {
+                    string accountStatus = result.ToString();
+                    return accountStatus == "Unverified" || accountStatus == "Pending" || accountStatus == "Denied";
+                }
+                else
+                {
+                    throw new Exception("Account not found for the specified account number.");
+                }
+            }
+        }
         private bool IsAccountDeactivated(int accountNumber)
         {
             string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";

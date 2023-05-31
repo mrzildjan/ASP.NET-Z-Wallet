@@ -85,51 +85,87 @@ namespace Z_Wallet
 
             // Check if the account is deactivated
             bool isDeactivated = IsAccountDeactivated(accountNumber);
+            bool isVerified = AccountStatus(accountNumber);
 
-            if (isDeactivated)
+            if (isVerified)
             {
                 lblErrorMessage.Visible = true;
-                lblErrorMessage.Text = "Account is deactivated. Cash-out is not allowed.";
+                lblErrorMessage.Text = "Account is not Verified. Please complete Verification Form.";
 
                 lblSuccessMessage.Visible = false;
             }
-            else
-            {
-                // Get the cash in amount entered by the user
-                decimal cashInAmount = Convert.ToDecimal(depositAmount.Text);
-
-                // Check if the cash-in amount is greater than zero
-                if (cashInAmount > 0)
+            else {
+                if (isDeactivated)
                 {
-                    // Update the current balance in the database
-                    bool success = UpdateCurrentBalance(accountNumber, cashInAmount);
+                    lblErrorMessage.Visible = true;
+                    lblErrorMessage.Text = "Account is deactivated. Cash-out is not allowed.";
 
-                    if (success)
+                    lblSuccessMessage.Visible = false;
+                }
+                else
+                {
+                    // Get the cash in amount entered by the user
+                    decimal cashInAmount = Convert.ToDecimal(depositAmount.Text);
+
+                    // Check if the cash-in amount is greater than zero
+                    if (cashInAmount > 0)
                     {
-                        // Store the transaction information in the database
-                        StoreTransaction(accountNumber, "Cash-In", "", "", cashInAmount);
+                        // Update the current balance in the database
+                        bool success = UpdateCurrentBalance(accountNumber, cashInAmount);
 
-                        // Display the updated balance and total cash-in
-                        DisplayAccountInformation(accountNumber);
+                        if (success)
+                        {
+                            // Store the transaction information in the database
+                            StoreTransaction(accountNumber, "Cash-In", "", "", cashInAmount);
 
-                        lblSuccessMessage.Visible = true;
-                        lblSuccessMessage.Text = "Cash-in was successfully added to your account.";
-                        lblErrorMessage.Visible = false;
+                            // Display the updated balance and total cash-in
+                            DisplayAccountInformation(accountNumber);
+
+                            lblSuccessMessage.Visible = true;
+                            lblSuccessMessage.Text = "Cash-in was successfully added to your account.";
+                            lblErrorMessage.Visible = false;
+                        }
+                        else
+                        {
+                            lblErrorMessage.Visible = true;
+                            lblErrorMessage.Text = "Account credit amount cannot exceed 50,000 PHP.";
+
+                            lblSuccessMessage.Visible = false;
+                        }
                     }
                     else
                     {
                         lblErrorMessage.Visible = true;
-                        lblErrorMessage.Text = "Account credit amount cannot exceed 50,000 PHP.";
+                        lblErrorMessage.Text = "Invalid cash-in amount. Please enter a positive value.";
 
                         lblSuccessMessage.Visible = false;
                     }
                 }
+            }
+        }
+
+        private bool AccountStatus(int accountNumber)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT AccountStatus FROM Users WHERE AccountNumber = @AccountNumber";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@AccountNumber", accountNumber);
+
+                connection.Open();
+                object result = command.ExecuteScalar();
+
+                if (result != null && result != DBNull.Value)
+                {
+                    string accountStatus = result.ToString();
+                    return accountStatus == "Unverified" || accountStatus == "Pending" || accountStatus == "Denied";
+                }
                 else
                 {
-                    lblErrorMessage.Visible = true;
-                    lblErrorMessage.Text = "Invalid cash-in amount. Please enter a positive value.";
-
-                    lblSuccessMessage.Visible = false;
+                    throw new Exception("Account not found for the specified account number.");
                 }
             }
         }

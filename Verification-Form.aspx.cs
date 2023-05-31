@@ -63,19 +63,18 @@ namespace Z_Wallet
                         {
                             SqlCommand command = new SqlCommand("IF EXISTS (SELECT * FROM [User-Verification] WHERE AccountNumber = @AccountNumber) " +
                                                                 "UPDATE [User-Verification] SET " +
-                                                                "VerificationStatus = @VerificationStatus, FirstName = @FirstName, LastName = @LastName, MiddleName = @MiddleName, Birthdate = @Birthdate, " +
+                                                                "FirstName = @FirstName, LastName = @LastName, MiddleName = @MiddleName, Birthdate = @Birthdate, " +
                                                                 "Gender = @Gender, Nationality = @Nationality, PlaceOfBirth = @PlaceOfBirth, AddressLineOne = @AddressLineOne, AddressLineTwo = @AddressLineTwo, " +
                                                                 "City = @City, Province = @Province, PostalCode = @PostalCode, Country = @Country, IDType = @IDType, " +
                                                                 "FrontIDPicture = @FrontIDPicture, BackIDPicture = @BackIDPicture " +
                                                                 "WHERE AccountNumber = @AccountNumber " +
                                                                 "ELSE " +
-                                                                "INSERT INTO [User-Verification] (AccountNumber, VerificationStatus, FirstName, LastName, MiddleName, Birthdate, Gender, Nationality, PlaceOfBirth, " +
+                                                                "INSERT INTO [User-Verification] (AccountNumber, FirstName, LastName, MiddleName, Birthdate, Gender, Nationality, PlaceOfBirth, " +
                                                                 "AddressLineOne, AddressLineTwo, City, Province, PostalCode, Country, IDType, FrontIDPicture, BackIDPicture) " +
-                                                                "VALUES (@AccountNumber, @VerificationStatus, @FirstName, @LastName, @MiddleName, @Birthdate, @Gender, @Nationality, @PlaceOfBirth, " +
+                                                                "VALUES (@AccountNumber, @FirstName, @LastName, @MiddleName, @Birthdate, @Gender, @Nationality, @PlaceOfBirth, " +
                                                                 "@AddressLineOne, @AddressLineTwo, @City, @Province, @PostalCode, @Country, @IDType, @FrontIDPicture, @BackIDPicture)", connection);
 
                             command.Parameters.AddWithValue("@AccountNumber", accountNumber);
-                            command.Parameters.AddWithValue("@VerificationStatus", "Pending");
                             command.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
                             command.Parameters.AddWithValue("@LastName", txtLastName.Text);
                             command.Parameters.AddWithValue("@MiddleName", txtMiddleName.Text);
@@ -105,6 +104,9 @@ namespace Z_Wallet
                             command.ExecuteNonQuery();
                             connection.Close();
 
+                            // Update the account status in the Users table to "Pending"
+                            UpdateAccountStatus(accountNumber, "Pending");
+
                             // Display success message or perform other actions
                             lblSuccessMessage.Visible = true;
                             lblSuccessMessage.Text = "Form submitted successfully!";
@@ -122,20 +124,40 @@ namespace Z_Wallet
             }
         }
 
+        private void UpdateAccountStatus(int accountNumber, string status)
+        {
+            // Update the account status in the Users table
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+            string query = "UPDATE [Users] SET [AccountStatus] = @AccountStatus WHERE [AccountNumber] = @AccountNumber";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@AccountStatus", status);
+                    command.Parameters.AddWithValue("@AccountNumber", accountNumber);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+        }
+
+
         private bool IsAccountVerified(int accountNumber)
         {
             // Check if the account is already verified in the database
             string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand command = new SqlCommand("SELECT VerificationStatus FROM [User-Verification] WHERE AccountNumber = @AccountNumber", connection);
+                SqlCommand command = new SqlCommand("SELECT AccountStatus FROM Users WHERE AccountNumber = @AccountNumber", connection);
                 command.Parameters.AddWithValue("@AccountNumber", accountNumber);
 
                 connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
                 if (reader.Read())
                 {
-                    string verificationStatus = reader["VerificationStatus"].ToString();
+                    string verificationStatus = reader["AccountStatus"].ToString();
                     if (verificationStatus == "Verified")
                     {
                         reader.Close();
@@ -184,6 +206,7 @@ namespace Z_Wallet
             string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
+                // Load the verification information from the User-Verification table
                 SqlCommand command = new SqlCommand("SELECT * FROM [User-Verification] WHERE AccountNumber = @AccountNumber", connection);
                 command.Parameters.AddWithValue("@AccountNumber", accountNumber);
 
@@ -191,17 +214,6 @@ namespace Z_Wallet
                 SqlDataReader reader = command.ExecuteReader();
                 if (reader.Read())
                 {
-                    lblAccountStatus.Text = reader["VerificationStatus"].ToString();
-                    if (lblAccountStatus.Text == "Pending")
-                    {
-                        lblAccountStatus.CssClass = "status-text status-pending";
-                    }
-                    else if (lblAccountStatus.Text == "Verified")
-                    {
-                        lblAccountStatus.CssClass = "status-text status-verified";
-                        cardfileUpload1.Visible = false; // Hide front ID picture file upload
-                        cardfileUpload2.Visible = false; // Hide back ID picture file upload
-                    }
                     txtFirstName.Text = reader["FirstName"].ToString();
                     txtLastName.Text = reader["LastName"].ToString();
                     txtMiddleName.Text = reader["MiddleName"].ToString();
@@ -218,9 +230,55 @@ namespace Z_Wallet
                     ddlIDType.SelectedValue = reader["IDType"].ToString();
                 }
                 reader.Close();
+
+                // Load the verification status from the Users table
+                command = new SqlCommand("SELECT AccountStatus FROM [Users] WHERE AccountNumber = @AccountNumber", connection);
+                command.Parameters.AddWithValue("@AccountNumber", accountNumber);
+
+                SqlDataReader statusReader = command.ExecuteReader();
+                if (statusReader.Read())
+                {
+                    string accountStatus = statusReader["AccountStatus"].ToString();
+                    lblAccountStatus.Text = accountStatus;
+                    lblAccountStatus.CssClass = "status-badge " + GetStatusBadgeClass(accountStatus);
+
+                    if (accountStatus == "Pending" || accountStatus == "Unverified" || accountStatus == "Denied")
+                    {
+                        cardfileUpload1.Visible = true; // Show front ID picture file upload
+                        cardfileUpload2.Visible = true; // Show back ID picture file upload
+                    }
+                    else if (accountStatus == "Verified")
+                    {
+                        cardfileUpload1.Visible = false; // Hide front ID picture file upload
+                        cardfileUpload2.Visible = false; // Hide back ID picture file upload
+                    }
+                }
+                statusReader.Close();
+
                 connection.Close();
             }
         }
+
+
+        protected string GetStatusBadgeClass(string status)
+        {
+            switch (status)
+            {
+                case "Verified":
+                    return "bg-success";
+                case "Pending":
+                    return "bg-info";
+                case "Denied":
+                    return "bg-danger";
+                case "Suspended":
+                    return "bg-warning";
+                case "Unverified":
+                    return "bg-secondary";
+                default:
+                    return "bg-secondary";
+            }
+        }
+
 
         private bool ValidateForm()
         {

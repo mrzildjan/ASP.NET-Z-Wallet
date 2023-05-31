@@ -38,22 +38,35 @@ namespace Z_Wallet
                     SqlDataReader userReader = userCommand.ExecuteReader();
                     if (userReader.HasRows)
                     {
-                        // User login success
-                        // Store user information in session
-                        userReader.Read();
-                        int AccountNumber = (int)userReader["AccountNumber"]; // Update column name to "Id"
-                        string firstName = (string)userReader["FirstName"];
-                        string lastName = (string)userReader["LastName"];
+                        bool isVerified = AccountStatus(email, password);
 
-                        Session["AccountNumber"] = AccountNumber;
-                        Session["FirstName"] = firstName;
-                        Session["LastName"] = lastName;
+                        if (isVerified)
+                        {
+                            lblLoginErrorMessage.Visible = true;
+                            lblLoginErrorMessage.Text = "Account is suspended plese contact help support.";
 
-                        userReader.Close();
-                        connection.Close();
+                            string alertScript = "<script>alert('Account is suspended plese contact help support.');</script>";
+                            Response.Write(alertScript);
+                        }
+                        else
+                        {
+                            // User login success
+                            // Store user information in session
+                            userReader.Read();
+                            int AccountNumber = (int)userReader["AccountNumber"]; // Update column name to "Id"
+                            string firstName = (string)userReader["FirstName"];
+                            string lastName = (string)userReader["LastName"];
 
-                        // Redirect to the desired user page
-                        Response.Redirect("Dashboard.aspx");
+                            Session["AccountNumber"] = AccountNumber;   
+                            Session["FirstName"] = firstName;
+                            Session["LastName"] = lastName;
+
+                            userReader.Close();
+                            connection.Close();
+
+                            // Redirect to the desired user page
+                            Response.Redirect("Dashboard.aspx");
+                        }
                     }
                     else
                     {
@@ -89,10 +102,10 @@ namespace Z_Wallet
                         {
                             adminReader.Close();
 
-                            // Login failed for both user and admin
+                            // Login failed
                             // Show error message or take appropriate action
-                            loginErrorLabel.Text = "Invalid email or password!";
-                            loginErrorLabel.Visible = true; // Make the error label visible
+                            lblLoginErrorMessage.Text = "Invalid email or password!";
+                            lblLoginErrorMessage.Visible = true; // Make the error label visible
 
                             string alertScript = "<script>alert('Invalid email or password!');</script>";
                             Response.Write(alertScript);
@@ -115,6 +128,33 @@ namespace Z_Wallet
             }
         }
 
+        private bool AccountStatus(string email, string password)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT AccountStatus FROM Users WHERE Email = @Email AND Password = @Password";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Email", email);
+                command.Parameters.AddWithValue("@Password", password);
+
+                connection.Open();
+                object result = command.ExecuteScalar();
+
+                if (result != null && result != DBNull.Value)
+                {
+                    string accountStatus = result.ToString();
+                    return accountStatus == "Suspended";
+                }
+                else
+                {
+                    throw new Exception("Account not found for the specified account number.");
+                }
+            }
+        }
+
         protected void SignupButton_Click(object sender, EventArgs e)
         {
             string firstName = signup_first_name.Text;
@@ -131,19 +171,24 @@ namespace Z_Wallet
                     connection.Open();
 
                     // Check if email or phone number already exist in the database
-                    string checkQuery = "SELECT COUNT(*) FROM Users";
+                    string checkQuery = "SELECT COUNT(*) FROM Users WHERE Email = @Email OR PhoneNumber = @PhoneNumber";
                     SqlCommand checkCommand = new SqlCommand(checkQuery, connection);
+                    checkCommand.Parameters.AddWithValue("@Email", email);
+                    checkCommand.Parameters.AddWithValue("@PhoneNumber", phone);
 
                     int existingUserCount = (int)checkCommand.ExecuteScalar();
-                    if (existingUserCount == 0)
+                    if (existingUserCount > 0)
                     {
-                        // No users exist, add admin account
+                        // User with the same email or phone number already exists
+                        // Show error message or take appropriate action
+                        signupErrorLabel.Text = "Email or phone number already exists!";
                         AddAdminAccount(connection);
+                        return; // Exit the method, do not proceed with registration
                     }
 
                     // Proceed with user registration
-                    string query = "INSERT INTO Users (FirstName, LastName, Email, PhoneNumber, Password, SignUpDateTime, CurrentBalance, TotalSendMoney, TotalReceiveMoney, TotalCashIn, TotalCashOut, Avatar, isDeactivated) " +
-                                    "VALUES (@FirstName, @LastName, @Email, @PhoneNumber, @Password, @SignUpDateTime, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 'Active')"; // Added 'Avatar' column with NULL value
+                    string query = "INSERT INTO Users (FirstName, LastName, Email, PhoneNumber, Password, SignUpDateTime, CurrentBalance, TotalSendMoney, TotalReceiveMoney, TotalCashIn, TotalCashOut, Avatar, isDeactivated, AccountStatus) " +
+                                    "VALUES (@FirstName, @LastName, @Email, @PhoneNumber, @Password, @SignUpDateTime, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 'Active', 'Unverified')";
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@FirstName", firstName);
                     command.Parameters.AddWithValue("@LastName", lastName);
@@ -190,8 +235,8 @@ namespace Z_Wallet
 
         private void AddAdminAccount(SqlConnection connection)
         {
-            string adminFirstName = "Admin";
-            string adminLastName = "Admin";
+            string adminFirstName = "Zildjan Leenor";
+            string adminLastName = "Luvindino";
             string adminEmail = "admin@zwallet.ph";
             string adminPassword = "admin";
             DateTime createdDateTime = DateTime.Now;

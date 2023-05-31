@@ -25,10 +25,12 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="accountStatus">Status</label>
+                                    <div class="col-md-12 mb-3 d-flex">
+                                        <label for="accountStatus" class="mr-lg-2">Status</label>
                                         <div class="status-indicator">
-                                            <asp:Label ID="lblAccountStatus" runat="server" CssClass="status-text">Active</asp:Label>
+                                            <span class="badge <% = GetStatusBadgeClass(lblAccountStatus.Text) %> text-white">
+                                                <asp:Label ID="lblAccountStatus" runat="server" CssClass="status-text"></asp:Label>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -201,11 +203,11 @@
             margin: 0 auto;
         }
 
-        .id-picture img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+            .id-picture img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
 
         .custom-file-input {
             position: relative;
@@ -236,27 +238,7 @@
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
 
-        .status-indicator {
-            display: inline-block;
-            padding: 5px;
-            border-radius: 5px;
-        }
-
-        .status-text {
-            font-weight: bold;
-            padding: 5px 5px;
-            color: #fff;
-        }
-
-        .status-verified {
-            background-color: #28a745; /* Green */
-        }
-
-        .status-pending {
-            background-color: #dc3545; /* Red */
-        }
-
-        .required {
+        .required{
             color: red;
         }
     </style>

@@ -60,6 +60,15 @@ namespace Z_Wallet
         protected global::System.Web.UI.WebControls.Label loginErrorLabel;
 
         /// <summary>
+        /// lblLoginErrorMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblLoginErrorMessage;
+
+        /// <summary>
         /// login_button control.
         /// </summary>
         /// <remarks>
@@ -121,6 +130,15 @@ namespace Z_Wallet
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator signup_emailValidator;
+
+        /// <summary>
+        /// signup_emailRegexValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator signup_emailRegexValidator;
 
         /// <summary>
         /// signup_phone control.

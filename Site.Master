@@ -77,6 +77,9 @@
                         <div class="login-message mb-3 text-center">
                             <asp:Label ID="loginErrorLabel" runat="server" CssClass="login-error-message" Text="" Visible="false"></asp:Label>
                         </div>
+                        <div class="login-message text-center mb-3">
+                            <asp:Label ID="lblLoginErrorMessage" runat="server" CssClass="signup-error-message" Text=""></asp:Label>
+                        </div>
                         <div class="text-center" runat="server">
                             <asp:Button ID="login_button" runat="server" CssClass="btn btn-primary" Text="Login" ValidationGroup="loginValidation" OnClick="LoginButton_Click" />
                         </div>
@@ -118,6 +121,7 @@
                                     <label for="signup_email" class="form-label">Email address</label>
                                     <asp:TextBox ID="signup_email" runat="server" CssClass="form-control"></asp:TextBox>
                                     <asp:RequiredFieldValidator ID="signup_emailValidator" runat="server" ControlToValidate="signup_email" ErrorMessage="Email address is required" CssClass="text-danger" ValidationGroup="signupValidation"></asp:RequiredFieldValidator>
+                                    <asp:RegularExpressionValidator ID="signup_emailRegexValidator" runat="server" ControlToValidate="signup_email" ErrorMessage="<br />Invalid email address" CssClass="text-danger" ValidationExpression="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" ValidationGroup="signupValidation"></asp:RegularExpressionValidator>
                                     <div class="signup-email-error-message text-danger" style="display: none;">Email address is required</div>
                                 </div>
                             </div>
