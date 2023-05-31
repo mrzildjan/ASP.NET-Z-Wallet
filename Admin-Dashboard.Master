@@ -55,7 +55,7 @@
                                             </h5>
                                             <span class="status"></span><span class="ml-2">Admin</span>
                                         </div>
-                                        <a class="dropdown-item" href="/Profile"><i class="fas fa-user mr-2"></i>Account</a>
+                                        <a class="dropdown-item" href="/Admin-Profile"><i class="fas fa-user mr-2"></i>Account</a>
                                         <asp:LinkButton ID="logoutButton" runat="server" OnClick="Logout_Click" CssClass="dropdown-item">
                                             <i class="fas fa-power-off mr-2"></i>Logout
                                         </asp:LinkButton>
@@ -83,7 +83,7 @@
                                         <a class="nav-link" href="\Manage-Members"><i class="fa fa-fw fa-users"></i>Manage Members</a>
                                     </li>
                                     <li class="nav-item ">
-                                        <a class="nav-link" href="\View-Transactions"><i class="fa fa-fw fa-history"></i>View Transactions</a>
+                                        <a class="nav-link" href="\View-Reports"><i class="fa fa-fw fa-history"></i>View Reports</a>
                                     </li>
                                     <li class="nav-item ">
                                         <a class="nav-link" href="\Admin-Members"><i class="fa fa-fw fa-user-plus"></i>Admin Members</a>

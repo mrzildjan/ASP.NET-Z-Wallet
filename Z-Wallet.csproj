@@ -103,6 +103,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="Add-Admin-Members.aspx" />
+    <Content Include="Admin-Members.aspx" />
     <Content Include="Admin-Profile.aspx" />
     <Content Include="Admin.aspx" />
     <Content Include="App_Data\Z-Wallet.mdf" />
@@ -551,12 +553,14 @@
     <Content Include="Content\Site.css" />
     <Content Include="Dashboard.aspx" />
     <Content Include="Default.aspx" />
+    <Content Include="Edit-Admin-Account.aspx" />
     <Content Include="FAQ.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="How-It-Works.aspx" />
     <Content Include="Legal.aspx" />
     <Content Include="Manage-Members.aspx" />
+    <Content Include="Member-Reports.aspx" />
     <Content Include="Privacy-Policy.aspx" />
     <Content Include="Profile.aspx" />
     <Content Include="Reports.aspx" />
@@ -662,18 +666,33 @@
     <Content Include="Terms.aspx" />
     <Content Include="User-Members.aspx" />
     <Content Include="Verification-Form.aspx" />
+    <Content Include="View-Reports.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Add-Admin-Members.aspx.cs">
+      <DependentUpon>Add-Admin-Members.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Add-Admin-Members.aspx.designer.cs">
+      <DependentUpon>Add-Admin-Members.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin-Dashboard.Master.cs">
       <DependentUpon>Admin-Dashboard.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin-Dashboard.Master.designer.cs">
       <DependentUpon>Admin-Dashboard.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Admin-Members.aspx.cs">
+      <DependentUpon>Admin-Members.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin-Members.aspx.designer.cs">
+      <DependentUpon>Admin-Members.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin-Profile.aspx.cs">
       <DependentUpon>Admin-Profile.aspx</DependentUpon>
@@ -733,6 +752,13 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Edit-Admin-Account.aspx.cs">
+      <DependentUpon>Edit-Admin-Account.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Edit-Admin-Account.aspx.designer.cs">
+      <DependentUpon>Edit-Admin-Account.aspx</DependentUpon>
+    </Compile>
     <Compile Include="FAQ.aspx.cs">
       <DependentUpon>FAQ.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -763,6 +789,13 @@
     </Compile>
     <Compile Include="Manage-Members.aspx.designer.cs">
       <DependentUpon>Manage-Members.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Member-Reports.aspx.cs">
+      <DependentUpon>Member-Reports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Member-Reports.aspx.designer.cs">
+      <DependentUpon>Member-Reports.aspx</DependentUpon>
     </Compile>
     <Compile Include="Privacy-Policy.aspx.cs">
       <DependentUpon>Privacy-Policy.aspx</DependentUpon>
@@ -848,6 +881,13 @@
     </Compile>
     <Compile Include="Verification-Form.aspx.designer.cs">
       <DependentUpon>Verification-Form.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View-Reports.aspx.cs">
+      <DependentUpon>View-Reports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View-Reports.aspx.designer.cs">
+      <DependentUpon>View-Reports.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>

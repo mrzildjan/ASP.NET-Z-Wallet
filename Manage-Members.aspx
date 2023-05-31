@@ -30,7 +30,7 @@
                                     <table class="table table-striped table-bordered first">
                                         <thead>
                                             <tr>
-                                                <th>No.</th>
+                                                <th>Account No.</th>
                                                 <th>Full Name</th>
                                                 <th>Email</th>
                                                 <th>Phone Number</th>
@@ -39,11 +39,10 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <% int count = 1; %>
                                             <% foreach (var member in MembersList)
                                                 { %>
                                             <tr>
-                                                <td><%= count %></td>
+                                                <td><%= member.AccountNumber %></td>
                                                 <td><%= member.FullName %></td>
                                                 <td><%= member.Email %></td>
                                                 <td><%= member.PhoneNumber %></td>
@@ -52,11 +51,10 @@
                                                 </td>
                                                 <td class="align-right text-center">
                                                     <a href="/User-Members.aspx?accountNumber=<%= member.AccountNumber %>" class="text-primary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit">
-                                                        <i class="fa fa-edit"></i>
+                                                        <i class="fa fa-edit fa-lg"></i>
                                                     </a>
                                                 </td>
                                             </tr>
-                                            <% count++; %>
                                             <% } %>
                                         </tbody>
                                     </table>
