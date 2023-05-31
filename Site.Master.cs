@@ -177,7 +177,7 @@ namespace Z_Wallet
                     checkCommand.Parameters.AddWithValue("@PhoneNumber", phone);
 
                     int existingUserCount = (int)checkCommand.ExecuteScalar();
-                    if (existingUserCount > 0)
+                    if (existingUserCount > 0 || email.Equals("superadmin@zwallet.ph", StringComparison.OrdinalIgnoreCase))
                     {
                         // User with the same email or phone number already exists
                         // Show error message or take appropriate action
@@ -235,9 +235,24 @@ namespace Z_Wallet
 
         private void AddAdminAccount(SqlConnection connection)
         {
+            string adminEmail = "superadmin@zwallet.ph";
+
+            // Check if admin account already exists
+            string checkQuery = "SELECT COUNT(*) FROM Admins WHERE Email = @Email";
+            SqlCommand checkCommand = new SqlCommand(checkQuery, connection);
+            checkCommand.Parameters.AddWithValue("@Email", adminEmail);
+
+            int existingAdminCount = (int)checkCommand.ExecuteScalar();
+            if (existingAdminCount > 0)
+            {
+                // Admin account with the same email already exists
+                // You can handle this case or skip adding a new row
+                return; // Exit the method, no need to add a new admin account
+            }
+
+            // Admin account does not exist, proceed with adding a new row
             string adminFirstName = "Zildjan Leenor";
             string adminLastName = "Luvindino";
-            string adminEmail = "admin@zwallet.ph";
             string adminPassword = "admin";
             DateTime createdDateTime = DateTime.Now;
 
