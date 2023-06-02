@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin-Dashboard.Master" AutoEventWireup="true" CodeBehind="Add-Admin-Members.aspx.cs" Inherits="Z_Wallet.Add_Admin_Members" %>
+﻿<%@ Page Title="Add Admin Members" Language="C#" MasterPageFile="~/Admin-Dashboard.Master" AutoEventWireup="true" CodeBehind="Add-Admin-Members.aspx.cs" Inherits="Z_Wallet.Add_Admin_Members" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <main>
@@ -12,7 +12,7 @@
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="/Admin" class="breadcrumb-link">Dashboard</a></li>
-                                        <li class="breadcrumb-item"><a href="/Add-Admin-Members" class="breadcrumb-link">Admin Profile</a></li>
+                                        <li class="breadcrumb-item"><a href="/Add-Admin-Members" class="breadcrumb-link">Admin Admin Members</a></li>
                                     </ol>
                                 </nav>
                             </div>

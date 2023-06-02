@@ -154,6 +154,15 @@
                             <asp:CompareValidator ID="signup_confirm_passwordCompareValidator" runat="server" ControlToValidate="signup_confirm_password" ControlToCompare="signup_password" Operator="Equal" ErrorMessage="Passwords do not match" CssClass="text-danger" ValidationGroup="signupValidation"></asp:CompareValidator>
                             <div class="signup-confirm-password-error-message text-danger" style="display: none;">Passwords do not match</div>
                         </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <asp:CheckBox ID="termsCheckbox" runat="server" ClientIDMode="Static" />
+                                <label class="form-check-label" for="termsCheckbox">
+                                    I agree to the <a href="/Terms" target="_blank">Terms and Conditions</a> and <a href="/Privacy-Policy" target="_blank">Privacy Policy.</a>
+                                </label>
+                            </div>
+                            <asp:CustomValidator ID="termsValidator" runat="server" ErrorMessage="You must agree to the Terms and Privacy Policy" CssClass="text-danger" ValidationGroup="signupValidation" ClientValidationFunction="validateTermsCheckbox"></asp:CustomValidator>
+                        </div>
                         <div class="signup-message text-center mb-3">
                             <asp:Label ID="signupSuccessLabel" runat="server" CssClass="signup-success-message" Text=""></asp:Label>
                             <asp:Label ID="signupErrorLabel" runat="server" CssClass="signup-error-message" Text=""></asp:Label>
@@ -353,6 +362,12 @@
                 document.getElementById("show_signup_confirm_password").textContent = "Show";
             }
         });
+    </script>
+    <script type="text/javascript">
+        function validateTermsCheckbox(sender, args) {
+            var termsCheckbox = document.getElementById('<%= termsCheckbox.ClientID %>');
+            args.IsValid = termsCheckbox.checked;
+        }
     </script>
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/Content/plugins/jquery/jquery.min.js") %>

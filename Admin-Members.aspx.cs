@@ -28,7 +28,7 @@ namespace Z_Wallet
         private void BindMembers()
         {
             string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-            string query = "SELECT AdminID, FirstName, LastName, Email FROM Admins ORDER BY AdminID DESC";
+            string query = "SELECT AdminID, FirstName, LastName, Email, CreatedDateTime FROM Admins ORDER BY AdminID DESC";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -44,6 +44,7 @@ namespace Z_Wallet
                         adminMember.AdminID = Convert.ToInt32(reader["AdminID"]);
                         adminMember.FullName = $"{reader["FirstName"]} {reader["LastName"]}";
                         adminMember.Email = reader["Email"].ToString();
+                        adminMember.DateCreated = ((DateTime)reader["CreatedDateTime"]).ToString("MMM dd, yyyy hh:mm:ss tt");
 
                         adminList.Add(adminMember);
                     }
@@ -63,6 +64,7 @@ namespace Z_Wallet
     {
         public string FullName;
         public string Email;
+        public string DateCreated;
         public int AdminID;
     }
 }

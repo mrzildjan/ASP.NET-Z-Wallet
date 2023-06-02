@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin-Dashboard.Master" AutoEventWireup="true" CodeBehind="User-Members.aspx.cs" Inherits="Z_Wallet.User_Members" %>
+﻿<%@ Page Title="Member Forms" Language="C#" MasterPageFile="~/Admin-Dashboard.Master" AutoEventWireup="true" CodeBehind="User-Members.aspx.cs" Inherits="Z_Wallet.User_Members" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <main>
@@ -37,6 +37,11 @@
                                                 <asp:ListItem Text="Unverified" Value="Unverified"></asp:ListItem>
                                             </asp:DropDownList>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row text-center">
+                                    <div class="col-12">
+                                        <asp:Label ID="lblSuccessVerificationStatus" runat="server" CssClass="text-success font-16" Visible="false"></asp:Label>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -288,7 +293,7 @@
                     preview.src = "";
                     preview.style.display = "none";
                 }
-            }   
+            }
 
             function chooseFile2() {
                 var fileInput = document.getElementById('<%=fileUpload2.ClientID%>');

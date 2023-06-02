@@ -661,7 +661,6 @@
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Send-Money.aspx" />
     <Content Include="Services.aspx" />
-    <Content Include="Signin.aspx" />
     <Content Include="Site.Master" />
     <Content Include="Terms.aspx" />
     <Content Include="User-Members.aspx" />
@@ -832,13 +831,6 @@
     </Compile>
     <Compile Include="Services.aspx.designer.cs">
       <DependentUpon>Services.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Signin.aspx.cs">
-      <DependentUpon>Signin.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Signin.aspx.designer.cs">
-      <DependentUpon>Signin.aspx</DependentUpon>
     </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>

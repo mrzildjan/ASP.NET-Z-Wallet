@@ -27,7 +27,7 @@ namespace Z_Wallet
         private void BindMembers()
         {
             string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-            string query = "SELECT AccountNumber, FirstName, LastName, Email, PhoneNumber, AccountStatus FROM Users ORDER BY AccountNumber DESC";
+            string query = "SELECT AccountNumber, FirstName, LastName, Email, PhoneNumber, SignUpDateTime, AccountStatus FROM Users ORDER BY AccountNumber DESC";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -44,6 +44,7 @@ namespace Z_Wallet
                         member.FullName = $"{reader["FirstName"]} {reader["LastName"]}";
                         member.Email = reader["Email"].ToString();
                         member.PhoneNumber = reader["PhoneNumber"].ToString();
+                        member.DateCreated = ((DateTime)reader["SignUpDateTime"]).ToString("MMM dd, yyyy hh:mm:ss tt");
                         member.Status = reader["AccountStatus"].ToString();
                         member.StatusBadgeClass = GetStatusBadgeClass(member.Status);
 
@@ -86,6 +87,7 @@ namespace Z_Wallet
         public string Email;
         public string PhoneNumber;
         public string Status;
+        public string DateCreated;
         public string StatusBadgeClass;
         public int AccountNumber;
     }

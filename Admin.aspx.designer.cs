@@ -33,6 +33,15 @@ namespace Z_Wallet
         protected global::System.Web.UI.WebControls.Label adminNameLabel;
 
         /// <summary>
+        /// adminMembersLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label adminMembersLabel;
+
+        /// <summary>
         /// totalUsersLabel control.
         /// </summary>
         /// <remarks>
@@ -42,22 +51,31 @@ namespace Z_Wallet
         protected global::System.Web.UI.WebControls.Label totalUsersLabel;
 
         /// <summary>
-        /// activeMembersLabel control.
+        /// verifiedMembersLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label activeMembersLabel;
+        protected global::System.Web.UI.WebControls.Label verifiedMembersLabel;
 
         /// <summary>
-        /// inactiveMembersLabel control.
+        /// unverfiedMembersLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label inactiveMembersLabel;
+        protected global::System.Web.UI.WebControls.Label unverfiedMembersLabel;
+
+        /// <summary>
+        /// pendingMembersLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label pendingMembersLabel;
 
         /// <summary>
         /// dailyTransactionsLabel control.

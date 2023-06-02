@@ -34,6 +34,12 @@ namespace Z_Wallet
                         FetchMemberDetails(accountNumber);
                     }
                 }
+                else
+                {
+                    lblSuccessVerificationStatus.Visible = false;
+                    lblErrorMessage.Visible = false;
+                    lblSuccessMessage.Visible = false;
+                }
             }
         }
 
@@ -356,6 +362,13 @@ namespace Z_Wallet
                         connection.Open();
                         command.ExecuteNonQuery();
                         connection.Close();
+
+                        // Display success message or perform other actions
+                        lblSuccessVerificationStatus.Visible = true;
+                        lblSuccessVerificationStatus.Text = "Successfully Change Status.";
+
+                        lblErrorMessage.Visible = false;
+                        lblSuccessMessage.Visible = false;
                     }
                 }
             }

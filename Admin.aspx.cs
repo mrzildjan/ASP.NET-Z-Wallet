@@ -21,13 +21,10 @@ namespace Z_Wallet
                 // Admin is not logged in, redirect to login page
                 Response.Redirect("Default.aspx");
             }
-            else
-            {
-                // Admin is logged in
-                string adminEmail = Session["Email"].ToString();
-                DisplayAdminInfo(adminEmail);
-                DisplayStatistics();
-            }
+            // Admin is logged in
+            string adminEmail = Session["Email"].ToString();
+            DisplayAdminInfo(adminEmail);
+            DisplayStatistics();
         }
 
         private void DisplayAdminInfo(string adminEmail)
@@ -73,23 +70,35 @@ namespace Z_Wallet
                 {
                     connection.Open();
 
+                    // Get admin members count
+                    string adminMembersQuery = "SELECT COUNT(*) FROM Admins";
+                    SqlCommand adminMembersCommand = new SqlCommand(adminMembersQuery, connection);
+                    int adminMembers = (int)adminMembersCommand.ExecuteScalar();
+                    adminMembersLabel.Text = adminMembers.ToString();
+
                     // Get total users count
                     string usersQuery = "SELECT COUNT(*) FROM Users";
                     SqlCommand usersCommand = new SqlCommand(usersQuery, connection);
                     int totalUsers = (int)usersCommand.ExecuteScalar();
                     totalUsersLabel.Text = totalUsers.ToString();
 
-                    // Get active members count
-                    string activeMembersQuery = "SELECT COUNT(*) FROM Users WHERE isDeactivated = 'Active'";
-                    SqlCommand activeMembersCommand = new SqlCommand(activeMembersQuery, connection);
-                    int activeMembers = (int)activeMembersCommand.ExecuteScalar();
-                    activeMembersLabel.Text = activeMembers.ToString();
+                    // Get verified members count
+                    string verifiedMembersQuery = "SELECT COUNT(*) FROM Users WHERE AccountStatus = 'Verified'";
+                    SqlCommand verifiedMembersCommand = new SqlCommand(verifiedMembersQuery, connection);
+                    int activeMembers = (int)verifiedMembersCommand.ExecuteScalar();
+                    verifiedMembersLabel.Text = activeMembers.ToString();
 
-                    // Get inactive members count
-                    string inactiveMembersQuery = "SELECT COUNT(*) FROM Users WHERE isDeactivated = 'Inactive'";
-                    SqlCommand inactiveMembersCommand = new SqlCommand(inactiveMembersQuery, connection);
-                    int inactiveMembers = (int)inactiveMembersCommand.ExecuteScalar();
-                    inactiveMembersLabel.Text = inactiveMembers.ToString();
+                    // Get unverified members count
+                    string unverfiedMembersQuery = "SELECT COUNT(*) FROM Users WHERE AccountStatus = 'Unverified'";
+                    SqlCommand unverfiedMembersCommand = new SqlCommand(unverfiedMembersQuery, connection);
+                    int unverifiedMembers = (int)unverfiedMembersCommand.ExecuteScalar();
+                    unverfiedMembersLabel.Text = unverifiedMembers.ToString();
+
+                    // Get pending members count
+                    string pendingMembersQuery = "SELECT COUNT(*) FROM Users WHERE AccountStatus = 'Pending'";
+                    SqlCommand pendingMembersCommand = new SqlCommand(pendingMembersQuery, connection);
+                    int pendingMembers = (int)pendingMembersCommand.ExecuteScalar();
+                    pendingMembersLabel.Text = pendingMembers.ToString();
 
                     // Get daily transactions count
                     DateTime today = DateTime.Today;

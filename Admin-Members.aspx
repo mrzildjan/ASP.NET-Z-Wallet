@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin-Dashboard.Master" AutoEventWireup="true" CodeBehind="Admin-Members.aspx.cs" Inherits="Z_Wallet.Admin_Members" %>
+﻿<%@ Page Title="Admin Members" Language="C#" MasterPageFile="~/Admin-Dashboard.Master" AutoEventWireup="true" CodeBehind="Admin-Members.aspx.cs" Inherits="Z_Wallet.Admin_Members" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <main>
         <div class="dashboard-wrapper">
@@ -10,8 +10,8 @@
                             <div class="page-breadcrumb">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Member</a></li>
+                                        <li class="breadcrumb-item"><a href="/Admin" class="breadcrumb-link">Dashboard</a></li>
+                                        <li class="breadcrumb-item"><a href="/Admin-Members" class="breadcrumb-link">Admin Member</a></li>
                                     </ol>
                                 </nav>
                             </div>
@@ -32,6 +32,7 @@
                                                 <th>Admin ID</th>
                                                 <th>Full Name</th>
                                                 <th>Email</th>
+                                                <th>Date Created</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -42,6 +43,7 @@
                                                 <td><%= member.AdminID %></td>
                                                 <td><%= member.FullName %></td>
                                                 <td><%= member.Email %></td>
+                                                <td><%= member.DateCreated %></td>
                                                 <td class="align-right text-center">
                                                     <a href="/Edit-Admin-Account.aspx?AdminID=<%= member.AdminID %>" class="text-primary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit">
                                                         <i class="fa fa-edit fa-lg"></i>

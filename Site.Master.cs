@@ -57,7 +57,7 @@ namespace Z_Wallet
                             string firstName = (string)userReader["FirstName"];
                             string lastName = (string)userReader["LastName"];
 
-                            Session["AccountNumber"] = AccountNumber;   
+                            Session["AccountNumber"] = AccountNumber;
                             Session["FirstName"] = firstName;
                             Session["LastName"] = lastName;
 
@@ -274,6 +274,10 @@ namespace Z_Wallet
             {
                 // Failed to add admin account
             }
+        }
+        protected void termsValidator_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            args.IsValid = termsCheckbox.Checked;
         }
     }
 }

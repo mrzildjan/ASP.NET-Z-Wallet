@@ -91,7 +91,7 @@
                                 <li class="nav-item ">
                                     <a class="nav-link" href="\Reports"><i class="fa fa-fw fa-file"></i>Reports</a>
                                 </li>
-                                 <li class="nav-item ">
+                                <li class="nav-item ">
                                     <a class="nav-link" href="\Verification-Form"><i class="fa fa-fw fa-check-circle"></i>Verification</a>
                                 </li>
                                 <li class="nav-item ">
@@ -143,9 +143,20 @@
         <%: Scripts.Render("~/Content/assets/vendor/charts/morris-bundle/morrisjs.html") %>
         <script src="../../../../cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
         <script src="../../../../cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-        <%: Scripts.Render("~Content/assets/vendor/datatables/js/buttons.bootstrap4.min.js") %>
-        <%: Scripts.Render("~Content/assets/vendor/datatables/js/data-table.js") %>
-        <%: Scripts.Render("~Content/assets/vendor/datatables/js/dataTables.bootstrap4.min.js") %>
+    </asp:PlaceHolder>
+    <asp:PlaceHolder runat="server">
+        <script src="<%= ResolveUrl("~/Content/assets/vendor/multi-select/js/jquery.multi-select.js") %>"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="<%= ResolveUrl("~/Content/assets/vendor/datatables/js/dataTables.bootstrap4.min.js") %>"></script>
+        <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+        <script src="<%= ResolveUrl("~/Content/assets/vendor/datatables/js/buttons.bootstrap4.min.js") %>"></script>
+        <script src="<%= ResolveUrl("~/Content/assets/vendor/datatables/js/data-table.js") %>"></script>
+        <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+        <script src="https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
+        <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+        <script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
     </asp:PlaceHolder>
 </body>
 </html>

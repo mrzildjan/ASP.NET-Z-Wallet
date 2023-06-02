@@ -114,50 +114,62 @@ namespace Z_Wallet
 
             if (passwordVerified)
             {
-                bool isVerified = AccountStatus(accountNumber);
+                // Get the cash in amount entered by the user
+                decimal cashInAmount = Convert.ToDecimal(withdrawAmount.Text);
 
-                if (isVerified)
+                if (cashInAmount % 100 != 0)
                 {
                     lblErrorMessage.Visible = true;
-                    lblErrorMessage.Text = "Account is not Verified. Please complete Verification Form.";
-
+                    lblErrorMessage.Text = "Amount should divisible by 100.00";
                     lblSuccessMessage.Visible = false;
                 }
                 else
                 {
-                    // Check if the account is deactivated or inactive
-                    bool isDeactivated = IsAccountDeactivated(accountNumber);
+                bool isVerified = AccountStatus(accountNumber);
 
-                    if (isDeactivated)
+                    if (isVerified)
                     {
                         lblErrorMessage.Visible = true;
-                        lblErrorMessage.Text = "Account is deactivated. Cash-out is not allowed.";
+                        lblErrorMessage.Text = "Account is not Verified. Please complete Verification Form.";
 
                         lblSuccessMessage.Visible = false;
                     }
                     else
                     {
-                        // Update the current balance and total cash-out in the database
-                        bool success = UpdateCurrentBalance(accountNumber, cashOutAmount);
+                        // Check if the account is deactivated or inactive
+                        bool isDeactivated = IsAccountDeactivated(accountNumber);
 
-                        if (success)
+                        if (isDeactivated)
                         {
-                            // Store the transaction information in the database
-                            StoreTransaction(accountNumber, "Cash-Out", "", "", cashOutAmount);
+                            lblErrorMessage.Visible = true;
+                            lblErrorMessage.Text = "Account is deactivated. Cash-out is not allowed.";
 
-                            // Display the updated balance and total cash-out
-                            DisplayAccountInformation(accountNumber);
-
-                            lblSuccessMessage.Visible = true;
-                            lblSuccessMessage.Text = "Cash-out was successfully deducted from your account.";
-                            lblErrorMessage.Visible = false;
+                            lblSuccessMessage.Visible = false;
                         }
                         else
                         {
-                            lblErrorMessage.Visible = true;
-                            lblErrorMessage.Text = "Insufficient funds. Please enter a valid cash-out amount.";
+                            // Update the current balance and total cash-out in the database
+                            bool success = UpdateCurrentBalance(accountNumber, cashOutAmount);
 
-                            lblSuccessMessage.Visible = false;
+                            if (success)
+                            {
+                                // Store the transaction information in the database
+                                StoreTransaction(accountNumber, "Cash-Out", "", "", cashOutAmount);
+
+                                // Display the updated balance and total cash-out
+                                DisplayAccountInformation(accountNumber);
+
+                                lblSuccessMessage.Visible = true;
+                                lblSuccessMessage.Text = "Cash-out was successfully deducted from your account.";
+                                lblErrorMessage.Visible = false;
+                            }
+                            else
+                            {
+                                lblErrorMessage.Visible = true;
+                                lblErrorMessage.Text = "Insufficient funds. Please enter a valid cash-out amount.";
+
+                                lblSuccessMessage.Visible = false;
+                            }
                         }
                     }
                 }
@@ -191,7 +203,7 @@ namespace Z_Wallet
                 if (result != null && result != DBNull.Value)
                 {
                     string accountStatus = result.ToString();
-                    return accountStatus == "Unverified" || accountStatus == "Pending" || accountStatus == "Denied";
+                    return accountStatus == "Unverified" || accountStatus == "Pending" || accountStatus == "Denied" || accountStatus == "Suspended";
                 }
                 else
                 {

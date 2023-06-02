@@ -87,58 +87,68 @@ namespace Z_Wallet
             bool isDeactivated = IsAccountDeactivated(accountNumber);
             bool isVerified = AccountStatus(accountNumber);
 
-            if (isVerified)
+            // Get the cash in amount entered by the user
+            decimal cashInAmount = Convert.ToDecimal(depositAmount.Text);
+
+            if (cashInAmount % 100 != 0)
             {
                 lblErrorMessage.Visible = true;
-                lblErrorMessage.Text = "Account is not Verified. Please complete Verification Form.";
-
+                lblErrorMessage.Text = "Amount should divisible by 100.00";
                 lblSuccessMessage.Visible = false;
             }
-            else {
-                if (isDeactivated)
+            else
+            {
+                if (isVerified)
                 {
                     lblErrorMessage.Visible = true;
-                    lblErrorMessage.Text = "Account is deactivated. Cash-out is not allowed.";
+                    lblErrorMessage.Text = "Account is not Verified. Please complete Verification Form.";
 
                     lblSuccessMessage.Visible = false;
                 }
                 else
                 {
-                    // Get the cash in amount entered by the user
-                    decimal cashInAmount = Convert.ToDecimal(depositAmount.Text);
-
-                    // Check if the cash-in amount is greater than zero
-                    if (cashInAmount > 0)
+                    if (isDeactivated)
                     {
-                        // Update the current balance in the database
-                        bool success = UpdateCurrentBalance(accountNumber, cashInAmount);
+                        lblErrorMessage.Visible = true;
+                        lblErrorMessage.Text = "Account is deactivated. Cash-out is not allowed.";
 
-                        if (success)
+                        lblSuccessMessage.Visible = false;
+                    }
+                    else
+                    {
+                        // Check if the cash-in amount is greater than zero
+                        if (cashInAmount > 0)
                         {
-                            // Store the transaction information in the database
-                            StoreTransaction(accountNumber, "Cash-In", "", "", cashInAmount);
+                            // Update the current balance in the database
+                            bool success = UpdateCurrentBalance(accountNumber, cashInAmount);
 
-                            // Display the updated balance and total cash-in
-                            DisplayAccountInformation(accountNumber);
+                            if (success)
+                            {
+                                // Store the transaction information in the database
+                                StoreTransaction(accountNumber, "Cash-In", "", "", cashInAmount);
 
-                            lblSuccessMessage.Visible = true;
-                            lblSuccessMessage.Text = "Cash-in was successfully added to your account.";
-                            lblErrorMessage.Visible = false;
+                                // Display the updated balance and total cash-in
+                                DisplayAccountInformation(accountNumber);
+
+                                lblSuccessMessage.Visible = true;
+                                lblSuccessMessage.Text = "Cash-in was successfully added to your account.";
+                                lblErrorMessage.Visible = false;
+                            }
+                            else
+                            {
+                                lblErrorMessage.Visible = true;
+                                lblErrorMessage.Text = "Account credit amount cannot exceed 50,000 PHP.";
+
+                                lblSuccessMessage.Visible = false;
+                            }
                         }
                         else
                         {
                             lblErrorMessage.Visible = true;
-                            lblErrorMessage.Text = "Account credit amount cannot exceed 50,000 PHP.";
+                            lblErrorMessage.Text = "Invalid cash-in amount. Please enter a positive value.";
 
                             lblSuccessMessage.Visible = false;
                         }
-                    }
-                    else
-                    {
-                        lblErrorMessage.Visible = true;
-                        lblErrorMessage.Text = "Invalid cash-in amount. Please enter a positive value.";
-
-                        lblSuccessMessage.Visible = false;
                     }
                 }
             }
@@ -161,7 +171,7 @@ namespace Z_Wallet
                 if (result != null && result != DBNull.Value)
                 {
                     string accountStatus = result.ToString();
-                    return accountStatus == "Unverified" || accountStatus == "Pending" || accountStatus == "Denied";
+                    return accountStatus == "Unverified" || accountStatus == "Pending" || accountStatus == "Denied" || accountStatus == "Suspended";
                 }
                 else
                 {

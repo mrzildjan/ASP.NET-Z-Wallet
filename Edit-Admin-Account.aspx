@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin-Dashboard.Master" AutoEventWireup="true" CodeBehind="Edit-Admin-Account.aspx.cs" Inherits="Z_Wallet.Edit_Admin_Account" %>
+﻿<%@ Page Title="Edit Admin Profile" Language="C#" MasterPageFile="~/Admin-Dashboard.Master" AutoEventWireup="true" CodeBehind="Edit-Admin-Account.aspx.cs" Inherits="Z_Wallet.Edit_Admin_Account" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <main>
         <div class="dashboard-wrapper">
@@ -6,12 +6,12 @@
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="page-header">
-                            <h2 class="pageheader-title"><i class="fa fa-fw fa-user"></i>Admin Member Profile </h2>
+                            <h2 class="pageheader-title"><i class="fa fa-fw fa-user"></i>Edit Admin Profile </h2>
                             <div class="page-breadcrumb">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="Admin" class="breadcrumb-link">Dashboard</a></li>
-                                        <li class="breadcrumb-item"><a href="Admin-Profile" class="breadcrumb-link">Admin Profile</a></li>
+                                        <li class="breadcrumb-item"><a href="Edit-Admin-Profile" class="breadcrumb-link">Edit Admin Profile</a></li>
                                     </ol>
                                 </nav>
                             </div>
@@ -22,7 +22,7 @@
                     <div class="col-lg-4">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="mb-0">Profile Picture</h4>
+                                <h4 class="mb-0">Edit Admin Picture</h4>
                             </div>
                             <div class="card-body text-center">
                                 <div class="rounded-circle overflow-hidden profile-picture">

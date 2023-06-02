@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Verification" Language="C#" MasterPageFile="~/User-Dashboard.Master" AutoEventWireup="true" CodeBehind="Verification.aspx.cs" Inherits="Z_Wallet.Verification" %>
+﻿<%@ Page Title="Member Verification" Language="C#" MasterPageFile="~/User-Dashboard.Master" AutoEventWireup="true" CodeBehind="Verification.aspx.cs" Inherits="Z_Wallet.Verification" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <main>
@@ -7,11 +7,11 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-header">
-                            <h2 class="pageheader-title"><i class="fa fa-fw fa-user"></i>Verification Form</h2>
+                            <h2 class="pageheader-title"><i class="fa fa-fw fa-user"></i>Member Verification Form</h2>
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="\Admin" class="breadcrumb-link">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="\Verification-Form" class="breadcrumb-link">Verification Form</a></li>
+                                    <li class="breadcrumb-item"><a href="\Dashboard" class="breadcrumb-link">Dashboard</a></li>
+                                    <li class="breadcrumb-item"><a href="\Verification-Form" class="breadcrumb-link">Member Verification Form</a></li>
                                 </ol>
                             </nav>
                         </div>

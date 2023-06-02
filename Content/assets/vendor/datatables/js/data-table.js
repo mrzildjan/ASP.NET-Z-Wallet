@@ -1,9 +1,9 @@
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
     'use strict';
 
     if ($("table.first").length) {
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('table.first').DataTable();
         });
     }
@@ -12,7 +12,7 @@ jQuery(document).ready(function($) {
 
     if ($("table.second").length) {
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             var table = $('table.second').DataTable({
                 lengthChange: false,
                 buttons: ['copy', 'excel', 'pdf', 'print', 'colvis']
@@ -26,8 +26,8 @@ jQuery(document).ready(function($) {
 
     if ($("#example2").length) {
 
-        $(document).ready(function() {
-            $(document).ready(function() {
+        $(document).ready(function () {
+            $(document).ready(function () {
                 var groupColumn = 2;
                 var table = $('#example2').DataTable({
                     "columnDefs": [
@@ -37,12 +37,12 @@ jQuery(document).ready(function($) {
                         [groupColumn, 'asc']
                     ],
                     "displayLength": 25,
-                    "drawCallback": function(settings) {
+                    "drawCallback": function (settings) {
                         var api = this.api();
                         var rows = api.rows({ page: 'current' }).nodes();
                         var last = null;
 
-                        api.column(groupColumn, { page: 'current' }).data().each(function(group, i) {
+                        api.column(groupColumn, { page: 'current' }).data().each(function (group, i) {
                             if (last !== group) {
                                 $(rows).eq(i).before(
                                     '<tr class="group"><td colspan="5">' + group + '</td></tr>'
@@ -55,7 +55,7 @@ jQuery(document).ready(function($) {
                 });
 
                 // Order by the grouping
-                $('#example2 tbody').on('click', 'tr.group', function() {
+                $('#example2 tbody').on('click', 'tr.group', function () {
                     var currentOrder = table.order()[0];
                     if (currentOrder[0] === groupColumn && currentOrder[1] === 'asc') {
                         table.order([groupColumn, 'desc']).draw();
@@ -78,7 +78,7 @@ jQuery(document).ready(function($) {
     }
     if ($("#example4").length) {
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             var table = $('#example4').DataTable({
                 fixedHeader: true
             });

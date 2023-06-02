@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin-Dashboard.Master" AutoEventWireup="true" CodeBehind="Member-Reports.aspx.cs" Inherits="Z_Wallet.Member_Reports" %>
+﻿<%@ Page Title="Members Reports" Language="C#" MasterPageFile="~/Admin-Dashboard.Master" AutoEventWireup="true" CodeBehind="Member-Reports.aspx.cs" Inherits="Z_Wallet.Member_Reports" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <main>
         <div class="dashboard-wrapper">
@@ -6,12 +6,12 @@
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="page-header">
-                            <h2 class="pageheader-title"><i class="fa fa-fw fa-piggy-bank"></i>Withdrawal Transactions</h2>
+                            <h2 class="pageheader-title"><i class="fa fa-fw fa-piggy-bank"></i>Member Reports</h2>
                             <div class="page-breadcrumb">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Withdraw</a></li>
+                                        <li class="breadcrumb-item"><a href="/Admin" class="breadcrumb-link">Dashboard</a></li>
+                                        <li class="breadcrumb-item"><a href="/Member-Reports" class="breadcrumb-link">Member Reports</a></li>
                                     </ol>
                                 </nav>
                             </div>

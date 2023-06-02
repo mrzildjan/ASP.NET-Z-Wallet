@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin-Dashboard.Master" AutoEventWireup="true" CodeBehind="View-Reports.aspx.cs" Inherits="Z_Wallet.View_Reports" %>
+﻿<%@ Page Title="View Reports" Language="C#" MasterPageFile="~/Admin-Dashboard.Master" AutoEventWireup="true" CodeBehind="View-Reports.aspx.cs" Inherits="Z_Wallet.View_Reports" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <main>
@@ -11,8 +11,8 @@
                             <div class="page-breadcrumb">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Reports</a></li>
+                                        <li class="breadcrumb-item"><a href="/Admin" class="breadcrumb-link">Dashboard</a></li>
+                                        <li class="breadcrumb-item"><a href="/View-Reports" class="breadcrumb-link">View Reports</a></li>
                                     </ol>
                                 </nav>
                             </div>
@@ -24,8 +24,6 @@
                         <div class="card">
                             <h5 class="card-header">List of Members</h5>
                             <div class="card-body">
-                                <a class="btn btn-sm btn-success" href="add-member.php"><i class="fa fa-fw fa-user-plus"></i>Add Member</a><br />
-                                <br />
                                 <div class="table-responsive">
                                     <table class="table table-striped table-bordered first">
                                         <thead>

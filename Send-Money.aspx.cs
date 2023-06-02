@@ -222,6 +222,17 @@ namespace Z_Wallet
 
             if (passwordVerified)
             {
+                // Get the cash in amount entered by the user
+                decimal cashInAmount = Convert.ToDecimal(sendAmountValue);
+
+                if (cashInAmount % 100 != 0)
+                {
+                    lblErrorMessage.Visible = true;
+                    lblErrorMessage.Text = "Amount should divisible by 100.00";
+                    lblSuccessMessage.Visible = false;
+                }
+                else
+                {
                 bool isVerified = AccountStatus(senderAccountNumber);
 
                 if (isVerified)
@@ -260,86 +271,87 @@ namespace Z_Wallet
                     // Check if the account is deactivated or inactive
                     bool isDeactivated = IsAccountDeactivated(senderAccountNumber);
 
-                    if (isDeactivated)
-                    {
-                        lblErrorMessage.Visible = true;
-                        lblErrorMessage.Text = "Account is deactivated. Send-money is not allowed.";
-
-                        lblSuccessMessage.Visible = false;
-                    }
-                    else
-                    {
-                        // Check if the receiver account is deactivated
-                        bool receiverDeactivated = IsAccountDeactivated(receiverAccountNumberValue);
-
-                        if (receiverDeactivated)
+                        if (isDeactivated)
                         {
                             lblErrorMessage.Visible = true;
-                            lblErrorMessage.Text = "Cannot send money to a deactivated account.";
+                            lblErrorMessage.Text = "Account is deactivated. Send-money is not allowed.";
 
                             lblSuccessMessage.Visible = false;
-                            return;
                         }
-
-                        // Check if the receiver account number is the same as the sender's account number
-                        if (senderAccountNumber == receiverAccountNumberValue)
+                        else
                         {
-                            lblErrorMessage.Visible = true;
-                            lblErrorMessage.Text = "You cannot send money to your own account.";
+                            // Check if the receiver account is deactivated
+                            bool receiverDeactivated = IsAccountDeactivated(receiverAccountNumberValue);
 
-                            lblSuccessMessage.Visible = false;
-                            return;
-                        }
+                            if (receiverDeactivated)
+                            {
+                                lblErrorMessage.Visible = true;
+                                lblErrorMessage.Text = "Cannot send money to a deactivated account.";
 
-                        // Check if the receiver account number exists
-                        bool receiverAccountExists = CheckAccountExists(receiverAccountNumberValue);
+                                lblSuccessMessage.Visible = false;
+                                return;
+                            }
 
-                        if (!receiverAccountExists)
-                        {
-                            lblErrorMessage.Visible = true;
-                            lblErrorMessage.Text = "Invalid receiver account number. Please enter a valid account number.";
+                            // Check if the receiver account number is the same as the sender's account number
+                            if (senderAccountNumber == receiverAccountNumberValue)
+                            {
+                                lblErrorMessage.Visible = true;
+                                lblErrorMessage.Text = "You cannot send money to your own account.";
 
-                            lblSuccessMessage.Visible = false;
-                            return;
-                        }
+                                lblSuccessMessage.Visible = false;
+                                return;
+                            }
 
-                        // Update the current balance in the database
-                        int updateResult = UpdateCurrentBalance(senderAccountNumber, receiverAccountNumberValue, sendAmountValue);
+                            // Check if the receiver account number exists
+                            bool receiverAccountExists = CheckAccountExists(receiverAccountNumberValue);
 
-                        switch (updateResult)
-                        {
-                            case 0:
-                                // Update the total send money and total receive money in the database
-                                bool updateSendSuccess = UpdateTotalSendMoney(senderAccountNumber, sendAmountValue);
-                                bool updateReceiveSuccess = UpdateTotalReceiveMoney(receiverAccountNumberValue, sendAmountValue);
+                            if (!receiverAccountExists)
+                            {
+                                lblErrorMessage.Visible = true;
+                                lblErrorMessage.Text = "Invalid receiver account number. Please enter a valid account number.";
 
-                                if (updateSendSuccess && updateReceiveSuccess)
-                                {
-                                    // Display the updated balance
-                                    DisplayAccountInformation(senderAccountNumber);
+                                lblSuccessMessage.Visible = false;
+                                return;
+                            }
 
-                                    lblSuccessMessage.Visible = true;
-                                    lblSuccessMessage.Text = "Money was successfully sent.";
-                                    lblErrorMessage.Visible = false;
-                                }
-                                else
-                                {
-                                    // Update failed. Display an error message.
+                            // Update the current balance in the database
+                            int updateResult = UpdateCurrentBalance(senderAccountNumber, receiverAccountNumberValue, sendAmountValue);
+
+                            switch (updateResult)
+                            {
+                                case 0:
+                                    // Update the total send money and total receive money in the database
+                                    bool updateSendSuccess = UpdateTotalSendMoney(senderAccountNumber, sendAmountValue);
+                                    bool updateReceiveSuccess = UpdateTotalReceiveMoney(receiverAccountNumberValue, sendAmountValue);
+
+                                    if (updateSendSuccess && updateReceiveSuccess)
+                                    {
+                                        // Display the updated balance
+                                        DisplayAccountInformation(senderAccountNumber);
+
+                                        lblSuccessMessage.Visible = true;
+                                        lblSuccessMessage.Text = "Money was successfully sent.";
+                                        lblErrorMessage.Visible = false;
+                                    }
+                                    else
+                                    {
+                                        // Update failed. Display an error message.
+                                        lblErrorMessage.Visible = true;
+                                        lblErrorMessage.Text = "Money was sent successfully.";
+                                        lblSuccessMessage.Visible = false;
+                                    }
+                                    break;
+                                case 1:
                                     lblErrorMessage.Visible = true;
-                                    lblErrorMessage.Text = "Money was sent successfully.";
+                                    lblErrorMessage.Text = "Insufficient funds. Please enter a valid amount.";
                                     lblSuccessMessage.Visible = false;
-                                }
-                                break;
-                            case 1:
-                                lblErrorMessage.Visible = true;
-                                lblErrorMessage.Text = "Insufficient funds. Please enter a valid amount.";
-                                lblSuccessMessage.Visible = false;
-                                break;
-                            case 2:
-                                lblErrorMessage.Visible = true;
-                                lblErrorMessage.Text = "The transaction would exceed the receiver's credit limit.";
-                                lblSuccessMessage.Visible = false;
-                                break;
+                                    break;
+                                case 2:
+                                    lblErrorMessage.Visible = true;
+                                    lblErrorMessage.Text = "The transaction would exceed the receiver's credit limit.";
+                                    lblSuccessMessage.Visible = false;
+                                    break;
+                            }
                         }
                     }
                 }
@@ -397,7 +409,7 @@ namespace Z_Wallet
                 if (result != null && result != DBNull.Value)
                 {
                     string accountStatus = result.ToString();
-                    return accountStatus == "Unverified" || accountStatus == "Pending" || accountStatus == "Denied";
+                    return accountStatus == "Unverified" || accountStatus == "Pending" || accountStatus == "Denied" || accountStatus == "Suspended";
                 }
                 else
                 {

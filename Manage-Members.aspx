@@ -3,16 +3,16 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <main>
         <div class="dashboard-wrapper">
-            <div class="container-fluid  dashboard-content">
+            <div class="container-fluid dashboard-content">
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="page-header">
-                            <h2 class="pageheader-title"><i class="fa fa-fw fa-users"></i>Members </h2>
+                            <h2 class="pageheader-title"><i class="fa fa-fw fa-users"></i>Manage Members</h2>
                             <div class="page-breadcrumb">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Member</a></li>
+                                        <li class="breadcrumb-item"><a href="/Admin" class="breadcrumb-link">Dashboard</a></li>
+                                        <li class="breadcrumb-item"><a href="/Manage-Members" class="breadcrumb-link">Manage Member</a></li>
                                     </ol>
                                 </nav>
                             </div>
@@ -24,8 +24,6 @@
                         <div class="card">
                             <h5 class="card-header">List of Members</h5>
                             <div class="card-body">
-                                <a class="btn btn-sm btn-success" href="add-member.php"><i class="fa fa-fw fa-user-plus"></i>Add Member</a><br />
-                                <br />
                                 <div class="table-responsive">
                                     <table class="table table-striped table-bordered first">
                                         <thead>
@@ -34,6 +32,7 @@
                                                 <th>Full Name</th>
                                                 <th>Email</th>
                                                 <th>Phone Number</th>
+                                                <th>Date Created</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
@@ -46,6 +45,7 @@
                                                 <td><%= member.FullName %></td>
                                                 <td><%= member.Email %></td>
                                                 <td><%= member.PhoneNumber %></td>
+                                                <td><%= member.DateCreated %></td>
                                                 <td>
                                                     <span class="badge <%= member.StatusBadgeClass %> text-white"><%= member.Status %></span>
                                                 </td>
@@ -64,6 +64,5 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
+    </main> 
 </asp:Content>
