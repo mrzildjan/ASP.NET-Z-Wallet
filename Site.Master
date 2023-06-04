@@ -230,7 +230,7 @@
                             <ul class="list-unstyled">
                                 <li class="mb-2"><a href="/Default">Home</a>
                                 </li>
-                                <li class="mb-2"><a href="/Login">About</a>
+                                <li class="mb-2"><a href="/About">About</a>
                                 </li>
                                 <li class="mb-2"><a href="/How-It-Works">How It Works</a>
                                 </li>
@@ -260,9 +260,9 @@
                         <div class="footer-widget">
                             <h5 class="mb-4 text-primary font-secondary">Explore</h5>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><a href="/Login">Login</a>
+                                <li class="mb-2"><a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
                                 </li>
-                                <li class="mb-2"><a href="/Sign-up">Sign-up</a>
+                                <li class="mb-2"><a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Sign-up</a>
                                 </li>
                                 <li class="mb-2"><a href="/Services">Services</a>
                                 </li>

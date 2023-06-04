@@ -388,7 +388,9 @@ namespace Z_Wallet
                 }
                 else
                 {
-                    throw new Exception("Account not found for the specified account number.");
+                    lblErrorMessage.Visible = true;
+                    lblErrorMessage.Text = "Invalid receiver account number. Please enter a valid account number.";
+                    return false;
                 }
             }
         }
@@ -413,7 +415,9 @@ namespace Z_Wallet
                 }
                 else
                 {
-                    throw new Exception("Account not found for the specified account number.");
+                    lblErrorMessage.Visible = true;
+                    lblErrorMessage.Text = "Invalid receiver account number. Please enter a valid account number.";
+                    return false;
                 }
             }
         }
@@ -519,7 +523,10 @@ namespace Z_Wallet
                 }
                 else
                 {
-                    throw new Exception("Account not found.");
+                    // Instead of throwing an exception, set a label text to indicate that the account was not found.
+                    lblErrorMessage.Text = "Account not found for the specified account number.";
+                    lblErrorMessage.Visible = true;
+                    return null;
                 }
             }
         }
@@ -605,7 +612,10 @@ namespace Z_Wallet
                 }
                 else
                 {
-                    throw new Exception("Current balance not found for the specified account.");
+                    // Instead of throwing an exception, set a label text to indicate that the account was not found.
+                    lblErrorMessage.Text = "Current balance not found for the specified account.";
+                    lblErrorMessage.Visible = true;
+                    return 0;
                 }
             }
         }

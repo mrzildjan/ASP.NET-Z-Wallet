@@ -209,7 +209,7 @@ namespace Z_Wallet
                         signup_first_name.Text = "";
                         signup_last_name.Text = "";
                         signup_email.Text = "";
-                        signup_phone.Text = "";
+                        signup_phone.Text = "+63";
                         signup_password.Text = "";
                         signup_confirm_password.Text = "";
 

@@ -12,7 +12,7 @@
                                 Our e-wallet provides secure and encrypted payments through an easy-to-use web, eliminating the need for carrying cash.
                             </p>
                             <a type="button"
-                                class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#applyLoan">Get Started<span style="font-size: 14px;" class="ms-2 fas fa-arrow-right"></span></a>
+                                class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#signUpModal">Get Started<span style="font-size: 14px;" class="ms-2 fas fa-arrow-right"></span></a>
                         </div>
                     </div>
                     <div class="col-lg-6">
