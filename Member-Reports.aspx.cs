@@ -21,20 +21,28 @@ namespace Z_Wallet
             {
                 if (!IsPostBack)
                 {
-                    // Fetch member details from the database based on the accountNumber
-                    if (Request.QueryString["accountNumber"] != null)
-                    {
-                        int accountNumber = Convert.ToInt32(Request.QueryString["accountNumber"]);
-                        BindTransactions(accountNumber);
-                    }
+                    fromDate.Attributes["max"] = DateTime.Now.ToString("yyyy-MM-dd");
+                    toDate.Attributes["max"] = DateTime.Now.ToString("yyyy-MM-dd");
+                    BindTransactions();
                 }
             }
         }
-        private void BindTransactions(int accountNumber)
+
+        private void BindTransactions(DateTime? fromDate = null, DateTime? toDate = null)
         {
             try
             {
+                int accountNumber = Convert.ToInt32(Request.QueryString["accountNumber"]);
                 DataTable transactions = GetTransactions(accountNumber);
+
+               if (fromDate.HasValue && toDate.HasValue)
+                {
+                    transactions = GetFilteredTransactions(accountNumber, fromDate.Value, toDate.Value);
+                }
+                else
+                {
+                    transactions = GetTransactions(accountNumber);
+                }
 
                 if (transactions.Rows.Count > 0)
                 {
@@ -43,11 +51,16 @@ namespace Z_Wallet
                     rptTransactions.DataSource = sortedView;
                     rptTransactions.DataBind();
                 }
+                else
+                {
+                    rptTransactions.DataSource = null;
+                    rptTransactions.DataBind();
+                }
             }
             catch (Exception ex)
             {
                 // Handle any exceptions that occur during data retrieval
-                Response.Write("<script>window.alert('An error occurred while retrieving transactions.')<script/>");
+                Response.Write("<script>window.alert('An error occurred while retrieving transactions.')</script>");
             }
         }
 
@@ -83,6 +96,63 @@ namespace Z_Wallet
 
                 return transactions;
             }
+        }
+        private DataTable GetFilteredTransactions(int accountNumber, DateTime fromDate, DateTime toDate)
+        {
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT * FROM Transactions WHERE AccountNumber = @AccountNumber AND TransactionDate >= @FromDate AND TransactionDate <= DATEADD(day, 1, @ToDate)";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@AccountNumber", accountNumber);
+                command.Parameters.AddWithValue("@FromDate", fromDate);
+                command.Parameters.AddWithValue("@ToDate", toDate);
+
+                SqlDataAdapter adapter = new SqlDataAdapter(command);
+                DataTable transactions = new DataTable();
+
+                connection.Open();
+                adapter.Fill(transactions);
+                connection.Close();
+
+                return transactions;
+            }
+        }
+
+        protected void btnApplyFilter_Click(object sender, EventArgs e)
+        {
+            DateTime fromDateValue;
+            DateTime toDateValue;
+
+            if (DateTime.TryParse(fromDate.Text, out fromDateValue) && DateTime.TryParse(toDate.Text, out toDateValue))
+            {
+                BindTransactions(fromDateValue, toDateValue);
+
+                lblFilterSuccessMessage.Text = "Successfully filtered dates.";
+                lblFilterSuccessMessage.Visible = true;
+
+                lblFilterErrorMessage.Visible = false;
+            }
+            else
+            {
+                lblFilterErrorMessage.Text = "Please filter a valid dates.";
+                lblFilterErrorMessage.Visible = true;
+
+                lblFilterSuccessMessage.Visible = false;
+            }
+        }
+
+        protected void btnResetFilter_Click(object sender, EventArgs e)
+        {
+            fromDate.Text = "";
+            toDate.Text = "";
+
+            lblFilterErrorMessage.Visible = false;
+            lblFilterSuccessMessage.Visible = false;
+
+            BindTransactions();
         }
     }
 }
