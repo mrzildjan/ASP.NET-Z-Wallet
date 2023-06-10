@@ -6,11 +6,13 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Configuration;
 
 namespace Z_Wallet
 {
     public partial class Dashboard : System.Web.UI.Page
     {
+        string connectionString = ConfigurationManager.ConnectionStrings["Z-WalletConnectionString"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
             // Check if the user is logged in
@@ -44,7 +46,6 @@ namespace Z_Wallet
 
         private DataTable GetUserAccountData(int AccountNumber)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
 
             DataTable accountData = new DataTable();
 

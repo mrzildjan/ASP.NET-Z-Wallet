@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI;
@@ -12,6 +13,7 @@ namespace Z_Wallet
         private string lastName;
         private string avatarUrl;
 
+        string connectionString = ConfigurationManager.ConnectionStrings["Z-WalletConnectionString"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["AccountNumber"] == null)
@@ -71,8 +73,7 @@ namespace Z_Wallet
 
         private DataTable GetUserInfo(int accountNumber)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
+            
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "SELECT FirstName, LastName, Avatar FROM Users WHERE AccountNumber = @AccountNumber";

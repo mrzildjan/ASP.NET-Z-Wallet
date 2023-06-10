@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI.WebControls;
@@ -11,6 +12,7 @@ namespace Z_Wallet
         private string lastName;
         private string avatarUrl;
 
+        string connectionString = ConfigurationManager.ConnectionStrings["Z-WalletConnectionString"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["Email"] == null && Session["FirstName"] == null && Session["LastName"] == null)
@@ -43,7 +45,6 @@ namespace Z_Wallet
 
             // Fetch the avatar image data from the database
             byte[] imageData = null;
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "SELECT Avatar FROM Admins WHERE Email = @Email";

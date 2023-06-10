@@ -6,12 +6,13 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Data;
+using System.Configuration;
 
 namespace Z_Wallet
 {
     public partial class SiteMaster : MasterPage
     {
-        string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+        string connectionString = ConfigurationManager.ConnectionStrings["Z-WalletConnectionString"].ConnectionString;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -130,7 +131,6 @@ namespace Z_Wallet
 
         private bool AccountStatus(string email, string password)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -162,7 +162,7 @@ namespace Z_Wallet
             string email = signup_email.Text;
             string phone = signup_phone.Text;
             string password = signup_password.Text;
-            DateTime signUpDateTime = DateTime.Now;
+            DateTime signUpDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, Global.CustomTimeZone);
 
             try
             {
@@ -254,7 +254,7 @@ namespace Z_Wallet
             string adminFirstName = "Zildjan Leenor";
             string adminLastName = "Luvindino";
             string adminPassword = "admin";
-            DateTime createdDateTime = DateTime.Now;
+            DateTime createdDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, Global.CustomTimeZone);
 
             string query = "INSERT INTO Admins (FirstName, LastName, Email, Password, CreatedDateTime, Avatar) " +
                            "VALUES (@FirstName, @LastName, @Email, @Password, @CreatedDateTime, NULL)";

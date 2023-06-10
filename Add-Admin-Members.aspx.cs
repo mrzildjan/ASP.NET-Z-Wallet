@@ -13,8 +13,7 @@ namespace Z_Wallet
 {
     public partial class Add_Admin_Members : System.Web.UI.Page
     {
-        string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
+        string connectionString = ConfigurationManager.ConnectionStrings["Z-WalletConnectionString"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["Email"] == null && Session["FirstName"] == null && Session["LastName"] == null)
@@ -29,7 +28,7 @@ namespace Z_Wallet
             string lastName = txtLastName.Text;
             string email = txtEmail.Text;
             string password = txtPassword.Text;
-            DateTime createdDateTime = DateTime.Now; // Set the default value for CreatedDateTime
+            DateTime createdDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, Global.CustomTimeZone); // Set the default value for CreatedDateTime
 
             // Validate input data
             if (!string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(lastName) && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))

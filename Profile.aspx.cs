@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
@@ -9,6 +10,8 @@ namespace Z_Wallet
 {
     public partial class Profile : System.Web.UI.Page
     {
+
+        string connectionString = ConfigurationManager.ConnectionStrings["Z-WalletConnectionString"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["AccountNumber"] == null)
@@ -72,8 +75,6 @@ namespace Z_Wallet
 
         private DataTable GetUserAccountData(int accountNumber)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
             DataTable accountData = new DataTable();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -120,8 +121,7 @@ namespace Z_Wallet
 
         private void UpdateUserProfile(int accountNumber, string firstName, string lastName, string email, string contact)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
+            
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "UPDATE Users SET FirstName = @FirstName, LastName = @LastName, Email = @Email, PhoneNumber = @Contact WHERE AccountNumber = @AccountNumber";
@@ -158,8 +158,7 @@ namespace Z_Wallet
 
         private void UpdateUserAvatar(int accountNumber, byte[] imageData)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
+            
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "UPDATE Users SET Avatar = @Avatar WHERE AccountNumber = @AccountNumber";
@@ -246,8 +245,7 @@ namespace Z_Wallet
 
         private bool IsNewPasswordDifferent(int accountNumber, string newPassword)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
+            
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "SELECT COUNT(*) FROM Users WHERE AccountNumber = @AccountNumber AND Password = @Password";
@@ -266,8 +264,7 @@ namespace Z_Wallet
 
         private bool IsOldPasswordValid(int accountNumber, string oldPassword)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
+            
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "SELECT COUNT(*) FROM Users WHERE AccountNumber = @AccountNumber AND Password = @Password";
@@ -286,8 +283,7 @@ namespace Z_Wallet
 
         private void UpdateUserPassword(int accountNumber, string newPassword)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
+            
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "UPDATE Users SET Password = @Password WHERE AccountNumber = @AccountNumber";
@@ -392,7 +388,7 @@ namespace Z_Wallet
 
         private string GetAccountStatus(int accountNumber)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+            
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -411,7 +407,7 @@ namespace Z_Wallet
 
         private void UpdateAccountStatus(int accountNumber, string status)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+            
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

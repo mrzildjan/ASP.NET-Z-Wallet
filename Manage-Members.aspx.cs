@@ -9,6 +9,8 @@ namespace Z_Wallet
 {
     public partial class Manage_Members : System.Web.UI.Page
     {
+
+        string connectionString = ConfigurationManager.ConnectionStrings["Z-WalletConnectionString"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["Email"] == null && Session["FirstName"] == null && Session["LastName"] == null)
@@ -26,7 +28,6 @@ namespace Z_Wallet
 
         private void BindMembers()
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
             string query = "SELECT AccountNumber, FirstName, LastName, Email, PhoneNumber, SignUpDateTime, AccountStatus FROM Users ORDER BY AccountNumber DESC";
 
             using (SqlConnection connection = new SqlConnection(connectionString))

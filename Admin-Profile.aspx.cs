@@ -6,11 +6,14 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Configuration;
 
 namespace Z_Wallet
 {
     public partial class Admin_Profile : System.Web.UI.Page
     {
+
+        string connectionString = ConfigurationManager.ConnectionStrings["Z-WalletConnectionString"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["Email"] == null && Session["FirstName"] == null && Session["LastName"] == null)
@@ -60,8 +63,6 @@ namespace Z_Wallet
 
         private DataTable GetAdminAccountData(string email) // Changed parameter type to string
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
             DataTable accountData = new DataTable();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -105,7 +106,6 @@ namespace Z_Wallet
 
         private void UpdateAdminProfile(string email, string firstName, string lastName, string updatedEmail) // Updated parameter name
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -142,7 +142,6 @@ namespace Z_Wallet
 
         private void UpdateAdminAvatar(string email, byte[] imageData) // Updated parameter name
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -222,7 +221,6 @@ namespace Z_Wallet
 
         private bool IsNewPasswordDifferent(string email, string newPassword) // Updated parameter name
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -242,7 +240,6 @@ namespace Z_Wallet
 
         private bool IsOldPasswordValid(string email, string oldPassword) // Updated parameter name
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -262,7 +259,6 @@ namespace Z_Wallet
 
         private void UpdateAdminPassword(string email, string newPassword) // Updated parameter name
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

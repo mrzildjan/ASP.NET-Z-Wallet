@@ -6,11 +6,13 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Configuration;
 
 namespace Z_Wallet
 {
     public partial class Member_Reports : System.Web.UI.Page
     {
+        string connectionString = ConfigurationManager.ConnectionStrings["Z-WalletConnectionString"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["Email"] == null && Session["FirstName"] == null && Session["LastName"] == null)
@@ -21,8 +23,8 @@ namespace Z_Wallet
             {
                 if (!IsPostBack)
                 {
-                    fromDate.Attributes["max"] = DateTime.Now.ToString("yyyy-MM-dd");
-                    toDate.Attributes["max"] = DateTime.Now.ToString("yyyy-MM-dd");
+                    fromDate.Attributes["max"] = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, Global.CustomTimeZone).ToString("yyyy-MM-dd");
+                    toDate.Attributes["max"] = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, Global.CustomTimeZone).ToString("yyyy-MM-dd");
                     BindTransactions();
                 }
             }
@@ -65,8 +67,7 @@ namespace Z_Wallet
         }
 
         private DataTable GetTransactions(int accountNumber)
-        {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+        {  
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -99,7 +100,6 @@ namespace Z_Wallet
         }
         private DataTable GetFilteredTransactions(int accountNumber, DateTime fromDate, DateTime toDate)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

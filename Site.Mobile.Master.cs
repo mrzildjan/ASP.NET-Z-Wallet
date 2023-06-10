@@ -11,7 +11,8 @@ namespace Z_Wallet
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            string switchViewUrl = "~/__FriendlyUrls_SwitchView?ReturnUrl=%2f";
+            Response.Redirect(switchViewUrl);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
@@ -11,6 +12,7 @@ namespace Z_Wallet
 {
     public partial class Verification : Page
     {
+        string connectionString = ConfigurationManager.ConnectionStrings["Z-WalletConnectionString"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["AccountNumber"] == null)
@@ -57,60 +59,52 @@ namespace Z_Wallet
                     // Check if both front and back ID pictures are chosen
                     if (fileUpload1.HasFile && fileUpload2.HasFile)
                     {
-                        // Prepare the database query to save or update the verification information
-                        string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        // Check file extensions
+                        string fileExtension1 = Path.GetExtension(fileUpload1.FileName).ToLower();
+                        string fileExtension2 = Path.GetExtension(fileUpload2.FileName).ToLower();
+
+                        if (IsImageExtension(fileExtension1) && IsImageExtension(fileExtension2))
                         {
-                            SqlCommand command = new SqlCommand("IF EXISTS (SELECT * FROM [User-Verification] WHERE AccountNumber = @AccountNumber) " +
-                                                                "UPDATE [User-Verification] SET " +
-                                                                "FirstName = @FirstName, LastName = @LastName, MiddleName = @MiddleName, Birthdate = @Birthdate, " +
-                                                                "Gender = @Gender, Nationality = @Nationality, PlaceOfBirth = @PlaceOfBirth, AddressLineOne = @AddressLineOne, AddressLineTwo = @AddressLineTwo, " +
-                                                                "City = @City, Province = @Province, PostalCode = @PostalCode, Country = @Country, IDType = @IDType, " +
-                                                                "FrontIDPicture = @FrontIDPicture, BackIDPicture = @BackIDPicture " +
-                                                                "WHERE AccountNumber = @AccountNumber " +
-                                                                "ELSE " +
-                                                                "INSERT INTO [User-Verification] (AccountNumber, FirstName, LastName, MiddleName, Birthdate, Gender, Nationality, PlaceOfBirth, " +
-                                                                "AddressLineOne, AddressLineTwo, City, Province, PostalCode, Country, IDType, FrontIDPicture, BackIDPicture) " +
-                                                                "VALUES (@AccountNumber, @FirstName, @LastName, @MiddleName, @Birthdate, @Gender, @Nationality, @PlaceOfBirth, " +
-                                                                "@AddressLineOne, @AddressLineTwo, @City, @Province, @PostalCode, @Country, @IDType, @FrontIDPicture, @BackIDPicture)", connection);
+                            // Prepare the database query to save or update the verification information
+                            using (SqlConnection connection = new SqlConnection(connectionString))
+                            {
+                                SqlCommand command = new SqlCommand("IF EXISTS (SELECT * FROM [User-Verification] WHERE AccountNumber = @AccountNumber) " +
+                                                                    "UPDATE [User-Verification] SET " +
+                                                                    "FrontIDPicture = @FrontIDPicture, BackIDPicture = @BackIDPicture " +
+                                                                    "WHERE AccountNumber = @AccountNumber " +
+                                                                    "ELSE " +
+                                                                    "INSERT INTO [User-Verification] (AccountNumber, FrontIDPicture, BackIDPicture) " +
+                                                                    "VALUES (@AccountNumber, @FrontIDPicture, @BackIDPicture)", connection);
 
-                            command.Parameters.AddWithValue("@AccountNumber", accountNumber);
-                            command.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
-                            command.Parameters.AddWithValue("@LastName", txtLastName.Text);
-                            command.Parameters.AddWithValue("@MiddleName", txtMiddleName.Text);
-                            command.Parameters.AddWithValue("@Birthdate", Convert.ToDateTime(txtBirthDate.Text));
-                            command.Parameters.AddWithValue("@Gender", ddlGender.SelectedValue);
-                            command.Parameters.AddWithValue("@Nationality", txtNationality.Text);
-                            command.Parameters.AddWithValue("@PlaceOfBirth", txtPlaceOfBirth.Text);
-                            command.Parameters.AddWithValue("@AddressLineOne", txtAddressLine1.Text);
-                            command.Parameters.AddWithValue("@AddressLineTwo", txtAddressLine2.Text);
-                            command.Parameters.AddWithValue("@City", txtCityAddress.Text);
-                            command.Parameters.AddWithValue("@Province", ProvinceAddress.Text);
-                            command.Parameters.AddWithValue("@PostalCode", txtPostalCode.Text);
-                            command.Parameters.AddWithValue("@Country", ddlCountries.SelectedValue);
-                            command.Parameters.AddWithValue("@IDType", ddlIDType.SelectedValue);
+                                command.Parameters.AddWithValue("@AccountNumber", accountNumber);
 
-                            // Save the front ID picture
-                            string fileName1 = Path.GetFileName(fileUpload1.PostedFile.FileName);
-                            byte[] imageData1 = fileUpload1.FileBytes;
-                            command.Parameters.AddWithValue("@FrontIDPicture", imageData1);
+                                // Save the front ID picture
+                                byte[] imageData1 = fileUpload1.FileBytes;
+                                command.Parameters.AddWithValue("@FrontIDPicture", imageData1);
 
-                            // Save the back ID picture
-                            string fileName2 = Path.GetFileName(fileUpload2.PostedFile.FileName);
-                            byte[] imageData2 = fileUpload2.FileBytes;
-                            command.Parameters.AddWithValue("@BackIDPicture", imageData2);
+                                // Save the back ID picture
+                                byte[] imageData2 = fileUpload2.FileBytes;
+                                command.Parameters.AddWithValue("@BackIDPicture", imageData2);
 
-                            connection.Open();
-                            command.ExecuteNonQuery();
-                            connection.Close();
+                                connection.Open();
+                                command.ExecuteNonQuery();
+                                connection.Close();
 
-                            // Update the account status in the Users table to "Pending"
-                            UpdateAccountStatus(accountNumber, "Pending");
+                                // Update the account status in the Users table to "Pending"
+                                UpdateAccountStatus(accountNumber, "Pending");
 
-                            // Display success message or perform other actions
-                            lblSuccessMessage.Visible = true;
-                            lblSuccessMessage.Text = "Form submitted successfully!";
-                            lblErrorMessage.Visible = false;
+                                // Display success message or perform other actions
+                                lblSuccessMessage.Visible = true;
+                                lblSuccessMessage.Text = "Form submitted successfully!";
+                                lblErrorMessage.Visible = false;
+                            }
+                        }
+                        else
+                        {
+                            // Display error message for invalid file extensions
+                            lblErrorMessage.Text = "Please choose image files only.";
+                            lblErrorMessage.Visible = true;
+                            lblSuccessMessage.Visible = false;
                         }
                     }
                     else
@@ -124,10 +118,18 @@ namespace Z_Wallet
             }
         }
 
+        private bool IsImageExtension(string fileExtension)
+        {
+            // Define the allowed image file extensions
+            string[] allowedExtensions = { ".jpg", ".jpeg", ".png" };
+
+            // Check if the file extension is in the allowed extensions list
+            return allowedExtensions.Contains(fileExtension);
+        }
+
         private void UpdateAccountStatus(int accountNumber, string status)
         {
-            // Update the account status in the Users table
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+            // Update the account status in the Users table        
             string query = "UPDATE [Users] SET [AccountStatus] = @AccountStatus WHERE [AccountNumber] = @AccountNumber";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -147,7 +149,6 @@ namespace Z_Wallet
         private bool IsAccountVerified(int accountNumber)
         {
             // Check if the account is already verified in the database
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand("SELECT AccountStatus FROM Users WHERE AccountNumber = @AccountNumber", connection);
@@ -176,7 +177,7 @@ namespace Z_Wallet
         {
             // Clear the form fields and redirect the user
             ClearForm();
-            Response.Redirect("~/Default.aspx");
+            Response.Redirect("~/Dashboard.aspx");
         }
 
         private void PopulateCountries()
@@ -203,7 +204,6 @@ namespace Z_Wallet
         private void LoadVerificationInfo(int accountNumber)
         {
             // Prepare the database query to load the user's verification information
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 // Load the verification information from the User-Verification table

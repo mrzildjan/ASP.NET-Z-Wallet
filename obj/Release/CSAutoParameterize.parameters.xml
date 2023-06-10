@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="Z-WalletConnectionString-Web.config Connection String" description="Z-WalletConnectionString Connection String used in web.config by the application to access the database." defaultValue="Server=tcp:z-walletdbserver.database.windows.net,1433;Initial Catalog=Z-Wallet;Persist Security Info=False;User ID=mr.zildjan;Password=Mr.hacker181818;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; " tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\ZILD\\OneDrive\\Documents\\GitHub\\Z-Wallet\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='Z-WalletConnectionString']/@connectionString" />
+  </parameter>
+</parameters>

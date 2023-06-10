@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI.WebControls;
@@ -7,6 +8,8 @@ namespace Z_Wallet
 {
     public partial class Reports : System.Web.UI.Page
     {
+
+        string connectionString = ConfigurationManager.ConnectionStrings["Z-WalletConnectionString"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
             // Check if the user is logged in
@@ -18,8 +21,8 @@ namespace Z_Wallet
             {
                 if (!IsPostBack)
                 {
-                    fromDate.Attributes["max"] = DateTime.Now.ToString("yyyy-MM-dd");
-                    toDate.Attributes["max"] = DateTime.Now.ToString("yyyy-MM-dd");
+                    fromDate.Attributes["max"] = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, Global.CustomTimeZone).ToString("yyyy-MM-dd");
+                    toDate.Attributes["max"] = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, Global.CustomTimeZone).ToString("yyyy-MM-dd");
                     BindTransactions();
                 }
             }
@@ -64,7 +67,7 @@ namespace Z_Wallet
 
         private DataTable GetTransactions(int accountNumber)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+            
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -96,8 +99,7 @@ namespace Z_Wallet
 
         private DataTable GetFilteredTransactions(int accountNumber, DateTime fromDate, DateTime toDate)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
+           
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "SELECT * FROM Transactions WHERE AccountNumber = @AccountNumber AND TransactionDate >= @FromDate AND TransactionDate <= DATEADD(day, 1, @ToDate)";

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI;
@@ -7,6 +8,8 @@ namespace Z_Wallet
 {
     public partial class Cash_Out : Page
     {
+
+        string connectionString = ConfigurationManager.ConnectionStrings["Z-WalletConnectionString"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
             // Check if the user is logged in
@@ -39,7 +42,6 @@ namespace Z_Wallet
 
         private DataTable GetUserAccountData(int accountNumber)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
 
             DataTable accountData = new DataTable();
 
@@ -80,7 +82,6 @@ namespace Z_Wallet
 
         private void StoreTransaction(int accountNumber, string transactionType, string transactionSender, string transactionReceiver, decimal transactionAmount)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -93,7 +94,7 @@ namespace Z_Wallet
                 command.Parameters.AddWithValue("@TransactionSender", transactionSender);
                 command.Parameters.AddWithValue("@TransactionReceiver", transactionReceiver);
                 command.Parameters.AddWithValue("@TransactionAmount", transactionAmount);
-                command.Parameters.AddWithValue("@TransactionDate", DateTime.Now);
+                command.Parameters.AddWithValue("@TransactionDate", TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, Global.CustomTimeZone));
 
                 connection.Open();
                 command.ExecuteNonQuery();
@@ -188,7 +189,6 @@ namespace Z_Wallet
 
         private bool AccountStatus(int accountNumber)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -213,7 +213,6 @@ namespace Z_Wallet
         }
         private bool IsAccountDeactivated(int accountNumber)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -239,7 +238,6 @@ namespace Z_Wallet
 
         private bool VerifyPassword(int accountNumber, string password)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -257,7 +255,6 @@ namespace Z_Wallet
         }
         private bool UpdateCurrentBalance(int accountNumber, decimal cashOutAmount)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -288,7 +285,6 @@ namespace Z_Wallet
 
         private decimal GetCurrentBalance(int accountNumber)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -313,7 +309,6 @@ namespace Z_Wallet
 
         private decimal GetTotalCashOut(int accountNumber)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

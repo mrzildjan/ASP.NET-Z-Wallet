@@ -1,0 +1,386 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Z_Wallet.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Z Wallet - <%: Page.Title %></title>
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+
+    <webopt:BundleReference runat="server" Path="~/Content" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+    <asp:PlaceHolder runat="server">
+        <%-- CSS Plugins --%>
+        <%: Styles.Render("~/Content/plugins/slick/slick.css") %>
+        <%: Styles.Render("~/Content/plugins/font-awesome/fontawesome.min.css") %>
+        <%: Styles.Render("~/Content/plugins/font-awesome/brands.css") %>
+        <%: Styles.Render("~/Content/plugins/font-awesome/solid.css") %>
+        <%: Styles.Render("~/Content/css/style.css") %>
+        <%--Google Fonts--%>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </asp:PlaceHolder>
+</head>
+<body>
+    <form runat="server">
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
+                <%--Framework Scripts--%>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+
+                <%--Site Scripts--%>
+            </Scripts>
+        </asp:ScriptManager>
+
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h4 class="modal-title" id="loginModalLabel">Login</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="login_email" class="form-label">Email address</label>
+                            <asp:TextBox ID="login_email" runat="server" CssClass="form-control" TextMode="Email"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="login_emailValidator" runat="server" ControlToValidate="login_email" ErrorMessage="Email address is required" CssClass="text-danger" ValidationGroup="loginValidation"></asp:RequiredFieldValidator>
+                            <div class="login-email-error-message text-danger" style="display: none;">Email address is required</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="login_password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <asp:TextBox ID="login_password" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
+                                <button type="button" class="btn btn-outline-secondary" id="show_login_password">Show</button>
+                            </div>
+                            <asp:RequiredFieldValidator ID="login_passwordValidator" runat="server" ControlToValidate="login_password" ErrorMessage="Password is required" CssClass="text-danger" ValidationGroup="loginValidation"></asp:RequiredFieldValidator>
+                            <div class="login-password-error-message text-danger" style="display: none;">Password is required</div>
+                        </div>
+                        <div class="login-message mb-3 text-center">
+                            <asp:Label ID="loginErrorLabel" runat="server" CssClass="login-error-message" Text="" Visible="false"></asp:Label>
+                        </div>
+                        <div class="login-message text-center mb-3">
+                            <asp:Label ID="lblLoginErrorMessage" runat="server" CssClass="signup-error-message" Text=""></asp:Label>
+                        </div>
+                        <div class="text-center" runat="server">
+                            <asp:Button ID="login_button" runat="server" CssClass="btn btn-primary" Text="Login" ValidationGroup="loginValidation" OnClick="LoginButton_Click" />
+                        </div>
+                        <div class="text-center mt-3">
+                            <p>Don't have an account? <a href="#signUpModal" data-bs-toggle="modal" data-bs-dismiss="modal">Register</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered signup-modal">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h4 class="modal-title" id="signUpModalLabel">Sign Up</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="signup_first_name" class="form-label">First Name</label>
+                                    <asp:TextBox ID="signup_first_name" runat="server" CssClass="form-control"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="signup_first_nameValidator" runat="server" ControlToValidate="signup_first_name" ErrorMessage="First Name is required" CssClass="text-danger" ValidationGroup="signupValidation"></asp:RequiredFieldValidator>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="signup_last_name" class="form-label">Last Name</label>
+                                    <asp:TextBox ID="signup_last_name" runat="server" CssClass="form-control"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="signup_last_nameValidator" runat="server" ControlToValidate="signup_last_name" ErrorMessage="Last Name is required" CssClass="text-danger" ValidationGroup="signupValidation"></asp:RequiredFieldValidator>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="signup_email" class="form-label">Email address</label>
+                                    <asp:TextBox ID="signup_email" runat="server" CssClass="form-control"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="signup_emailValidator" runat="server" ControlToValidate="signup_email" ErrorMessage="Email address is required" CssClass="text-danger" ValidationGroup="signupValidation"></asp:RequiredFieldValidator>
+                                    <asp:RegularExpressionValidator ID="signup_emailRegexValidator" runat="server" ControlToValidate="signup_email" ErrorMessage="<br />Invalid email address" CssClass="text-danger" ValidationExpression="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" ValidationGroup="signupValidation"></asp:RegularExpressionValidator>
+                                    <div class="signup-email-error-message text-danger" style="display: none;">Email address is required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="signup_phone" class="form-label">Phone Number</label>
+                                    <asp:TextBox ID="signup_phone" runat="server" CssClass="form-control">+63</asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="signup_phoneValidator" runat="server" ControlToValidate="signup_phone" ErrorMessage="Phone Number is required" CssClass="text-danger" ValidationGroup="signupValidation"></asp:RequiredFieldValidator>
+                                    <asp:RegularExpressionValidator ID="numValidator" runat="server" ErrorMessage="<br />Invalid Phone Number!" ValidationExpression="^(09|\+639)\d{9}$" CssClass="text-danger" ControlToValidate="signup_phone"></asp:RegularExpressionValidator>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="signup_password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <asp:TextBox ID="signup_password" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
+                                <button type="button" class="btn btn-outline-secondary" id="show_signup_password">Show</button>
+                            </div>
+                            <asp:RegularExpressionValidator ID="password" runat="server" ErrorMessage="Password length must be a minimum of 8 characters" Display="Dynamic" CssClass="text-danger" ControlToValidate="signup_password" ValidationExpression="^.{8,}$"></asp:RegularExpressionValidator>
+                            <asp:RequiredFieldValidator ID="signup_passwordValidator" runat="server" ControlToValidate="signup_password" ErrorMessage="Password is required" CssClass="text-danger" ValidationGroup="signupValidation"></asp:RequiredFieldValidator>
+                            <div class="signup-password-error-message text-danger" style="display: none;">Password is required</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="signup_confirm_password" class="form-label">Confirm Password</label>
+                            <div class="input-group">
+                                <asp:TextBox ID="signup_confirm_password" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
+                                <button type="button" class="btn btn-outline-secondary" id="show_signup_confirm_password">Show</button>
+                            </div>
+                            <asp:RequiredFieldValidator ID="signup_confirm_passwordValidator" runat="server" ControlToValidate="signup_confirm_password" ErrorMessage="Confirm Password is required" CssClass="text-danger" ValidationGroup="signupValidation"></asp:RequiredFieldValidator>
+                            <asp:CompareValidator ID="signup_confirm_passwordCompareValidator" runat="server" ControlToValidate="signup_confirm_password" ControlToCompare="signup_password" Operator="Equal" ErrorMessage="Passwords do not match" CssClass="text-danger" ValidationGroup="signupValidation"></asp:CompareValidator>
+                            <div class="signup-confirm-password-error-message text-danger" style="display: none;">Passwords do not match</div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <asp:CheckBox ID="termsCheckbox" runat="server" ClientIDMode="Static" />
+                                <label class="form-check-label" for="termsCheckbox">
+                                    I agree to the <a href="/Terms" target="_blank">Terms and Conditions</a> and <a href="/Privacy-Policy" target="_blank">Privacy Policy.</a>
+                                </label>
+                            </div>
+                            <asp:CustomValidator ID="termsValidator" runat="server" ErrorMessage="You must agree to the Terms and Privacy Policy" CssClass="text-danger" ValidationGroup="signupValidation" ClientValidationFunction="validateTermsCheckbox"></asp:CustomValidator>
+                        </div>
+                        <div class="signup-message text-center mb-3">
+                            <asp:Label ID="signupSuccessLabel" runat="server" CssClass="signup-success-message" Text=""></asp:Label>
+                            <asp:Label ID="signupErrorLabel" runat="server" CssClass="signup-error-message" Text=""></asp:Label>
+                        </div>
+                        <div class="text-center" runat="server">
+                            <asp:Button ID="signup_button" runat="server" CssClass="btn btn-primary" Text="Sign Up" OnClick="SignupButton_Click" ValidationGroup="signupValidation" />
+                        </div>
+                        <div class="text-center mt-3">
+                            <p>Already have an account? <a href="#loginModal" data-bs-toggle="modal" data-bs-dismiss="modal">Please login</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <header class="navigation bg-tertiary sticky-top">
+            <nav class="navbar navbar-expand-xl navbar-light text-center py-3">
+                <div class="container">
+                    <a class="navbar-brand" href="/Default">
+                        <img loading="prelaod" decoding="async" class="img-fluid" width="160" src="Content/images/logo.png" alt="Wallet">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                            <li class="nav-item"><a class="nav-link" href="/Default">Home</a>
+                            </li>
+                            <li class="nav-item "><a class="nav-link" href="/About">About</a>
+                            </li>
+                            <li class="nav-item "><a class="nav-link" href="/How-It-Works">How It Works</a>
+                            </li>
+                            <li class="nav-item "><a class="nav-link" href="/Services">Services</a>
+                            </li>
+                            <li class="nav-item "><a class="nav-link" href="/Contact">Contact</a>
+                            </li>
+                            <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">More</a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item " href="/FAQ">FAQ&#39;s</a>
+                                    </li>
+                                    <li><a class="dropdown-item " href="/Legal">Legal</a>
+                                    </li>
+                                    <li><a class="dropdown-item " href="/Terms">Terms &amp; Condition</a>
+                                    </li>
+                                    <li><a class="dropdown-item " href="/Privacy-Policy">Privacy &amp; Policy</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" class="btn btn-outline-primary">Log In</a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#signUpModal" class="btn btn-primary ms-2 ms-lg-3">Sign Up</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <asp:ContentPlaceHolder ID="MainContent" runat="server">
+        </asp:ContentPlaceHolder>
+        <footer class="section-sm bg-tertiary">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-lg-2 col-md-4 col-6 mb-4">
+                        <div class="footer-widget">
+                            <h5 class="mb-4 text-primary font-secondary">Links</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><a href="/Default">Home</a>
+                                </li>
+                                <li class="mb-2"><a href="/About">About</a>
+                                </li>
+                                <li class="mb-2"><a href="/How-It-Works">How It Works</a>
+                                </li>
+                                <li class="mb-2"><a href="/Service">Service</a>
+                                </li>
+                                <li class="mb-2"><a href="/Contact">Contact Us</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6 mb-4">
+                        <div class="footer-widget">
+                            <h5 class="mb-4 text-primary font-secondary">About</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><a href="/Legal">Legal</a>
+                                </li>
+                                <li class="mb-2"><a href="/Privacy-Policy">Privacy Policy</a>
+                                </li>
+                                <li class="mb-2"><a href="/Terms">Terms & Conditions</a>
+                                </li>
+                                <li class="mb-2"><a href="/FAQ">FAQs</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6 mb-4">
+                        <div class="footer-widget">
+                            <h5 class="mb-4 text-primary font-secondary">Explore</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+                                </li>
+                                <li class="mb-2"><a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Sign-up</a>
+                                </li>
+                                <li class="mb-2"><a href="/Services">Services</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6 mb-4">
+                        <div class="footer-widget">
+                            <h5 class="mb-4 text-primary font-secondary">Help</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><a href="/Contact">Contact Us</a>
+                                </li>
+                                <li class="mb-2"><a href="/FAQ">FAQs</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12 newsletter-form">
+                        <div style="background-color: #F4F4F4; padding: 35px;">
+                            <h5 class="mb-4 text-primary font-secondary">Subscribe</h5>
+                            <div class="pe-0 pe-xl-5">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control shadow-none bg-white border-end-0" placeholder="Email address">
+                                    <span class="input-group-text border-0 p-0">
+                                        <button class="input-group-text border-0 bg-primary" type="submit" name="subscribe"
+                                            aria-label="Subscribe for Newsletter">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                                <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                                    <input type="text" name="b_463ee871f45d2d93748e77cad_a0a2c6d074" tabindex="-1">
+                                </div>
+                            </div>
+                            <p class="mb-0">Stay up-to-date with our e-wallet newsletter. Subscribe now and get the latest updates and news straight to your inbox!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mt-5 text-center text-md-start">
+                    <div class="col-lg-4">
+                        <a href="/Default">
+                            <img loading="prelaod" decoding="async" class="img-fluid" width="160" src="Content/images/logo.png" alt="Wallet">
+                        </a>
+                    </div>
+                    <div class="col-lg-4 col-md-6 mt-4 mt-lg-0">
+                        <ul class="list-unstyled list-inline mb-0 text-lg-center">
+                            <li class="list-inline-item me-4"><a class="text-black" href="/Privacy-Policy">Privacy Policy</a>
+                            </li>
+                            <li class="list-inline-item me-4"><a class="text-black" href="/Terms">Terms &amp; Conditions</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4 col-md-6 text-md-end mt-4 mt-md-0">
+                        <ul class="list-unstyled list-inline mb-0 social-icons">
+                            <li class="list-inline-item me-3"><a title="Explorer Facebook Profile" class="text-black" href="https://facebook.com/" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+                            </li>
+                            <li class="list-inline-item me-3"><a title="Explorer Twitter Profile" class="text-black" href="https://twitter.com/" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+                            </li>
+                            <li class="list-inline-item me-3"><a title="Explorer Instagram Profile" class="text-black" href="https://instagram.com/" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </form>
+    <script>
+        document.getElementById("show_login_password").addEventListener("click", function () {
+            var passwordInput = document.getElementById("login_password");
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                document.getElementById("show_login_password").textContent = "Hide";
+            } else {
+                passwordInput.type = "password";
+                document.getElementById("show_login_password").textContent = "Show";
+            }
+        });
+
+        document.getElementById("show_signup_password").addEventListener("click", function () {
+            var passwordInput = document.getElementById("signup_password");
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                document.getElementById("show_signup_password").textContent = "Hide";
+            } else {
+                passwordInput.type = "password";
+                document.getElementById("show_signup_password").textContent = "Show";
+            }
+        });
+
+        document.getElementById("show_signup_confirm_password").addEventListener("click", function () {
+            var passwordInput = document.getElementById("signup_confirm_password");
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                document.getElementById("show_signup_confirm_password").textContent = "Hide";
+            } else {
+                passwordInput.type = "password";
+                document.getElementById("show_signup_confirm_password").textContent = "Show";
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        function validateTermsCheckbox(sender, args) {
+            var termsCheckbox = document.getElementById('<%= termsCheckbox.ClientID %>');
+            args.IsValid = termsCheckbox.checked;
+        }
+    </script>
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/Content/plugins/jquery/jquery.min.js") %>
+        <!-- Load jQuery before Bootstrap -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js" crossorigin="anonymous"></script>
+        <%: Scripts.Render("~/Scripts/bootstrap.js") %>
+    </asp:PlaceHolder>
+
+    <%-- JS Plugins --%>
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/Content/plugins/slick/slick.min.js") %>
+        <%: Scripts.Render("~/Content/plugins/scrollmenu/scrollmenu.min.js") %>
+        <%: Scripts.Render("~/Content/js/script.js") %>
+    </asp:PlaceHolder>
+</body>
+</html>

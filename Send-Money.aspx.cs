@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace Z_Wallet
 {
     public partial class Send_Money : System.Web.UI.Page
     {
+
+        string connectionString = ConfigurationManager.ConnectionStrings["Z-WalletConnectionString"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
             // Check if the user is logged in
@@ -42,8 +45,7 @@ namespace Z_Wallet
 
         private DataTable GetUserAccountData(int accountNumber)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
+          
             DataTable accountData = new DataTable();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -165,8 +167,7 @@ namespace Z_Wallet
 
         private bool CheckAccountExists(int accountNumber)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
+           
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "SELECT COUNT(*) FROM Users WHERE AccountNumber = @AccountNumber";
@@ -369,8 +370,7 @@ namespace Z_Wallet
 
         private bool AccountSuspended(int accountNumber)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
+            
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "SELECT AccountStatus FROM Users WHERE AccountNumber = @AccountNumber";
@@ -396,8 +396,7 @@ namespace Z_Wallet
         }
         private bool AccountStatus(int accountNumber)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
+            
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "SELECT AccountStatus FROM Users WHERE AccountNumber = @AccountNumber";
@@ -424,8 +423,7 @@ namespace Z_Wallet
 
         private bool IsAccountDeactivated(int accountNumber)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
+           
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "SELECT isDeactivated FROM Users WHERE AccountNumber = @AccountNumber";
@@ -453,8 +451,7 @@ namespace Z_Wallet
 
         private bool VerifyPassword(int accountNumber, string password)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
+            
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "SELECT COUNT(*) FROM Users WHERE AccountNumber = @AccountNumber AND Password = @Password";
@@ -472,7 +469,7 @@ namespace Z_Wallet
 
         private void StoreTransaction(int senderAccountNumber, int receiverAccountNumber, decimal sendAmount)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
+            
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -494,7 +491,7 @@ namespace Z_Wallet
                 command.Parameters.AddWithValue("@ReceivedTransactionSender", senderName);
                 command.Parameters.AddWithValue("@ReceivedTransactionReceiver", receiverName);
                 command.Parameters.AddWithValue("@TransactionAmount", sendAmount);
-                command.Parameters.AddWithValue("@TransactionDate", DateTime.Now);
+                command.Parameters.AddWithValue("@TransactionDate", TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, Global.CustomTimeZone));
 
                 connection.Open();
                 command.ExecuteNonQuery();
@@ -503,8 +500,7 @@ namespace Z_Wallet
 
         private string GetAccountName(int accountNumber)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
+            
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "SELECT FirstName, LastName FROM Users WHERE AccountNumber = @AccountNumber";
@@ -533,8 +529,7 @@ namespace Z_Wallet
 
         private int UpdateCurrentBalance(int senderAccountNumber, int receiverAccountNumber, decimal sendAmount)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
+          
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 // Retrieve the current balance of the sender
@@ -594,8 +589,7 @@ namespace Z_Wallet
 
         private decimal GetCurrentBalance(int accountNumber)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
+            
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "SELECT CurrentBalance FROM Users WHERE AccountNumber = @AccountNumber";
@@ -622,8 +616,7 @@ namespace Z_Wallet
 
         private bool UpdateTotalSendMoney(int accountNumber, decimal sendAmount)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
+            
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "UPDATE Users SET TotalSendMoney = ISNULL(TotalSendMoney, 0) + @SendAmount WHERE AccountNumber = @AccountNumber";
@@ -641,8 +634,7 @@ namespace Z_Wallet
 
         private bool UpdateTotalReceiveMoney(int accountNumber, decimal receiveAmount)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\ZILD\OneDrive\Documents\GitHub\Z-Wallet\App_Data\Z-Wallet.mdf;Integrated Security=True";
-
+            
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "UPDATE Users SET TotalReceiveMoney = ISNULL(TotalReceiveMoney, 0) + @ReceiveAmount WHERE AccountNumber = @AccountNumber";
