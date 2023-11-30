@@ -79,7 +79,7 @@ enables a responsive and user-friendly design, utilizing the **MSSQL Relational 
 
 ---
 
-### Loop Holes
+### Loopholes
 - [x] **Account Password** : Password was not hashed.
 - [x] **Connection String** : Connection string wasn't set up for the secret key.
                             
