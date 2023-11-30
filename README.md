@@ -54,7 +54,7 @@ enables a responsive and user-friendly design, utilizing the **MSSQL Relational 
 ![image](https://github.com/mrzildjan/ASP.NET-Z-Wallet/assets/127743545/706a1c30-6a44-4f7b-aa10-f1ff5bbfdc53)
 ![image](https://github.com/mrzildjan/ASP.NET-Z-Wallet/assets/127743545/e8f36001-b442-4ae1-a277-951468c5fd4d)
 
-
+---
 
 ### Admin Overview System
 ![image](https://github.com/mrzildjan/ASP.NET-Z-Wallet/assets/127743545/20ede962-ef0b-415b-9c03-7d0b65ab5c85)
@@ -77,8 +77,10 @@ enables a responsive and user-friendly design, utilizing the **MSSQL Relational 
 ![image](https://github.com/mrzildjan/ASP.NET-Z-Wallet/assets/127743545/9d939131-b31a-40be-ba11-75d920b2cddb)
 ![image](https://github.com/mrzildjan/ASP.NET-Z-Wallet/assets/127743545/47e7eabb-11a4-438f-ac20-a3f37defc5ef)
 
+---
+
 ### Loop Holes
-- [x] **Account Passowrd** : Password was not hashed.
+- [x] **Account Password** : Password was not hashed.
 - [x] **Connection String** : Connection string wasn't set up for the secret key.
                             
 ### Developer
